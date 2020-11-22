@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
         "Carent"
-    ]
+    ],
+    "editor.defaultFormatter": "Prisma.prisma"
 }
