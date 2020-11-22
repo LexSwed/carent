@@ -1,0 +1,13 @@
+overwrite: true
+schema: 'http://localhost:3000/api/gql'
+documents:
+  - './src/**/!(*.d).{ts,tsx}':
+    noRequire: true
+generates:
+  src/graphql/generated.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+  ./graphql.schema.json:
+    plugins:
+      - 'introspection'

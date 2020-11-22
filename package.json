@@ -1,0 +1,63 @@
+{
+  "name": "@fxtrot/carent",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=12"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LexSwed/carent"
+  },
+  "scripts": {
+    "start": "./start.sh",
+    "next:dev": "next dev",
+    "next:build": "next build",
+    "next:start": "next start",
+    "prisma:watch": "yarn prisma generate --watch",
+    "prisma:migrate": "prisma migrate save --experimental && prisma migrate up --experimental",
+    "lint": "eslint src schema prisma --fix",
+    "gql:codegen": "graphql-codegen --watch --config codegen.yml"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.2.5",
+    "@apollo/link-batch-http": "^2.0.0-beta.3",
+    "@fxtrot/ui": "^1.0.70",
+    "@nexus/schema": "^0.18.0",
+    "@prisma/client": "2.11.0",
+    "apollo-server-micro": "^2.19.0",
+    "graphql": "^15.4.0",
+    "graphql-iso-date": "^3.6.1",
+    "next": "10.0.2",
+    "next-auth": "^3.1.0",
+    "nexus-plugin-prisma": "^0.24.0",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-icons": "^3.11.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "1.19.2",
+    "@graphql-codegen/introspection": "1.18.0",
+    "@graphql-codegen/typescript": "1.17.11",
+    "@graphql-codegen/typescript-operations": "1.17.10",
+    "@graphql-codegen/typescript-react-apollo": "2.1.1",
+    "@prisma/cli": "2.11.0",
+    "@types/graphql-iso-date": "^3.4.0",
+    "@types/next-auth": "^3.1.15",
+    "@types/node": "^14.14.7",
+    "@types/react": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.0.0",
+    "@typescript-eslint/parser": "^4.0.0",
+    "babel-eslint": "^10.0.0",
+    "eslint": "^7.5.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^5.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
+    "prettier": "^2.1.2",
+    "typescript": "^4.0.5",
+    "vercel": "^21.0.0"
+  }
+}
