@@ -1,8 +1,6 @@
-import Head from 'next/head'
 import { getSession } from 'next-auth/client'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Router from 'next/router'
-import { prisma } from '../../prisma'
 import { useEffect } from 'react'
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>
@@ -19,20 +17,26 @@ const Home: React.FC<Props> = ({ redirectUrl }) => {
 
 export default Home
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+export const getServerSideProps: GetServerSideProps<{ redirectUrl?: string }> = async ({ req }) => {
   const session = await getSession({ req })
+
+  if (session?.user?.name) {
+    return {
+      props: {},
+    }
+  }
 
   if (session?.user?.email) {
     return {
       props: {
-        redirectUrl: '/new',
+        redirectUrl: '/auth/new',
       },
     }
   }
 
   return {
     props: {
-      redirectUrl: '/signin',
+      redirectUrl: '/auth/signin',
     },
   }
 }

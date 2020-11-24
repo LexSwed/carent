@@ -1,20 +1,16 @@
-import { signIn, useSession } from 'next-auth/client'
+import { useSession } from 'next-auth/client'
 import React from 'react'
 import Head from 'next/head'
 import Router from 'next/router'
 import { Heading, TextField, Flex, Button, Box } from '@fxtrot/ui'
+import { csrfToken } from 'next-auth/client'
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
-const SignIn = () => {
+const SignIn: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ csrfToken }) => {
   const [session] = useSession()
 
   if (session) {
     Router.push('/')
-  }
-
-  async function handleSignIn(e) {
-    e.preventDefault()
-    const form = new FormData(e.currentTarget)
-    await signIn('email', { email: form.get('email') })
   }
 
   return (
@@ -26,7 +22,7 @@ const SignIn = () => {
         <Box>
           <Heading as="h2">Sign in</Heading>
           <Box minWidth="320px" maxWidth="500px" width="100%">
-            <Flex cross="end" space="$4" as="form" onSubmit={handleSignIn}>
+            <Flex cross="end" space="$4" as="form" method="post" action="/api/auth/signin/email">
               <TextField
                 type="email"
                 id="email"
@@ -35,6 +31,7 @@ const SignIn = () => {
                 placeholder="john.doe@email.com"
                 required
               />
+              <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
               <Button main="center" type="submit">
                 Sign In
               </Button>
@@ -44,6 +41,14 @@ const SignIn = () => {
       </Flex>
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    props: {
+      csrfToken: await csrfToken(context),
+    },
+  }
 }
 
 export default SignIn

@@ -1,10 +1,10 @@
-import NextAuth from 'next-auth'
+import NextAuth, { InitOptions } from 'next-auth'
 import Providers from 'next-auth/providers'
 import Adapters from 'next-auth/adapters'
 import { NextApiHandler } from 'next'
 import { prisma } from '../../../../prisma'
 
-const options = {
+const options: InitOptions = {
   providers: [
     Providers.Email({
       server: {
@@ -15,6 +15,28 @@ const options = {
       from: process.env.EMAIL_FROM,
     }),
   ],
+  callbacks: {
+    signIn: async (user, account, profile) => {
+      if (profile.verificationRequest) {
+        const exists = await prisma.user.findOne({
+          where: {
+            email: user.email,
+          },
+          select: {
+            email: true,
+          },
+        })
+
+        return Boolean(exists?.email)
+      }
+
+      return true
+    },
+  },
+  pages: {
+    signIn: '/auth/signin',
+    newUser: '/auth/new',
+  },
   adapter: Adapters.Prisma.Adapter({
     prisma,
   }),
