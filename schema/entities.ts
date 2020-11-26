@@ -2,9 +2,9 @@ import { interfaceType, objectType } from '@nexus/schema'
 
 export const Node = interfaceType({
   name: 'Node',
+  resolveType: () => null,
   definition(t) {
-    t.int('id', { nullable: false, description: 'Resource ID' })
-    t.resolveType(() => null)
+    t.nonNull.id('id', { description: 'Resource ID' })
   },
 })
 

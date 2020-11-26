@@ -5,7 +5,7 @@ export const Query = queryType({
     t.field('me', {
       type: 'User',
       resolve: (root, args, { prisma, session }) => {
-        return prisma.user.findOne({
+        return prisma.user.findUnique({
           where: {
             email: session?.user?.email,
           },

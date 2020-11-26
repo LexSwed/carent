@@ -20,16 +20,10 @@ export default Home
 export const getServerSideProps: GetServerSideProps<{ redirectUrl?: string }> = async ({ req }) => {
   const session = await getSession({ req })
 
-  if (session?.user?.name) {
-    return {
-      props: {},
-    }
-  }
-
   if (session?.user?.email) {
     return {
       props: {
-        redirectUrl: '/auth/new',
+        redirectUrl: '/class',
       },
     }
   }

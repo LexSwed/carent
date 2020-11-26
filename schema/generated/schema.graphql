@@ -9,7 +9,7 @@ scalar DateTime
 
 interface Node {
   """Resource ID"""
-  id: Int!
+  id: ID!
 }
 
 type Query {
@@ -18,7 +18,7 @@ type Query {
 
 type User implements Node {
   email: String
-  id: Int!
+  id: String!
   image: String
   name: String
 }

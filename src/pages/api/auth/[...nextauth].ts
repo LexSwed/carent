@@ -18,7 +18,7 @@ const options: InitOptions = {
   callbacks: {
     signIn: async (user, account, profile) => {
       if (profile.verificationRequest) {
-        const exists = await prisma.user.findOne({
+        const exists = await prisma.user.findUnique({
           where: {
             email: user.email,
           },
@@ -35,7 +35,7 @@ const options: InitOptions = {
   },
   pages: {
     signIn: '/auth/signin',
-    newUser: '/auth/new',
+    newUser: '/',
   },
   adapter: Adapters.Prisma.Adapter({
     prisma,
