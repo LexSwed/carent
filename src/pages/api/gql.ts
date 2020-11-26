@@ -1,5 +1,4 @@
 import { ApolloServer } from 'apollo-server-micro'
-import { ApolloServerPlugin } from 'apollo-server-plugin-base'
 import { NextApiHandler } from 'next'
 import { getSession } from 'next-auth/client'
 import { schema } from '../../../schema'

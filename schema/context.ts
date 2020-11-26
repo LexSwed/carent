@@ -1,5 +1,5 @@
 import type { PrismaClient } from '@prisma/client'
-import type { NextApiRequest } from 'next'
+import type { NextPageContext } from 'next'
 import { getSession, Session } from 'next-auth/client'
 import { prisma } from '../prisma'
 
@@ -8,8 +8,8 @@ export interface Context {
   session: Session
 }
 
-export async function createContext({ req }: { req: NextApiRequest }): Promise<Context> {
-  const session = await getSession({ req })
+export async function createContext(context: NextPageContext): Promise<Context> {
+  const session = await getSession(context)
 
   return { prisma: prisma, session }
 }

@@ -10,9 +10,9 @@ const Home: React.FC<Props> = ({ redirectUrl }) => {
     if (redirectUrl) {
       Router.push(redirectUrl)
     }
-  }, [])
+  }, [redirectUrl])
 
-  return null
+  return <div>Home</div>
 }
 
 export default Home
@@ -20,17 +20,17 @@ export default Home
 export const getServerSideProps: GetServerSideProps<{ redirectUrl?: string }> = async ({ req }) => {
   const session = await getSession({ req })
 
-  if (session?.user?.email) {
+  if (!session?.user?.email) {
     return {
       props: {
-        redirectUrl: '/class',
+        redirectUrl: '/auth/signin',
       },
     }
   }
 
   return {
-    props: {
-      redirectUrl: '/auth/signin',
-    },
+    props: {},
   }
 }
+
+const Sidebar = () => {}
