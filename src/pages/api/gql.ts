@@ -9,6 +9,11 @@ const server = new ApolloServer({
   context: createContext,
   tracing: process.env.NODE_ENV === 'development',
   introspection: process.env.NODE_ENV === 'development',
+  playground: {
+    settings: {
+      'request.credentials': 'include',
+    },
+  },
 })
 
 const graphqlHandler = server.createHandler({ path: '/api/gql' })
@@ -20,14 +25,14 @@ export const config = {
 }
 
 const handler: NextApiHandler = async (req, res) => {
-  if (process.env.NODE_ENV === 'development') {
-    return graphqlHandler(req, res)
-  }
-
   const session = await getSession({ req })
 
   if (!session?.user) {
-    res.status(401).end()
+    res
+      .writeHead(301, {
+        Location: `/auth/signin`,
+      })
+      .end()
 
     return
   }

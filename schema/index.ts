@@ -3,15 +3,16 @@ import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema'
 import path from 'path'
 import * as entities from './entities'
 import { Query } from './query'
-import { DateTime } from './scalars'
+import { Mutation } from './mutation'
+import * as scalars from './scalars'
 
 export const schema = makeSchema({
-  types: { Query, DateTime, ...entities },
+  types: { Query, Mutation, ...scalars, ...entities },
   plugins: [
     nexusSchemaPrisma({
       experimentalCRUD: true,
       scalars: {
-        DateTime,
+        DateTime: scalars.DateTime,
       },
     }),
     connectionPlugin({

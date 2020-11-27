@@ -29,12 +29,24 @@ export const Topic = objectType({
   },
 })
 
+export const StudentGroup = objectType({
+  name: 'StudentGroup',
+  definition(t) {
+    t.implements(Node)
+    t.model.id()
+    t.model.code()
+  },
+})
+
 export const Class = objectType({
   name: 'Class',
   definition(t) {
     t.implements(Node)
     t.model.id()
     t.model.name()
+    t.model.studentGroup({
+      alias: 'group',
+    })
     t.connectionField('topics', {
       type: Topic,
       totalCount: (root: any, args, { prisma }) => prisma.topic.count({ where: root.id }),

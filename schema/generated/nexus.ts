@@ -58,6 +58,7 @@ export interface NexusGenObjects {
     cursor: string; // String!
     node?: NexusGenRootTypes['Class'] | null; // Class
   }
+  Mutation: {};
   PageInfo: { // root type
     endCursor?: string | null; // String
     hasNextPage: boolean; // Boolean!
@@ -65,6 +66,10 @@ export interface NexusGenObjects {
     startCursor?: string | null; // String
   }
   Query: {};
+  StudentGroup: { // root type
+    code: string; // String!
+    id: string; // String!
+  }
   Topic: { // root type
     id: string; // String!
     title: string; // String!
@@ -86,7 +91,7 @@ export interface NexusGenObjects {
 }
 
 export interface NexusGenInterfaces {
-  Node: NexusGenRootTypes['Class'] | NexusGenRootTypes['Topic'] | NexusGenRootTypes['User'];
+  Node: NexusGenRootTypes['Class'] | NexusGenRootTypes['StudentGroup'] | NexusGenRootTypes['Topic'] | NexusGenRootTypes['User'];
 }
 
 export interface NexusGenUnions {
@@ -98,6 +103,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
   Class: { // field return type
+    group: NexusGenRootTypes['StudentGroup']; // StudentGroup!
     id: string; // String!
     name: string; // String!
     topics: NexusGenRootTypes['TopicConnection'] | null; // TopicConnection
@@ -111,6 +117,9 @@ export interface NexusGenFieldTypes {
     cursor: string; // String!
     node: NexusGenRootTypes['Class'] | null; // Class
   }
+  Mutation: { // field return type
+    createClass: NexusGenRootTypes['Class'] | null; // Class
+  }
   PageInfo: { // field return type
     endCursor: string | null; // String
     hasNextPage: boolean; // Boolean!
@@ -120,6 +129,10 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     classes: NexusGenRootTypes['ClassConnection'] | null; // ClassConnection
     me: NexusGenRootTypes['User'] | null; // User
+  }
+  StudentGroup: { // field return type
+    code: string; // String!
+    id: string; // String!
   }
   Topic: { // field return type
     id: string; // String!
@@ -147,6 +160,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Class: { // field return type name
+    group: 'StudentGroup'
     id: 'String'
     name: 'String'
     topics: 'TopicConnection'
@@ -160,6 +174,9 @@ export interface NexusGenFieldTypeNames {
     cursor: 'String'
     node: 'Class'
   }
+  Mutation: { // field return type name
+    createClass: 'Class'
+  }
   PageInfo: { // field return type name
     endCursor: 'String'
     hasNextPage: 'Boolean'
@@ -169,6 +186,10 @@ export interface NexusGenFieldTypeNames {
   Query: { // field return type name
     classes: 'ClassConnection'
     me: 'User'
+  }
+  StudentGroup: { // field return type name
+    code: 'String'
+    id: 'String'
   }
   Topic: { // field return type name
     id: 'String'
@@ -203,6 +224,12 @@ export interface NexusGenArgTypes {
       last?: number | null; // Int
     }
   }
+  Mutation: {
+    createClass: { // args
+      name: string; // String!
+      studentGroupCode: string; // String!
+    }
+  }
   Query: {
     classes: { // args
       after?: string | null; // String
@@ -214,11 +241,12 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractTypeMembers {
-  Node: "Class" | "Topic" | "User"
+  Node: "Class" | "StudentGroup" | "Topic" | "User"
 }
 
 export interface NexusGenTypeInterfaces {
   Class: "Node"
+  StudentGroup: "Node"
   Topic: "Node"
   User: "Node"
 }
