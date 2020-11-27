@@ -1,7 +1,9 @@
+import React, { useEffect } from 'react'
 import { getSession } from 'next-auth/client'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import Router from 'next/router'
-import { useEffect } from 'react'
+import Layout from '../parts/Layout'
+import Sidebar from '../parts/Sidebar'
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>
 
@@ -12,7 +14,12 @@ const Home: React.FC<Props> = ({ redirectUrl }) => {
     }
   }, [redirectUrl])
 
-  return <div>Home</div>
+  return (
+    <Layout>
+      <Sidebar />
+      <main>Main</main>
+    </Layout>
+  )
 }
 
 export default Home
@@ -32,5 +39,3 @@ export const getServerSideProps: GetServerSideProps<{ redirectUrl?: string }> = 
     props: {},
   }
 }
-
-const Sidebar = () => {}
