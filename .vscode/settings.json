@@ -2,5 +2,6 @@
     "cSpell.words": [
         "Carent"
     ],
-    "editor.defaultFormatter": "Prisma.prisma"
+    "editor.defaultFormatter": "Prisma.prisma",
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

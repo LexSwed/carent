@@ -653,10 +653,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fxtrot/ui@^1.0.72":
-  version "1.0.72"
-  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.72.tgz#1bd9ee1fc4c1e24ad3ebde05f6a582ebc111cad3"
-  integrity sha512-oE1A+AXHIUZrEPdIPyGlrfAXeuPteDT9867j5oTB2mqriyXZ4i20dt8W6u5/7gSYq3AvrzclwS5DpmcguOPl2g==
+"@fxtrot/ui@^1.0.73":
+  version "1.0.73"
+  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.73.tgz#73634e1066780a57e9e5d99a1caaf4b9165411a4"
+  integrity sha512-myXiHgCaE34KwQ0bCfkZFBw9YWehQI9UMUrunpPbC1AwIQh79lxp08VfR0PKnzPe+KTG1fpL3G21Y0ySx808kA==
   dependencies:
     "@popperjs/core" "^2.5.4"
     "@react-aria/focus" "^3.2.3"
@@ -664,7 +664,7 @@
     "@react-aria/visually-hidden" "^3.2.1"
     "@stitches/react" "^0.0.3-canary.4"
     framer-motion "^2.9.4"
-    react-uid "^2.3.0"
+    react-uid "^2.3.1"
 
 "@graphql-codegen/cli@1.19.3":
   version "1.19.3"
@@ -7243,10 +7243,10 @@ react-refresh@0.8.3:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
 
-react-uid@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/react-uid/-/react-uid-2.3.0.tgz#bfd47cfd5ad3e37956ed1a8520964842d7bdcc6b"
-  integrity sha512-tsPZ77GR0pISGYmpCLHAbZTabKXZ7zBniKPVqVMMfnXFyo39zq5g/psIlD5vLTKkjQEhWOO8JhqcHnxkwNu6eA==
+react-uid@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/react-uid/-/react-uid-2.3.1.tgz#22a75d4a948a4824b9b8078cbf864d55d91ca4be"
+  integrity sha512-6C5pwNYP1udgp5feQ9MTBZBKD4su9nhD2aYCFY1bB0Bpask8wYKYz0ZhAtAJ4lcmTDC5kY1ByGTQMFDHQW6p0w==
   dependencies:
     tslib "^1.10.0"
 
