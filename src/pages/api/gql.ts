@@ -25,6 +25,10 @@ export const config = {
 }
 
 const handler: NextApiHandler = async (req, res) => {
+  if (process.env.NODE_ENV === 'development') {
+    return graphqlHandler(req, res)
+  }
+
   const session = await getSession({ req })
 
   if (!session?.user) {

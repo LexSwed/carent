@@ -22,7 +22,7 @@
   "dependencies": {
     "@apollo/client": "^3.2.9",
     "@apollo/link-batch-http": "^2.0.0-beta.3",
-    "@fxtrot/ui": "^1.0.73",
+    "@fxtrot/ui": "^1.0.75",
     "@nexus/schema": "^0.19.1",
     "@prisma/client": "2.12.1",
     "apollo-server-micro": "^2.19.0",

@@ -2,16 +2,13 @@ import React from 'react'
 import { Text, Icon, Menu, styled } from '@fxtrot/ui'
 import { signOut, useSession } from 'next-auth/client'
 import { HiOutlineCog, HiOutlineDotsHorizontal, HiUserCircle, HiOutlineLogout } from 'react-icons/hi'
+import { Card } from '../Card'
 
-const Card = styled('div', {
+const Panel = styled(Card, {
   display: 'grid',
   gridTemplateColumns: 'auto 1fr auto',
   gap: '$4',
   alignItems: 'center',
-  boxShadow: '$xs',
-  br: '$lg',
-  bc: '$surfaceStill',
-  p: '$3',
 })
 
 const Avatar = styled('span', {
@@ -28,7 +25,7 @@ const UserPanel = () => {
   const user = session?.user || {}
 
   return (
-    <Card>
+    <Panel>
       {user.image ? <Avatar as="img" src={user.image} /> : <Avatar as={HiUserCircle} />}
       <Text ellipsis>{user.name}</Text>
       <Menu>
@@ -46,7 +43,7 @@ const UserPanel = () => {
           </Menu.Item>
         </Menu.List>
       </Menu>
-    </Card>
+    </Panel>
   )
 }
 
