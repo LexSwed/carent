@@ -3,6 +3,7 @@ import { Button, Flex, Icon, Dialog, Heading, Box, TextField, Text } from '@fxtr
 import { HiPlus } from 'react-icons/hi'
 import { gql, useMutation } from '@apollo/client'
 import { CreateClassMutation, CreateClassMutationVariables } from '../../graphql/generated'
+import Router from 'next/router'
 
 const newClassFragment = gql`
   fragment ClassFragment on Class {
@@ -32,18 +33,21 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
         update(cache, { data: { createClass: item } }) {
           cache.modify({
             fields: {
-              classes(existingClasses = []) {
+              classes(existingClasses = {}) {
                 const newClassRef = cache.writeFragment({
                   data: item,
                   fragment: newClassFragment,
                 })
-                return [
-                  ...existingClasses.edges,
-                  {
-                    cursor: item.id,
-                    node: newClassRef,
-                  },
-                ]
+                return {
+                  ...existingClasses,
+                  totalCount: existingClasses.totalCount + 1,
+                  edges: [
+                    ...existingClasses.edges,
+                    {
+                      node: newClassRef,
+                    },
+                  ],
+                }
               },
             },
           })
@@ -72,7 +76,7 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
                     e.preventDefault()
                     const form = new FormData(e.currentTarget)
 
-                    await createClass({
+                    const { data } = await createClass({
                       variables: {
                         name: form.get('name') as string,
                         groupCode: form.get('code') as string,
@@ -80,6 +84,8 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
                     })
 
                     close()
+
+                    Router.push(`/${data.createClass.id}`)
                   }) as $tempAny
                 }
               >
