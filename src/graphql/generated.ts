@@ -134,14 +134,28 @@ export type GetClassesQuery = (
   { __typename?: 'Query' }
   & { classes?: Maybe<(
     { __typename?: 'ClassConnection' }
+    & Pick<ClassConnection, 'totalCount'>
     & { edges?: Maybe<Array<Maybe<(
       { __typename?: 'ClassEdge' }
       & { node?: Maybe<(
         { __typename?: 'Class' }
         & Pick<Class, 'id' | 'name'>
+        & { group: (
+          { __typename?: 'StudentGroup' }
+          & Pick<StudentGroup, 'id' | 'code'>
+        ) }
       )> }
     )>>> }
   )> }
+);
+
+export type ClassFragmentFragment = (
+  { __typename?: 'Class' }
+  & Pick<Class, 'id' | 'name'>
+  & { group: (
+    { __typename?: 'StudentGroup' }
+    & Pick<StudentGroup, 'id' | 'code'>
+  ) }
 );
 
 export type CreateClassMutationVariables = Exact<{
@@ -154,11 +168,6 @@ export type CreateClassMutation = (
   { __typename?: 'Mutation' }
   & { createClass?: Maybe<(
     { __typename?: 'Class' }
-    & Pick<Class, 'id' | 'name'>
+    & ClassFragmentFragment
   )> }
-);
-
-export type NewClassFragment = (
-  { __typename?: 'Class' }
-  & Pick<Class, 'id' | 'name'>
 );

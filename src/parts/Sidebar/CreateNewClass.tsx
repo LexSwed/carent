@@ -4,13 +4,24 @@ import { HiPlus } from 'react-icons/hi'
 import { gql, useMutation } from '@apollo/client'
 import { CreateClassMutation, CreateClassMutationVariables } from '../../graphql/generated'
 
+const newClassFragment = gql`
+  fragment ClassFragment on Class {
+    id
+    name
+    group {
+      id
+      code
+    }
+  }
+`
+
 const createClassMutation = gql`
   mutation createClass($name: String!, $groupCode: String!) {
     createClass(name: $name, studentGroupCode: $groupCode) {
-      id
-      name
+      ...ClassFragment
     }
   }
+  ${newClassFragment}
 `
 
 const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => {
@@ -24,12 +35,7 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
               classes(existingClasses = []) {
                 const newClassRef = cache.writeFragment({
                   data: item,
-                  fragment: gql`
-                    fragment NewClass on Class {
-                      id
-                      name
-                    }
-                  `,
+                  fragment: newClassFragment,
                 })
                 return [
                   ...existingClasses.edges,
@@ -50,7 +56,7 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
   return (
     <Flex cross="spread">
       <Dialog.Trigger defaultOpen={defaultOpen}>
-        <Button main="center" variant="secondary">
+        <Button main="center" variant="flat">
           <Icon as={HiPlus} />
           <span>Create new</span>
         </Button>
