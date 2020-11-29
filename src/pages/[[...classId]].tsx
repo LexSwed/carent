@@ -3,6 +3,8 @@ import { useSession } from 'next-auth/client'
 import Router from 'next/router'
 import Layout from '../parts/Layout'
 import Sidebar from '../parts/Sidebar'
+import Upnext from '../parts/Upnext'
+import { Box } from '@fxtrot/ui'
 
 const Home: React.FC = () => {
   const [session, isSignedIn] = useSession()
@@ -16,7 +18,9 @@ const Home: React.FC = () => {
   return (
     <Layout>
       <Sidebar />
-      <main>Class page</main>
+      <Box as="main" p="$4">
+        <Upnext />
+      </Box>
     </Layout>
   )
 }

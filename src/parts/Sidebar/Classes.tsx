@@ -59,7 +59,7 @@ const Classes = () => {
       {noClasses ? (
         <NoClasses />
       ) : (
-        <MenuList>
+        <MenuList as="nav">
           {data.classes.edges.map((item) => (
             <Link href={`/${item.node.id}`} key={item.node.id}>
               <ClassTile main="spread" selected={item.node.id === classId} as={'a' as $tempAny}>
