@@ -64,7 +64,7 @@ const Classes = () => {
             <Link href={`/${item.node.id}`} key={item.node.id}>
               <ClassTile main="spread" selected={item.node.id === classId} as={'a' as $tempAny}>
                 <Text ellipsis>{item.node.name} </Text>
-                <Box br="$sm" py="$1" px="$2" textSize="$xs" bc="$coolGray50">
+                <Box textSize="$xs">
                   <Text tone="light" size="xs">
                     {item.node.group.code}
                   </Text>
