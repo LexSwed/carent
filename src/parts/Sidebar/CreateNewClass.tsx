@@ -58,7 +58,6 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
   )
 
   return (
-    <Flex cross="spread">
       <Dialog.Trigger defaultOpen={defaultOpen}>
         <Button main="center" variant="flat">
           <Icon as={HiPlus} />
@@ -66,7 +65,7 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
         </Button>
         {(close) => (
           <Dialog.Modal>
-            <Flex cross="spread" space="$8">
+            <Flex space="$8">
               <Heading>Create new class</Heading>
               <Box
                 display="contents"
@@ -126,7 +125,6 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
           </Dialog.Modal>
         )}
       </Dialog.Trigger>
-    </Flex>
   )
 }
 

@@ -55,11 +55,11 @@ const Classes = () => {
   const noClasses = data.classes.edges.length === 0
 
   return (
-    <Flex cross="spread" space="$2">
+    <Flex space="$2">
       {noClasses ? (
         <NoClasses />
       ) : (
-        <MenuList as="nav">
+        <MenuList as={'nav' as any}>
           {data.classes.edges.map((item) => (
             <Link href={`/${item.node.id}`} key={item.node.id}>
               <ClassTile main="spread" selected={item.node.id === classId} as={'a' as $tempAny}>

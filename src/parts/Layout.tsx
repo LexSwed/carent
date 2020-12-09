@@ -1,4 +1,4 @@
-import { Box, styled } from '@fxtrot/ui'
+import { styled } from '@fxtrot/ui'
 import React from 'react'
 
 const Grid = styled('div', {

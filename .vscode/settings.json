@@ -3,5 +3,8 @@
         "Carent"
     ],
     "editor.defaultFormatter": "Prisma.prisma",
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }

@@ -1,11 +1,18 @@
 import React from 'react'
-import { Box, Flex } from '@fxtrot/ui'
+import { Flex, styled } from '@fxtrot/ui'
+
+const Wrapper = styled(Flex, {
+  width: '100%',
+  height: '$32',
+  bc: '$coolGray50',
+  br: '$lg',
+})
 
 const Upnext = () => {
   return (
-    <Box width="100%" height="$32" bc="$coolGray50" br="$lg" as={Flex} main="center" cross="center">
+    <Wrapper main="center" cross="center">
       Calendar of upcoming events
-    </Box>
+    </Wrapper>
   )
 }
 
