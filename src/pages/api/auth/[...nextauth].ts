@@ -2,6 +2,7 @@ import NextAuth, { InitOptions } from 'next-auth'
 import Providers from 'next-auth/providers'
 import Adapters from 'next-auth/adapters'
 import { NextApiHandler } from 'next'
+
 import { prisma } from '../../../../prisma'
 
 const options: InitOptions = {
@@ -31,6 +32,16 @@ const options: InitOptions = {
       }
 
       return true
+    },
+    session: async (session, user) => {
+      if (session && user) {
+        session.user = {
+          ...session.user,
+          id: user.id,
+          workspaceId: user.workspaceId,
+        }
+      }
+      return Promise.resolve(session)
     },
   },
   pages: {

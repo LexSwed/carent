@@ -70,6 +70,14 @@ export interface NexusGenObjects {
     code: string; // String!
     id: string; // String!
   }
+  StudentGroupConnection: { // root type
+    edges?: Array<NexusGenRootTypes['StudentGroupEdge'] | null> | null; // [StudentGroupEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+  }
+  StudentGroupEdge: { // root type
+    cursor: string; // String!
+    node?: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
+  }
   Topic: { // root type
     id: string; // String!
     title: string; // String!
@@ -128,11 +136,21 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     classes: NexusGenRootTypes['ClassConnection'] | null; // ClassConnection
+    groups: NexusGenRootTypes['StudentGroupConnection'] | null; // StudentGroupConnection
     me: NexusGenRootTypes['User'] | null; // User
   }
   StudentGroup: { // field return type
     code: string; // String!
     id: string; // String!
+  }
+  StudentGroupConnection: { // field return type
+    edges: Array<NexusGenRootTypes['StudentGroupEdge'] | null> | null; // [StudentGroupEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+    totalCount: number | null; // Int
+  }
+  StudentGroupEdge: { // field return type
+    cursor: string; // String!
+    node: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
   }
   Topic: { // field return type
     id: string; // String!
@@ -185,11 +203,21 @@ export interface NexusGenFieldTypeNames {
   }
   Query: { // field return type name
     classes: 'ClassConnection'
+    groups: 'StudentGroupConnection'
     me: 'User'
   }
   StudentGroup: { // field return type name
     code: 'String'
     id: 'String'
+  }
+  StudentGroupConnection: { // field return type name
+    edges: 'StudentGroupEdge'
+    pageInfo: 'PageInfo'
+    totalCount: 'Int'
+  }
+  StudentGroupEdge: { // field return type name
+    cursor: 'String'
+    node: 'StudentGroup'
   }
   Topic: { // field return type name
     id: 'String'
@@ -232,6 +260,12 @@ export interface NexusGenArgTypes {
   }
   Query: {
     classes: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+    groups: { // args
       after?: string | null; // String
       before?: string | null; // String
       first?: number | null; // Int

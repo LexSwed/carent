@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react'
-import { Button, Flex, Icon, Dialog, Heading, Box, TextField, Text } from '@fxtrot/ui'
+import React, { useCallback, useMemo } from 'react'
+import { Button, Flex, Icon, Dialog, Heading, Box, TextField, Text, ComboBox } from '@fxtrot/ui'
 import { HiPlus } from 'react-icons/hi'
-import { gql, useMutation } from '@apollo/client'
-import { CreateClassMutation, CreateClassMutationVariables } from '../../graphql/generated'
+import { gql, useMutation, useQuery } from '@apollo/client'
+import { CreateClassMutation, CreateClassMutationVariables, GetGroupsQuery } from '../../graphql/generated'
 import Router from 'next/router'
 
 const newClassFragment = gql`
@@ -16,6 +16,13 @@ const newClassFragment = gql`
   }
 `
 
+const groupGragment = gql`
+  fragment GroupFragment on StudentGroup {
+    id
+    code
+  }
+`
+
 const createClassMutation = gql`
   mutation createClass($name: String!, $groupCode: String!) {
     createClass(name: $name, studentGroupCode: $groupCode) {
@@ -25,7 +32,34 @@ const createClassMutation = gql`
   ${newClassFragment}
 `
 
+const getGroupsQuery = gql`
+  query getGroups {
+    groups(first: 10) {
+      edges {
+        node {
+          ...GroupFragment
+        }
+      }
+    }
+  }
+  ${groupGragment}
+`
+
 const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => {
+  return (
+    <Dialog.Trigger defaultOpen={defaultOpen}>
+      <Button main="center" variant="flat">
+        <Icon as={HiPlus} />
+        <span>Create new</span>
+      </Button>
+      {(close) => <NewGroupModal close={close} />}
+    </Dialog.Trigger>
+  )
+}
+
+export default CreateNewClass
+
+function NewGroupModal({ close }: { close: () => void }) {
   const [createClass, { error, loading }] = useMutation<CreateClassMutation, CreateClassMutationVariables>(
     createClassMutation,
     useMemo(
@@ -33,6 +67,21 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
         update(cache, { data: { createClass: item } }) {
           cache.modify({
             fields: {
+              groups(existingGroups = {}) {
+                const newGroupRef = cache.writeFragment({
+                  data: item.group,
+                  fragment: groupGragment,
+                })
+                return {
+                  ...existingGroups,
+                  edges: [
+                    ...existingGroups.edges,
+                    {
+                      node: newGroupRef,
+                    },
+                  ],
+                }
+              },
               classes(existingClasses = {}) {
                 const newClassRef = cache.writeFragment({
                   data: item,
@@ -40,7 +89,6 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
                 })
                 return {
                   ...existingClasses,
-                  totalCount: existingClasses.totalCount + 1,
                   edges: [
                     ...existingClasses.edges,
                     {
@@ -56,76 +104,87 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
       []
     )
   )
+  const { data } = useQuery<GetGroupsQuery>(getGroupsQuery)
+
+  const [className, setClassName] = React.useState<string>('')
+  const [groupId, setGroupId] = React.useState<string | null>(null)
+  const [newGroupName, setNewGroupName] = React.useState('')
+
+  const inputProps = {
+    'aria-describedby': 'students-code-hint',
+    'label': 'Student group code',
+    'secondaryLabel': '(Required)',
+    'placeholder': '11-A',
+    'name': 'code',
+    'id': 'code',
+    'maxLength': 10,
+    'autoComplete': 'off',
+    'required': true,
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    console.log({ className, newGroupName, groupId })
+
+    // const { data } = await createClass({
+    //   variables: {
+    //     name: form.get('name') as string,
+    //     groupCode: form.get('code') as string,
+    //   },
+    // })
+
+    // close()
+
+    // Router.push(`/${data.createClass.id}`)
+  }
 
   return (
-      <Dialog.Trigger defaultOpen={defaultOpen}>
-        <Button main="center" variant="flat">
-          <Icon as={HiPlus} />
-          <span>Create new</span>
-        </Button>
-        {(close) => (
-          <Dialog.Modal>
-            <Flex space="$8">
-              <Heading>Create new class</Heading>
-              <Box
-                display="contents"
-                as="form"
-                onSubmit={
-                  (async (e: React.FormEvent<HTMLFormElement>) => {
-                    e.preventDefault()
-                    const form = new FormData(e.currentTarget)
-
-                    const { data } = await createClass({
-                      variables: {
-                        name: form.get('name') as string,
-                        groupCode: form.get('code') as string,
-                      },
-                    })
-
-                    close()
-
-                    Router.push(`/${data.createClass.id}`)
-                  }) as $tempAny
-                }
-              >
-                <Flex space="$4">
-                  {error && <Text tone="danger">{error.message}</Text>}
-                  <TextField
-                    label="Class name"
-                    secondaryLabel="(Required)"
-                    placeholder="Defence Against the Dark Arts"
-                    hint="The name of the class you teach"
-                    name="name"
-                    autoComplete="off"
-                    id="name"
-                    required
-                  />
-                  <TextField
-                    label="Student group code"
-                    secondaryLabel="(Required)"
-                    placeholder="11-A"
-                    hint="You'll be adding students to this group"
-                    name="code"
-                    id="code"
-                    maxLength={10}
-                    autoComplete="off"
-                    required
-                  />
-                </Flex>
-                <Flex flow="row-reverse" space="$4">
-                  <Button disabled={loading} type="submit">
-                    Create
-                  </Button>
-                  <Button disabled={loading} onClick={close} variant="flat">
-                    Cancel
-                  </Button>
-                </Flex>
+    <Dialog.Modal>
+      <Flex space="$8">
+        <Heading>Create new class</Heading>
+        <Box display="contents" as="form" onSubmit={handleSubmit as any}>
+          <Flex space="$4">
+            {error && <Text tone="danger">{error.message}</Text>}
+            <TextField
+              label="Class name"
+              secondaryLabel="(Required)"
+              placeholder="Defence Against the Dark Arts"
+              hint="The name of the class you teach"
+              name="name"
+              autoComplete="off"
+              id="name"
+              required
+              value={className}
+              onChange={setClassName}
+            />
+            <Flex>
+              <Box width="$32">
+                {data?.groups.edges.length ? (
+                  <ComboBox {...inputProps} value={groupId} onChange={setGroupId} onInputChange={setNewGroupName}>
+                    {data?.groups.edges.map((group) => (
+                      <ComboBox.Item key={group.node.id} value={group.node.id} label={group.node.code} />
+                    ))}
+                  </ComboBox>
+                ) : (
+                  <TextField {...inputProps} />
+                )}
               </Box>
+              <Text id={inputProps['aria-describedby']} size="xs" tone="light">
+                You'll be adding students to this group
+              </Text>
             </Flex>
-          </Dialog.Modal>
-        )}
-      </Dialog.Trigger>
+          </Flex>
+          <Flex flow="row-reverse" space="$4">
+            <Button disabled={loading} type="submit">
+              Create
+            </Button>
+            <Button disabled={loading} onClick={close} variant="flat">
+              Cancel
+            </Button>
+          </Flex>
+        </Box>
+      </Flex>
+    </Dialog.Modal>
   )
 }
-
-export default CreateNewClass

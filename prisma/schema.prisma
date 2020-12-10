@@ -49,6 +49,8 @@ model User {
   updatedAt     DateTime  @default(now()) @map("updated_at")
   student       Student?
   teacher       Teacher?
+  workspace     Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId   String
 
   @@map("users")
 }
@@ -62,6 +64,12 @@ model VerificationRequest {
   updatedAt  DateTime @default(now()) @map("updated_at")
 
   @@map("verification_requests")
+}
+
+model Workspace {
+  id    String @id @default(cuid())
+  name  String
+  users User[]
 }
 
 model Teacher {

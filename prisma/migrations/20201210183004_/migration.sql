@@ -37,6 +37,7 @@ CREATE TABLE "users" (
     "image" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "workspaceId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -49,6 +50,14 @@ CREATE TABLE "verification_requests" (
     "expires" TIMESTAMP(3) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Workspace" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -139,6 +148,9 @@ CREATE UNIQUE INDEX "_StudentToStudentGroup_AB_unique" ON "_StudentToStudentGrou
 
 -- CreateIndex
 CREATE INDEX "_StudentToStudentGroup_B_index" ON "_StudentToStudentGroup"("B");
+
+-- AddForeignKey
+ALTER TABLE "users" ADD FOREIGN KEY("workspaceId")REFERENCES "Workspace"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Teacher" ADD FOREIGN KEY("user_id")REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

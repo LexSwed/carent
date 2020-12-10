@@ -18,10 +18,19 @@ export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
   classes?: Maybe<ClassConnection>;
+  groups?: Maybe<StudentGroupConnection>;
 };
 
 
 export type QueryClassesArgs = {
+  first?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryGroupsArgs = {
   first?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
   last?: Maybe<Scalars['Int']>;
@@ -110,6 +119,23 @@ export type PageInfo = {
   endCursor?: Maybe<Scalars['String']>;
 };
 
+export type StudentGroupConnection = {
+  __typename?: 'StudentGroupConnection';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
+  edges?: Maybe<Array<Maybe<StudentGroupEdge>>>;
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
+  pageInfo: PageInfo;
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type StudentGroupEdge = {
+  __typename?: 'StudentGroupEdge';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
+  cursor: Scalars['String'];
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
+  node?: Maybe<StudentGroup>;
+};
+
 export type TopicConnection = {
   __typename?: 'TopicConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
@@ -158,6 +184,11 @@ export type ClassFragmentFragment = (
   ) }
 );
 
+export type GroupFragmentFragment = (
+  { __typename?: 'StudentGroup' }
+  & Pick<StudentGroup, 'id' | 'code'>
+);
+
 export type CreateClassMutationVariables = Exact<{
   name: Scalars['String'];
   groupCode: Scalars['String'];
@@ -169,5 +200,22 @@ export type CreateClassMutation = (
   & { createClass?: Maybe<(
     { __typename?: 'Class' }
     & ClassFragmentFragment
+  )> }
+);
+
+export type GetGroupsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGroupsQuery = (
+  { __typename?: 'Query' }
+  & { groups?: Maybe<(
+    { __typename?: 'StudentGroupConnection' }
+    & { edges?: Maybe<Array<Maybe<(
+      { __typename?: 'StudentGroupEdge' }
+      & { node?: Maybe<(
+        { __typename?: 'StudentGroup' }
+        & GroupFragmentFragment
+      )> }
+    )>>> }
   )> }
 );

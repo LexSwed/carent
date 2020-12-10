@@ -18,11 +18,11 @@ const SignIn: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
       <Head>
         <title>Carent - Sign In</title>
       </Head>
-      <Flex main="center" cross="center" as={Box} width="100vw" height="100vh">
+      <Flex main="center" cross="center" as={Box as any} width="100vw" height="100vh">
         <Box>
           <Heading as="h2">Sign in</Heading>
           <Box minWidth="320px" maxWidth="500px" width="100%">
-            <Flex cross="end" space="$4" as="form" method="post" action="/api/auth/signin/email">
+            <Flex cross="end" space="$4" as={'form' as any} method="post" action="/api/auth/signin/email">
               <TextField
                 type="email"
                 id="email"
