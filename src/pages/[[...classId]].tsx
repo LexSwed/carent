@@ -7,13 +7,12 @@ import Upnext from '../parts/Upnext'
 import { Box } from '@fxtrot/ui'
 
 const Home: React.FC = () => {
-  const [session, isSignedIn] = useSession()
-
+  const [session] = useSession()
   useEffect(() => {
-    if (!isSignedIn) {
+    if (!session) {
       Router.push('/auth/signin')
     }
-  }, [isSignedIn])
+  }, [session])
 
   return (
     <Layout>

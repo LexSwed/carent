@@ -22,7 +22,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.4",
     "@apollo/link-batch-http": "^2.0.0-beta.3",
-    "@fxtrot/ui": "^1.0.80",
+    "@fxtrot/ui": "^1.0.83",
     "@nexus/schema": "^0.19.2",
     "@prisma/client": "2.13.0",
     "apollo-server-micro": "^2.19.0",
@@ -44,7 +44,7 @@
     "@prisma/cli": "2.13.0",
     "@types/graphql-iso-date": "^3.4.0",
     "@types/next-auth": "^3.1.18",
-    "@types/node": "^14.14.11",
+    "@types/node": "^14.14.12",
     "@types/react": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.9.1",
     "@typescript-eslint/parser": "^4.9.1",
