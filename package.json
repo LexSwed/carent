@@ -20,7 +20,7 @@
     "gql:codegen": "graphql-codegen --watch --config codegen.yml"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.4",
+    "@apollo/client": "^3.3.5",
     "@apollo/link-batch-http": "^2.0.0-beta.3",
     "@fxtrot/ui": "^1.0.84",
     "@nexus/schema": "^0.19.2",

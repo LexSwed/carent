@@ -45,7 +45,7 @@ export type Mutation = {
 
 export type MutationCreateClassArgs = {
   name: Scalars['String'];
-  studentGroupCode: Scalars['String'];
+  group: CreateClassGroupInput;
 };
 
 export type Node = {
@@ -136,6 +136,11 @@ export type StudentGroupEdge = {
   node?: Maybe<StudentGroup>;
 };
 
+export type CreateClassGroupInput = {
+  id?: Maybe<Scalars['String']>;
+  code?: Maybe<Scalars['String']>;
+};
+
 export type TopicConnection = {
   __typename?: 'TopicConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
@@ -191,7 +196,7 @@ export type GroupFragmentFragment = (
 
 export type CreateClassMutationVariables = Exact<{
   name: Scalars['String'];
-  groupCode: Scalars['String'];
+  group: CreateClassGroupInput;
 }>;
 
 

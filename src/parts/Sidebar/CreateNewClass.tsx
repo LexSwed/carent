@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react'
 import { Button, Flex, Icon, Dialog, Heading, Box, TextField, Text, ComboBox } from '@fxtrot/ui'
 import { HiPlus } from 'react-icons/hi'
-import { gql, useMutation, useQuery } from '@apollo/client'
+import { gql, MutationHookOptions, useMutation, useQuery } from '@apollo/client'
 import { CreateClassMutation, CreateClassMutationVariables, GetGroupsQuery } from '../../graphql/generated'
 import Router from 'next/router'
 
@@ -24,8 +24,8 @@ const groupGragment = gql`
 `
 
 const createClassMutation = gql`
-  mutation createClass($name: String!, $groupCode: String!) {
-    createClass(name: $name, studentGroupCode: $groupCode) {
+  mutation createClass($name: String!, $group: CreateClassGroupInput!) {
+    createClass(name: $name, group: $group) {
       ...ClassFragment
     }
   }
@@ -60,55 +60,12 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
 export default CreateNewClass
 
 function NewGroupModal({ close }: { close: () => void }) {
-  const [createClass, { error, loading }] = useMutation<CreateClassMutation, CreateClassMutationVariables>(
-    createClassMutation,
-    useMemo(
-      () => ({
-        update(cache, { data: { createClass: item } }) {
-          cache.modify({
-            fields: {
-              groups(existingGroups = {}) {
-                const newGroupRef = cache.writeFragment({
-                  data: item.group,
-                  fragment: groupGragment,
-                })
-                return {
-                  ...existingGroups,
-                  edges: [
-                    ...existingGroups.edges,
-                    {
-                      node: newGroupRef,
-                    },
-                  ],
-                }
-              },
-              classes(existingClasses = {}) {
-                const newClassRef = cache.writeFragment({
-                  data: item,
-                  fragment: newClassFragment,
-                })
-                return {
-                  ...existingClasses,
-                  edges: [
-                    ...existingClasses.edges,
-                    {
-                      node: newClassRef,
-                    },
-                  ],
-                }
-              },
-            },
-          })
-        },
-      }),
-      []
-    )
-  )
+  const [createClass, { error, loading }] = useCreateClassMutation()
   const { data } = useQuery<GetGroupsQuery>(getGroupsQuery)
 
   const [className, setClassName] = React.useState<string>('')
   const [groupId, setGroupId] = React.useState<string | null>(null)
-  const [newGroupName, setNewGroupName] = React.useState('')
+  const [newGroupCode, setNewGroupCode] = React.useState('')
 
   const inputProps = {
     'aria-describedby': 'students-code-hint',
@@ -125,18 +82,19 @@ function NewGroupModal({ close }: { close: () => void }) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    console.log({ className, newGroupName, groupId })
+    const { data } = await createClass({
+      variables: {
+        name: className,
+        group: {
+          id: groupId,
+          code: newGroupCode,
+        },
+      },
+    })
 
-    // const { data } = await createClass({
-    //   variables: {
-    //     name: form.get('name') as string,
-    //     groupCode: form.get('code') as string,
-    //   },
-    // })
+    close()
 
-    // close()
-
-    // Router.push(`/${data.createClass.id}`)
+    Router.push(`/${data.createClass.id}`)
   }
 
   return (
@@ -161,7 +119,7 @@ function NewGroupModal({ close }: { close: () => void }) {
             <Flex>
               <Box width="$32">
                 {data?.groups.edges.length ? (
-                  <ComboBox {...inputProps} value={groupId} onChange={setGroupId} onInputChange={setNewGroupName}>
+                  <ComboBox {...inputProps} value={groupId} onChange={setGroupId} onInputChange={setNewGroupCode}>
                     {data?.groups.edges.map((group) => (
                       <ComboBox.Item key={group.node.id} value={group.node.id} label={group.node.code} />
                     ))}
@@ -187,4 +145,50 @@ function NewGroupModal({ close }: { close: () => void }) {
       </Flex>
     </Dialog.Modal>
   )
+}
+
+const updateCache: MutationHookOptions<CreateClassMutation, CreateClassMutationVariables> = {
+  update(cache, { data: { createClass: item } }) {
+    cache.modify({
+      fields: {
+        groups(existingGroups = {}, { readField }) {
+          if (existingGroups.edges.some((edge) => readField('id', edge.node) === item.group.id)) {
+            return existingGroups
+          }
+          const newGroupRef = cache.writeFragment({
+            data: item.group,
+            fragment: groupGragment,
+          })
+          return {
+            ...existingGroups,
+            edges: [
+              ...existingGroups.edges,
+              {
+                node: newGroupRef,
+              },
+            ],
+          }
+        },
+        classes(existingClasses = {}) {
+          const newClassRef = cache.writeFragment({
+            data: item,
+            fragment: newClassFragment,
+          })
+          return {
+            ...existingClasses,
+            edges: [
+              ...existingClasses.edges,
+              {
+                node: newClassRef,
+              },
+            ],
+          }
+        },
+      },
+    })
+  },
+}
+
+function useCreateClassMutation() {
+  return useMutation<CreateClassMutation, CreateClassMutationVariables>(createClassMutation, updateCache)
 }
