@@ -31,6 +31,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  CreateClassGroupInput: { // input type
+    code?: string | null; // String
+    id?: string | null; // String
+  }
 }
 
 export interface NexusGenEnums {
@@ -254,8 +258,8 @@ export interface NexusGenArgTypes {
   }
   Mutation: {
     createClass: { // args
+      group: NexusGenInputs['CreateClassGroupInput']; // CreateClassGroupInput!
       name: string; // String!
-      studentGroupCode: string; // String!
     }
   }
   Query: {
@@ -287,7 +291,7 @@ export interface NexusGenTypeInterfaces {
 
 export type NexusGenObjectNames = keyof NexusGenObjects;
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = keyof NexusGenInputs;
 
 export type NexusGenEnumNames = never;
 

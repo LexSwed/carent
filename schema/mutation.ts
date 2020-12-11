@@ -1,5 +1,13 @@
-import { mutationType, nonNull, stringArg } from '@nexus/schema'
+import { inputObjectType, mutationType, nonNull, stringArg } from '@nexus/schema'
 import { ApolloError } from 'apollo-server-micro'
+
+const studentGroup = inputObjectType({
+  name: 'CreateClassGroupInput',
+  definition(t) {
+    t.string('id')
+    t.string('code')
+  },
+})
 
 export const Mutation = mutationType({
   definition(t) {
@@ -7,38 +15,28 @@ export const Mutation = mutationType({
       type: 'Class',
       args: {
         name: nonNull(stringArg()),
-        studentGroupCode: nonNull(stringArg()),
+        group: nonNull(studentGroup),
       },
-      resolve: async (_root, { name, studentGroupCode }, { prisma, session }) => {
-        if (name === '') {
-          throw new ApolloError('Class name cannot be empty')
-        }
-        if (studentGroupCode === '') {
-          throw new ApolloError('Student group code cannot be empty')
-        }
-        const teacher = await prisma.teacher.findFirst({
-          where: {
-            user: {
-              email: session.user.email,
-            },
-          },
-          select: {
-            id: true,
-          },
-        })
+      resolve: async (_root, { name, group }, { prisma, session }) => {
         return prisma.class.create({
           data: {
             name,
             teacher: {
               connect: {
-                id: teacher.id,
+                id: session.user.id,
               },
             },
-            studentGroup: {
-              create: {
-                code: studentGroupCode,
-              },
-            },
+            studentGroup: group.id
+              ? {
+                  connect: {
+                    id: group.id,
+                  },
+                }
+              : {
+                  create: {
+                    code: group.code,
+                  },
+                },
           },
         })
       },

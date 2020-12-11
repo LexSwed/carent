@@ -652,10 +652,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fxtrot/ui@^1.0.83":
-  version "1.0.83"
-  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.83.tgz#2b2f20b58defb4b45fc319b75345a986ffb8c6af"
-  integrity sha512-/W8qaWYKxkXhvSXq+U2+NLSXiQ2IRirZf6+8sX0cDlfcyyCi8i9aCGiavs529zu9qG9/M8qB/kLHxmqOCw/wPA==
+"@fxtrot/ui@^1.0.84":
+  version "1.0.84"
+  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.84.tgz#de032970ee3204938d66954e19eef0cdebb4fcb0"
+  integrity sha512-1aahVW17KwE4AqwJaf4m7Vc/AkhR2BuSOLSuuM05ducwK2hKD31/ZFdJfBliUzV19S7ohnMgLTzejXc/4B8ODQ==
   dependencies:
     "@popperjs/core" "^2.5.4"
     "@react-aria/focus" "^3.2.3"
