@@ -1,8 +1,8 @@
-import React, { useCallback, useMemo } from 'react'
+import React from 'react'
 import { Button, Flex, Icon, Dialog, Heading, Box, TextField, Text, ComboBox } from '@fxtrot/ui'
 import { HiPlus } from 'react-icons/hi'
 import { gql, MutationHookOptions, useMutation, useQuery } from '@apollo/client'
-import { CreateClassMutation, CreateClassMutationVariables, GetGroupsQuery } from '../../graphql/generated'
+import type { CreateClassMutation, CreateClassMutationVariables, GetGroupsQuery } from '../../graphql/generated'
 import Router from 'next/router'
 
 const newClassFragment = gql`

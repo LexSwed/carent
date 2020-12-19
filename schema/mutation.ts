@@ -1,4 +1,4 @@
-import { inputObjectType, mutationType, nonNull, stringArg } from '@nexus/schema'
+import { inputObjectType, mutationType, nonNull, stringArg } from 'nexus'
 import { ApolloError } from 'apollo-server-micro'
 
 const studentGroup = inputObjectType({

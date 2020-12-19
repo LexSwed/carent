@@ -1,4 +1,4 @@
-import { interfaceType, objectType } from '@nexus/schema'
+import { interfaceType, objectType } from 'nexus'
 import { relayToPrismaPagination } from './utils'
 
 export const Node = interfaceType({
@@ -48,7 +48,7 @@ export const Class = objectType({
       alias: 'group',
     })
     t.connectionField('topics', {
-      type: Topic,
+      type: 'Topic',
       totalCount: (root: any, args, { prisma }) => prisma.topic.count({ where: root.id }),
       nodes: (root, args, { prisma }) => {
         return prisma.topic.findMany({

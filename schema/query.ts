@@ -1,4 +1,4 @@
-import { intArg, queryType } from '@nexus/schema'
+import { queryType } from 'nexus'
 import { relayToPrismaPagination } from './utils'
 
 export const Query = queryType({
