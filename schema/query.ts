@@ -1,4 +1,4 @@
-import { queryType } from 'nexus'
+import { nonNull, queryType } from 'nexus'
 import { relayToPrismaPagination } from './utils'
 
 export const Query = queryType({
@@ -34,6 +34,25 @@ export const Query = queryType({
             teacher: {
               user: {
                 email: session?.user?.email,
+              },
+            },
+          },
+        })
+      },
+    })
+
+    t.field('class', {
+      type: 'Class',
+      args: {
+        id: nonNull('String'),
+      },
+      resolve: (_, { id }, { prisma, session }) => {
+        return prisma.class.findFirst({
+          where: {
+            id,
+            AND: {
+              teacher: {
+                userId: session.user.id,
               },
             },
           },

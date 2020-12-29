@@ -18,6 +18,7 @@ export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
   classes?: Maybe<ClassConnection>;
+  class?: Maybe<Class>;
   groups?: Maybe<StudentGroupConnection>;
 };
 
@@ -27,6 +28,11 @@ export type QueryClassesArgs = {
   after?: Maybe<Scalars['String']>;
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryClassArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -222,5 +228,27 @@ export type GetGroupsQuery = (
         & GroupFragmentFragment
       )> }
     )>>> }
+  )> }
+);
+
+export type GetClassQueryVariables = Exact<{
+  classId: Scalars['String'];
+}>;
+
+
+export type GetClassQuery = (
+  { __typename?: 'Query' }
+  & { class?: Maybe<(
+    { __typename?: 'Class' }
+    & { topics?: Maybe<(
+      { __typename?: 'TopicConnection' }
+      & { edges?: Maybe<Array<Maybe<(
+        { __typename?: 'TopicEdge' }
+        & { node?: Maybe<(
+          { __typename?: 'Topic' }
+          & Pick<Topic, 'id' | 'title'>
+        )> }
+      )>>> }
+    )> }
   )> }
 );

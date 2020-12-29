@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import Layout from '../parts/Layout'
 import Sidebar from '../parts/Sidebar'
 import Upnext from '../parts/Upnext'
+import TopicsList from '../parts/Topics'
 
 const Home: React.FC = () => {
   const [session, loading] = useSession()
@@ -29,7 +30,10 @@ const Home: React.FC = () => {
     <Layout>
       <Sidebar />
       <Box as="main" p="$4">
-        <Upnext />
+        <Flex space="$8">
+          <Upnext />
+          <TopicsList />
+        </Flex>
       </Box>
     </Layout>
   )

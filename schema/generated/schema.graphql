@@ -87,6 +87,7 @@ type PageInfo {
 }
 
 type Query {
+  class(id: String!): Class
   classes(
     """Returns the elements in the list that come after the specified cursor"""
     after: String

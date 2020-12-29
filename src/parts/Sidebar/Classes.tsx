@@ -87,7 +87,7 @@ export default Classes
 function NoClasses() {
   return (
     <Flex space="$8" cross="center">
-      <Image src="/void.svg" alt="A human looking into space" width="auto" height={80} />
+      <Image src="/draw/void.svg" alt="A human looking into space" width="auto" height={80} />
       <Text tone="light" size="sm">
         Create your first class to begin
       </Text>

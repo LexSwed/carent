@@ -140,6 +140,7 @@ export interface NexusGenFieldTypes {
     startCursor: string | null; // String
   }
   Query: { // field return type
+    class: NexusGenRootTypes['Class'] | null; // Class
     classes: NexusGenRootTypes['ClassConnection'] | null; // ClassConnection
     groups: NexusGenRootTypes['StudentGroupConnection'] | null; // StudentGroupConnection
     me: NexusGenRootTypes['User'] | null; // User
@@ -207,6 +208,7 @@ export interface NexusGenFieldTypeNames {
     startCursor: 'String'
   }
   Query: { // field return type name
+    class: 'Class'
     classes: 'ClassConnection'
     groups: 'StudentGroupConnection'
     me: 'User'
@@ -264,6 +266,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    class: { // args
+      id: string; // String!
+    }
     classes: { // args
       after?: string | null; // String
       before?: string | null; // String
