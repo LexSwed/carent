@@ -164,6 +164,23 @@ export type TopicEdge = {
   node?: Maybe<Topic>;
 };
 
+export type GetClassInfoQueryVariables = Exact<{
+  classId: Scalars['String'];
+}>;
+
+
+export type GetClassInfoQuery = (
+  { __typename?: 'Query' }
+  & { class?: Maybe<(
+    { __typename?: 'Class' }
+    & Pick<Class, 'id' | 'name'>
+    & { group: (
+      { __typename?: 'StudentGroup' }
+      & Pick<StudentGroup, 'id' | 'code'>
+    ) }
+  )> }
+);
+
 export type GetClassesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -228,27 +245,5 @@ export type GetGroupsQuery = (
         & GroupFragmentFragment
       )> }
     )>>> }
-  )> }
-);
-
-export type GetClassQueryVariables = Exact<{
-  classId: Scalars['String'];
-}>;
-
-
-export type GetClassQuery = (
-  { __typename?: 'Query' }
-  & { class?: Maybe<(
-    { __typename?: 'Class' }
-    & { topics?: Maybe<(
-      { __typename?: 'TopicConnection' }
-      & { edges?: Maybe<Array<Maybe<(
-        { __typename?: 'TopicEdge' }
-        & { node?: Maybe<(
-          { __typename?: 'Topic' }
-          & Pick<Topic, 'id' | 'title'>
-        )> }
-      )>>> }
-    )> }
   )> }
 );

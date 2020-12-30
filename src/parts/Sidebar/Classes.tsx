@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
-import { Box, Flex, MenuList, Text, StyleRecord } from '@fxtrot/ui'
+import { styled, Box, Flex, MenuList, Text, StyleRecord } from '@fxtrot/ui'
 import { gql, useQuery } from '@apollo/client'
 import Image from 'next/image'
 import Link from 'next/link'
 
 import type { GetClassesQuery } from '../../graphql/generated'
 import CreateNewClass from './CreateNewClass'
-import { Card } from '../Card'
 import { useRouter } from 'next/router'
 import { useClassId } from '../../utils'
 
@@ -27,6 +26,11 @@ const getClassesQuery = gql`
     }
   }
 `
+
+const Card = styled('div', {
+  br: '$lg',
+  p: '$4',
+})
 
 const styles: StyleRecord = {
   tile: {

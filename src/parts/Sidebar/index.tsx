@@ -5,7 +5,7 @@ import Classes from './Classes'
 
 const Sidebar = () => {
   return (
-    <Box height="100%" p="$4" bc="$warmGray50" borderRight="1px solid $borderLight">
+    <Box height="100%" py="$4" px="$2" borderRight="1px solid $borderLight">
       <Flex space="$4">
         <UserPanel />
         <Classes />

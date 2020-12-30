@@ -2,9 +2,10 @@ import React from 'react'
 import { Text, Icon, Menu, styled } from '@fxtrot/ui'
 import { signOut, useSession } from 'next-auth/client'
 import { HiOutlineCog, HiOutlineDotsHorizontal, HiUserCircle, HiOutlineLogout } from 'react-icons/hi'
-import { Card } from '../Card'
 
-const Panel = styled(Card, {
+const Panel = styled('div', {
+  px: '$4',
+  height: '$10',
   display: 'grid',
   gridTemplateColumns: 'auto 1fr auto',
   gap: '$4',

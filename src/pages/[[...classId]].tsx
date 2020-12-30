@@ -1,12 +1,11 @@
 import React from 'react'
 import { useSession } from 'next-auth/client'
-import { Box, Flex, Spinner } from '@fxtrot/ui'
+import { Flex, Spinner } from '@fxtrot/ui'
 import { useRouter } from 'next/router'
 
 import Layout from '../parts/Layout'
 import Sidebar from '../parts/Sidebar'
-import Upnext from '../parts/Upnext'
-import TopicsList from '../parts/Topics'
+import ClassPage from '../parts/Class'
 
 const Home: React.FC = () => {
   const [session, loading] = useSession()
@@ -29,12 +28,7 @@ const Home: React.FC = () => {
   return (
     <Layout>
       <Sidebar />
-      <Box as="main" p="$4">
-        <Flex space="$8">
-          <Upnext />
-          <TopicsList />
-        </Flex>
-      </Box>
+      <ClassPage />
     </Layout>
   )
 }
