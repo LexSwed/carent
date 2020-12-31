@@ -1,71 +1,48 @@
-import React from 'react'
-import { css, useKeyboardHandles } from '@fxtrot/ui'
+import React, { FC } from 'react'
+import { HeadingExtension } from 'remirror/extension/heading'
+import { HistoryExtension } from 'remirror/extension/history'
+import { LinkExtension } from 'remirror/extension/link'
+import { ParagraphExtension } from 'remirror/extension/paragraph'
+import { PlaceholderExtension } from 'remirror/extension/placeholder'
+import { ImageExtension } from 'remirror/extension/image'
+import { ListItemExtension } from 'remirror/preset/list'
+import { RemirrorProvider, useManager, useRemirror } from 'remirror/react'
+import { CorePreset } from 'remirror/preset/core'
 
-import ContentEditable from './ContentEditable'
+const EXTENSIONS = () => [
+  new HistoryExtension({}),
+  new HeadingExtension({}),
+  new LinkExtension({}),
+  new ListItemExtension(),
+  new ParagraphExtension(),
+  new PlaceholderExtension(),
+  new ImageExtension(),
+  new CorePreset({}),
+]
 
-const blockStyle = {
-  h1: css({
-    fontSize: '$2xl',
-  }),
-  h2: css({
-    fontSize: '$xl',
-  }),
-  h3: css({
-    fontSize: '$lg',
-  }),
-  h4: css({
-    fontSize: '$lg',
-  }),
-  p: css({}),
-}
-
-const Editor = () => {
-  const [text, setText] = React.useState('')
-  const [blockType, setBlockType] = React.useState<keyof typeof blockStyle>('p')
-
-  const handleInput = (html: string) => {
-    switch (html) {
-      case '#&nbsp;': {
-        setText('')
-        return setBlockType('h1')
-      }
-      case '##&nbsp;': {
-        setText('')
-        return setBlockType('h2')
-      }
-      case '###&nbsp;': {
-        setText('')
-        return setBlockType('h3')
-      }
-      case '####&nbsp;': {
-        setText('')
-        return setBlockType('h4')
-      }
-      default:
-        setText(html)
-    }
-  }
-
-  const handleKeyDown = useKeyboardHandles({
-    'Backspace.propagate': (ev) => {
-      if (ev.currentTarget.innerHTML === '') {
-        setBlockType('p')
-      }
-    },
-    'Enter': () => {
-      // create new block
-    },
-  })
-
+const SmallEditor: FC = () => {
+  const { getRootProps, ...rest } = useRemirror()
+  console.log(rest)
+  console.log(getRootProps())
   return (
-    <ContentEditable
-      css={blockStyle[blockType]}
-      value={text}
-      placeholder="Title of the topic"
-      onInput={handleInput}
-      onKeyDown={handleKeyDown}
-    />
+    <div>
+      <div {...getRootProps()} />
+    </div>
   )
 }
 
-export default Editor
+const SmallEditorContainer = () => {
+  const extensionManager = useManager(EXTENSIONS)
+
+  function handleChange(...args) {
+    console.log(...args)
+  }
+
+  return (
+    <RemirrorProvider manager={extensionManager} onChange={handleChange}>
+      <SmallEditor />
+    </RemirrorProvider>
+  )
+}
+
+export default SmallEditorContainer

@@ -4,7 +4,6 @@ import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 
 import ContentEditable from '../../editor/ContentEditable'
-import Editor from '../../editor'
 
 const getClassInfo = gql`
   query getClassInfo($classId: String!) {
@@ -36,7 +35,7 @@ const ClassPage = () => {
     },
   })
 
-  if (loading) {
+  if (loading || !data) {
     return <Box as="main" p="$4" />
   }
 
@@ -54,7 +53,6 @@ const ClassPage = () => {
                 Breadcrumbs and other items with sticky positioning
               </Text>
             </Flex>
-            <Editor />
           </Flex>
         </Box>
       </Flex>
