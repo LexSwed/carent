@@ -9,3 +9,8 @@ export function useClassId() {
 
   return query.classId?.[0]
 }
+
+export function useTopicId() {
+  const { query } = useRouter()
+  return query.classId?.[2]
+}

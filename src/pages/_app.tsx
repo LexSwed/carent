@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { ThemeProvider } from '@fxtrot/ui'
-import { AppProps } from 'next/app'
+import type { AppProps } from 'next/app'
 import { ApolloProvider } from '@apollo/client'
 import { useApollo } from '../apollo'
 
@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Carent</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <ThemeProvider theme="orange">
+      <ThemeProvider theme="indigo">
         <ApolloProvider client={apolloClient}>
           <Component {...pageProps} />
         </ApolloProvider>
@@ -22,7 +22,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         {`
           body {
             margin: 0;
-            body: 0;
+            padding: 0;
+            background-image: radial-gradient(farthest-corner at 20% 20%, #473dc915 50%, #0188c415 100%);
           }
           body * {
             box-sizing: border-box;

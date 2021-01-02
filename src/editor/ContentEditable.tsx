@@ -12,28 +12,36 @@ const EditableBlock = styled('div', {
   },
 })
 
-interface ContentEditableProps extends Omit<React.ComponentProps<'div'>, 'onInput'> {
+interface ContentEditableProps extends Omit<React.ComponentProps<'div'>, 'onInput' | 'defaultValue'> {
   as?: React.ElementType
   css?: StitchesProps<typeof EditableBlock>['css']
   value?: string
   onInput?: (html: string, event: React.KeyboardEvent<HTMLDivElement>) => void
   placeholder?: string
+  defaultValue?: string
 }
 
-function ContentEditable({ value, onInput, ...props }: ContentEditableProps) {
+function ContentEditable({ value, defaultValue, onInput, ...props }: ContentEditableProps) {
   const ref = React.useRef<HTMLDivElement>(null)
 
-  React.useLayoutEffect(() => {
+  const updateHtml = React.useCallback((value: string) => {
     if (!ref.current) return
     ref.current.innerHTML = DOMPurify.sanitize(value, { USE_PROFILES: { html: true } })
     if (document.activeElement === ref.current) {
       replaceCaret(ref)
     }
-  }, [value])
+  }, [])
+
+  React.useEffect(() => {
+    updateHtml(defaultValue)
+  }, [defaultValue, updateHtml])
+
+  React.useLayoutEffect(() => {
+    updateHtml(value)
+  }, [value, updateHtml])
 
   const handleInput = useCallback<React.KeyboardEventHandler<HTMLDivElement>>(
     (event) => {
-      console.log(event.currentTarget.innerHTML)
       onInput?.(event.currentTarget.innerHTML.replace?.(/&nbsp;|\u202F|\u00A0/g, ' '), event)
     },
     [onInput]

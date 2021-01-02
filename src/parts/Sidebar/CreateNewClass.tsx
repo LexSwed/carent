@@ -84,10 +84,10 @@ function NewGroupModal({ close }: { close: () => void }) {
 
     const { data } = await createClass({
       variables: {
-        name: className,
+        name: className.trim(),
         group: {
           id: groupId,
-          code: newGroupCode,
+          code: newGroupCode.trim(),
         },
       },
     })

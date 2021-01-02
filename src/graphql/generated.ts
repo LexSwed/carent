@@ -46,12 +46,19 @@ export type QueryGroupsArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   createClass?: Maybe<Class>;
+  createTopic?: Maybe<Topic>;
 };
 
 
 export type MutationCreateClassArgs = {
   name: Scalars['String'];
   group: CreateClassGroupInput;
+};
+
+
+export type MutationCreateTopicArgs = {
+  classId: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type Node = {
@@ -163,6 +170,43 @@ export type TopicEdge = {
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
   node?: Maybe<Topic>;
 };
+
+export type CreateNewTopicMutationVariables = Exact<{
+  classId: Scalars['String'];
+  title: Scalars['String'];
+}>;
+
+
+export type CreateNewTopicMutation = (
+  { __typename?: 'Mutation' }
+  & { createTopic?: Maybe<(
+    { __typename?: 'Topic' }
+    & Pick<Topic, 'id' | 'title'>
+  )> }
+);
+
+export type GetClassTopicsQueryVariables = Exact<{
+  classId: Scalars['String'];
+}>;
+
+
+export type GetClassTopicsQuery = (
+  { __typename?: 'Query' }
+  & { class?: Maybe<(
+    { __typename?: 'Class' }
+    & Pick<Class, 'id'>
+    & { topics?: Maybe<(
+      { __typename?: 'TopicConnection' }
+      & { edges?: Maybe<Array<Maybe<(
+        { __typename?: 'TopicEdge' }
+        & { node?: Maybe<(
+          { __typename?: 'Topic' }
+          & Pick<Topic, 'id' | 'title'>
+        )> }
+      )>>> }
+    )> }
+  )> }
+);
 
 export type GetClassInfoQueryVariables = Exact<{
   classId: Scalars['String'];

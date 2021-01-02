@@ -54,6 +54,7 @@ scalar DateTime
 
 type Mutation {
   createClass(group: CreateClassGroupInput!, name: String!): Class
+  createTopic(classId: String!, title: String!): Topic
 }
 
 interface Node {

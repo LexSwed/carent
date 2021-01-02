@@ -1,9 +1,10 @@
 import React from 'react'
-import { Box, Flex, Heading, StyleRecord, Text } from '@fxtrot/ui'
+import { Box, Flex, StyleRecord } from '@fxtrot/ui'
 import { gql, useQuery } from '@apollo/client'
-import { useRouter } from 'next/router'
 
-import ContentEditable from '../../editor/ContentEditable'
+import Topics from './Topics'
+import { useClassId } from '../../utils'
+import ClassHeader from './Header'
 
 const getClassInfo = gql`
   query getClassInfo($classId: String!) {
@@ -21,39 +22,40 @@ const getClassInfo = gql`
 const styles: StyleRecord = {
   fill: {
     height: '-webkit-fill-available',
+    overflow: 'hidden',
   },
   max: {
-    height: '100%',
+    maxHeight: '100%',
+    overflow: 'hidden',
+  },
+  main: {
+    p: '$4',
+    bc: 'rgba(255,255,255,0.9)',
+    shadow: '-5px 10px 25px -5px rgba(0, 0, 0, 0.03), -5px 5px 10px -5px rgba(0, 0, 0, 0.01)',
+    maxHeight: '100%',
+    overflow: 'hidden',
   },
 }
 
 const ClassPage = () => {
-  const router = useRouter()
+  const classId = useClassId()
   const { loading, data } = useQuery(getClassInfo, {
     variables: {
-      classId: router.query.classId?.[0],
+      classId,
     },
   })
 
   if (loading || !data) {
-    return <Box as="main" p="$4" />
+    return <Box as="main" p="$4" css={styles.main} />
   }
 
   return (
-    <Box as="main" p="$4">
-      <Flex space="$4" css={styles.fill}>
-        <Flex flow="row" space="$4">
-          <ContentEditable value={data.class.name} onInput={(val) => console.log(val)} as={Heading} />
-          <Heading variant="light">{data.class.group.code}</Heading>
-        </Flex>
-        <Box pb="$8" css={styles.max}>
-          <Flex space="$2" css={styles.fill}>
-            <Flex flow="row">
-              <Text tone="light" size="sm">
-                Breadcrumbs and other items with sticky positioning
-              </Text>
-            </Flex>
-          </Flex>
+    <Box as="main" css={styles.main}>
+      <Flex space="$4" css={styles.max}>
+        <ClassHeader name={data.class.name} code={data.class.group.code} />
+        <Box py="$2">Tabs</Box>
+        <Box display="grid" gridTemplate="100% / 300px 1fr" css={styles.fill}>
+          <Topics />
         </Box>
       </Flex>
     </Box>
@@ -61,7 +63,3 @@ const ClassPage = () => {
 }
 
 export default ClassPage
-
-/**
- * content: [["some text", [["b"]]], ["link", [["a",  "href"], ["b"], ["c", "#aaaaff"]], ["some text"]]
- */

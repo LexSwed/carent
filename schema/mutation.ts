@@ -53,5 +53,41 @@ export const Mutation = mutationType({
         }
       },
     })
+
+    t.field('createTopic', {
+      type: 'Topic',
+      args: {
+        classId: nonNull('String'),
+        title: nonNull('String'),
+      },
+      resolve: async (_root, { title, classId }, { prisma, session }) => {
+        const teacherClass = await prisma.class.findFirst({
+          where: {
+            id: classId,
+            teacher: {
+              userId: session?.user?.id,
+            },
+          },
+          select: {
+            id: true,
+          },
+        })
+
+        if (!teacherClass) {
+          throw new ApolloError('Failed to create new topic for the class', '404')
+        }
+
+        return await prisma.topic.create({
+          data: {
+            title,
+            class: {
+              connect: {
+                id: teacherClass.id,
+              },
+            },
+          },
+        })
+      },
+    })
   },
 })

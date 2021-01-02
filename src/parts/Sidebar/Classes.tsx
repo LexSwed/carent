@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { styled, Box, Flex, MenuList, Text, StyleRecord } from '@fxtrot/ui'
+import { Box, Flex, MenuList, Text, StyleRecord } from '@fxtrot/ui'
 import { gql, useQuery } from '@apollo/client'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -26,11 +26,6 @@ const getClassesQuery = gql`
     }
   }
 `
-
-const Card = styled('div', {
-  br: '$lg',
-  p: '$4',
-})
 
 const styles: StyleRecord = {
   tile: {
@@ -62,8 +57,8 @@ const Classes = () => {
   const noClasses = data.classes.edges.length === 0
 
   return (
-    <Flex space="$2">
-      <Card>
+    <Box p="$4">
+      <Flex space="$4">
         {noClasses ? (
           <NoClasses />
         ) : (
@@ -80,9 +75,9 @@ const Classes = () => {
             ))}
           </MenuList>
         )}
-      </Card>
-      <CreateNewClass defaultOpen={data.classes.edges.length === 0} />
-    </Flex>
+        <CreateNewClass defaultOpen={data.classes.edges.length === 0} />
+      </Flex>
+    </Box>
   )
 }
 

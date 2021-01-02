@@ -132,6 +132,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createClass: NexusGenRootTypes['Class'] | null; // Class
+    createTopic: NexusGenRootTypes['Topic'] | null; // Topic
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
@@ -200,6 +201,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     createClass: 'Class'
+    createTopic: 'Topic'
   }
   PageInfo: { // field return type name
     endCursor: 'String'
@@ -263,6 +265,10 @@ export interface NexusGenArgTypes {
     createClass: { // args
       group: NexusGenInputs['CreateClassGroupInput']; // CreateClassGroupInput!
       name: string; // String!
+    }
+    createTopic: { // args
+      classId: string; // String!
+      title: string; // String!
     }
   }
   Query: {
