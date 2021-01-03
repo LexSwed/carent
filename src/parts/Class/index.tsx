@@ -30,6 +30,7 @@ const styles: StyleRecord = {
   },
   main: {
     p: '$4',
+    pb: 0,
     bc: 'rgba(255,255,255,0.9)',
     shadow: '-5px 10px 25px -5px rgba(0, 0, 0, 0.03), -5px 5px 10px -5px rgba(0, 0, 0, 0.01)',
     maxHeight: '100%',

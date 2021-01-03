@@ -6,6 +6,7 @@
 
 import { Context as Context } from "./../context"
 import { core, connectionPluginCore } from "nexus"
+import { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
 
 declare global {
   interface NexusGenCustomOutputMethods<TypeName extends string> {
@@ -133,6 +134,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createClass: NexusGenRootTypes['Class'] | null; // Class
     createTopic: NexusGenRootTypes['Topic'] | null; // Topic
+    reorderTopic: NexusGenRootTypes['Topic'] | null; // Topic
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
@@ -202,6 +204,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createClass: 'Class'
     createTopic: 'Topic'
+    reorderTopic: 'Topic'
   }
   PageInfo: { // field return type name
     endCursor: 'String'
@@ -269,6 +272,11 @@ export interface NexusGenArgTypes {
     createTopic: { // args
       classId: string; // String!
       title: string; // String!
+    }
+    reorderTopic: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      id: string; // String!
     }
   }
   Query: {
@@ -357,6 +365,15 @@ declare global {
   }
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
     
+    /**
+     * Authorization for an individual field. Returning "true"
+     * or "Promise<true>" means the field can be accessed.
+     * Returning "false" or "Promise<false>" will respond
+     * with a "Not Authorized" error for the field.
+     * Returning or throwing an error will also prevent the
+     * resolver from executing.
+     */
+    authorize?: FieldAuthorizeResolver<TypeName, FieldName>
   }
   interface NexusGenPluginInputFieldConfig<TypeName extends string, FieldName extends string> {
   }

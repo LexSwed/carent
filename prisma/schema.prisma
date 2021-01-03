@@ -91,11 +91,12 @@ model Class {
 }
 
 model Topic {
-  id      String  @id @default(cuid())
-  title   String
-  classId String
-  hidden  Boolean @default(true)
-  class   Class   @relation(fields: [classId], references: [id])
+  id       String  @id @default(cuid())
+  title    String
+  classId  String
+  hidden   Boolean @default(true)
+  orderKey String
+  class    Class   @relation(fields: [classId], references: [id])
 }
 
 model StudentGroup {

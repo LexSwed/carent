@@ -47,6 +47,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   createClass?: Maybe<Class>;
   createTopic?: Maybe<Topic>;
+  reorderTopic?: Maybe<Topic>;
 };
 
 
@@ -59,6 +60,13 @@ export type MutationCreateClassArgs = {
 export type MutationCreateTopicArgs = {
   classId: Scalars['String'];
   title: Scalars['String'];
+};
+
+
+export type MutationReorderTopicArgs = {
+  id: Scalars['String'];
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
 };
 
 export type Node = {
@@ -171,20 +179,6 @@ export type TopicEdge = {
   node?: Maybe<Topic>;
 };
 
-export type CreateNewTopicMutationVariables = Exact<{
-  classId: Scalars['String'];
-  title: Scalars['String'];
-}>;
-
-
-export type CreateNewTopicMutation = (
-  { __typename?: 'Mutation' }
-  & { createTopic?: Maybe<(
-    { __typename?: 'Topic' }
-    & Pick<Topic, 'id' | 'title'>
-  )> }
-);
-
 export type GetClassTopicsQueryVariables = Exact<{
   classId: Scalars['String'];
 }>;
@@ -205,6 +199,35 @@ export type GetClassTopicsQuery = (
         )> }
       )>>> }
     )> }
+  )> }
+);
+
+export type CreateNewTopicMutationVariables = Exact<{
+  classId: Scalars['String'];
+  title: Scalars['String'];
+}>;
+
+
+export type CreateNewTopicMutation = (
+  { __typename?: 'Mutation' }
+  & { createTopic?: Maybe<(
+    { __typename?: 'Topic' }
+    & Pick<Topic, 'id' | 'title'>
+  )> }
+);
+
+export type UpdateTopicOrderMutationVariables = Exact<{
+  id: Scalars['String'];
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateTopicOrderMutation = (
+  { __typename?: 'Mutation' }
+  & { reorderTopic?: Maybe<(
+    { __typename?: 'Topic' }
+    & Pick<Topic, 'id' | 'title'>
   )> }
 );
 

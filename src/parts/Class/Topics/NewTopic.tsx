@@ -1,18 +1,9 @@
 import React, { useState } from 'react'
-import { gql, useMutation } from '@apollo/client'
 import { Box, Button, Flex, Icon, styled, TextField, useKeyboardHandles } from '@fxtrot/ui'
 import { HiPlus } from 'react-icons/hi'
-import type { CreateNewTopicMutation, CreateNewTopicMutationVariables } from '../../graphql/generated'
-import { useClassId } from '../../utils'
+import { useClassId } from '../../../utils'
 
-const createNewTopic = gql`
-  mutation createNewTopic($classId: String!, $title: String!) {
-    createTopic(classId: $classId, title: $title) {
-      id
-      title
-    }
-  }
-`
+import { useCreateNewTopic } from './gql'
 
 const MainCard = styled('div', {
   py: '$4',
@@ -24,7 +15,7 @@ const MainCard = styled('div', {
   clipPath: 'inset(0 0 -5px 0)',
 })
 
-const NewTopicCard = () => {
+export const NewTopic = () => {
   const classId = useClassId()
   const [create] = useCreateNewTopic()
   const [title, setTitle] = useState('')
@@ -64,34 +55,4 @@ const NewTopicCard = () => {
       </Flex>
     </MainCard>
   )
-}
-export default NewTopicCard
-
-const useCreateNewTopic = () => {
-  const classId = useClassId()
-
-  return useMutation<CreateNewTopicMutation, CreateNewTopicMutationVariables>(createNewTopic, {
-    update(cache, { data: { createTopic: item } }) {
-      cache.modify({
-        id: cache.identify({
-          __typename: 'Class',
-          id: classId,
-        }),
-        fields: {
-          topics(existingTopics = {}) {
-            return {
-              ...existingTopics,
-              edges: [
-                {
-                  __typename: 'TopicEdge',
-                  node: item,
-                },
-                ...existingTopics.edges,
-              ],
-            }
-          },
-        },
-      })
-    },
-  })
 }

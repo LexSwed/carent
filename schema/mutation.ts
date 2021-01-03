@@ -1,5 +1,6 @@
 import { inputObjectType, mutationType, nonNull, stringArg } from 'nexus'
 import { ApolloError } from 'apollo-server-micro'
+import { LexoRank } from 'lexorank'
 
 const studentGroup = inputObjectType({
   name: 'CreateClassGroupInput',
@@ -60,6 +61,7 @@ export const Mutation = mutationType({
         classId: nonNull('String'),
         title: nonNull('String'),
       },
+      /** I decided that having two consequent DB transactions is better than parallel if one fails */
       resolve: async (_root, { title, classId }, { prisma, session }) => {
         const teacherClass = await prisma.class.findFirst({
           where: {
@@ -74,17 +76,74 @@ export const Mutation = mutationType({
         })
 
         if (!teacherClass) {
-          throw new ApolloError('Failed to create new topic for the class', '404')
+          throw new ApolloError('Failed to create new topic for the class', '400')
         }
+
+        const topic = await prisma.topic.findFirst({
+          where: { classId },
+          orderBy: { orderKey: 'asc' },
+          select: { orderKey: true },
+        })
+        const orderKey = topic ? LexoRank.parse(topic.orderKey).genPrev().toString() : LexoRank.middle().toString()
 
         return await prisma.topic.create({
           data: {
             title,
+            orderKey,
             class: {
               connect: {
                 id: teacherClass.id,
               },
             },
+          },
+        })
+      },
+    })
+
+    /** This code chunk seem slow (at least 3 DB requests), but it's not the worst */
+    t.field('reorderTopic', {
+      type: 'Topic',
+      args: {
+        id: nonNull(stringArg({ description: 'ID of the topic to reorder' })),
+        before: stringArg({ description: 'ID of the topic to insert before' }),
+        after: stringArg({ description: 'ID of the topic to insert after' }),
+      },
+      resolve: async (_root, { id, before, after }, { prisma, session }) => {
+        const referenceId = before || after
+
+        if (!id) {
+          throw new ApolloError('Neither before ID not after ID was not provided', '400')
+        }
+
+        const referenceItem = await prisma.topic.findFirst({
+          where: {
+            id: referenceId,
+            AND: {
+              class: {
+                teacher: {
+                  userId: session.user.id,
+                },
+              },
+            },
+          },
+          select: {
+            orderKey: true,
+          },
+        })
+
+        if (!referenceItem) {
+          throw new ApolloError(`${before ? "'before'" : "'after'"} argument is not correct`, '400')
+        }
+
+        const referenceKey = LexoRank.parse(referenceItem.orderKey)
+        const orderKey = before ? referenceKey.genPrev().toString() : referenceKey.genNext().toString()
+
+        return prisma.topic.update({
+          where: {
+            id: id,
+          },
+          data: {
+            orderKey,
           },
         })
       },

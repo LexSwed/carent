@@ -1,4 +1,4 @@
-import { makeSchema, connectionPlugin } from 'nexus'
+import { makeSchema, connectionPlugin, fieldAuthorizePlugin } from 'nexus'
 import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema'
 import path from 'path'
 import * as entities from './entities'
@@ -20,6 +20,7 @@ export const schema = makeSchema({
         totalCount: { type: 'Int' },
       },
     }),
+    fieldAuthorizePlugin(),
   ],
   outputs: {
     schema: path.join(process.cwd(), 'schema/generated/schema.graphql'),

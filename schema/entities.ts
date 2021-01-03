@@ -54,7 +54,7 @@ export const Class = objectType({
         return prisma.topic.findMany({
           ...relayToPrismaPagination(args),
           orderBy: {
-            id: 'desc',
+            orderKey: 'asc',
           },
           where: {
             classId: root.id,
