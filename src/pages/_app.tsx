@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Carent</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <ThemeProvider theme="indigo">
+      <ThemeProvider theme="orange">
         <ApolloProvider client={apolloClient}>
           <Component {...pageProps} />
         </ApolloProvider>

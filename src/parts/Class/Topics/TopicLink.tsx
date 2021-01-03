@@ -65,7 +65,7 @@ export const TopicLink = React.memo<TopicCardProps>(({ id, title, selected, inde
           ref={provided.innerRef}
         >
           <Flex flow="row" space="$2" cross="center">
-            <Button size="sm" title="Reorder this topic" {...provided.dragHandleProps}>
+            <Button size="sm" title="Reorder this topic" onClick={stopPropagation} {...provided.dragHandleProps}>
               <Icon size="sm" as={HiMenuAlt4} />
             </Button>
             <Text size="sm">{title}</Text>
@@ -78,3 +78,7 @@ export const TopicLink = React.memo<TopicCardProps>(({ id, title, selected, inde
     </Draggable>
   )
 })
+
+function stopPropagation(e) {
+  e.stopPropagation()
+}

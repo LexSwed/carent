@@ -6,7 +6,7 @@ import { useClassId, useTopicId } from '../../../utils'
 import { NewTopic } from './NewTopic'
 import { TopicsList } from './TopicList'
 import { TopicLink } from './TopicLink'
-import { useClassTopics } from './gql'
+import { useClassTopics } from '../gql'
 
 const Topics = () => {
   const router = useRouter()

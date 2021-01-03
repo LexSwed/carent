@@ -1,23 +1,9 @@
 import React from 'react'
-import { Box, Flex, StyleRecord } from '@fxtrot/ui'
-import { gql, useQuery } from '@apollo/client'
+import { Box, Flex, Grid, StyleRecord } from '@fxtrot/ui'
 
 import Topics from './Topics'
-import { useClassId } from '../../utils'
 import ClassHeader from './Header'
-
-const getClassInfo = gql`
-  query getClassInfo($classId: String!) {
-    class(id: $classId) {
-      id
-      name
-      group {
-        id
-        code
-      }
-    }
-  }
-`
+import Topic from './Topic'
 
 const styles: StyleRecord = {
   fill: {
@@ -39,25 +25,15 @@ const styles: StyleRecord = {
 }
 
 const ClassPage = () => {
-  const classId = useClassId()
-  const { loading, data } = useQuery(getClassInfo, {
-    variables: {
-      classId,
-    },
-  })
-
-  if (loading || !data) {
-    return <Box as="main" p="$4" css={styles.main} />
-  }
-
   return (
     <Box as="main" css={styles.main}>
       <Flex space="$4" css={styles.max}>
-        <ClassHeader name={data.class.name} code={data.class.group.code} />
+        <ClassHeader />
         <Box py="$2">Tabs</Box>
-        <Box display="grid" gridTemplate="100% / 300px 1fr" css={styles.fill}>
+        <Grid columns="300px 1fr" css={styles.fill}>
           <Topics />
-        </Box>
+          <Topic />
+        </Grid>
       </Flex>
     </Box>
   )

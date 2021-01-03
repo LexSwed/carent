@@ -4,7 +4,7 @@ import { Flex, styled } from '@fxtrot/ui'
 import { useClassId } from '../../../utils'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import type { GetClassTopicsQuery, GetClassTopicsQueryVariables } from '../../../graphql/generated'
-import { getTopics, updateOrder } from './gql'
+import { getTopics, updateOrder } from '../gql'
 
 const List = styled(Flex, {
   p: 0,

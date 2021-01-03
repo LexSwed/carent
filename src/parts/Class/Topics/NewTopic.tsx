@@ -3,7 +3,7 @@ import { Box, Button, Flex, Icon, styled, TextField, useKeyboardHandles } from '
 import { HiPlus } from 'react-icons/hi'
 import { useClassId } from '../../../utils'
 
-import { useCreateNewTopic } from './gql'
+import { useCreateNewTopic } from '../gql'
 
 const MainCard = styled('div', {
   py: '$4',

@@ -4,8 +4,10 @@ import type {
   GetClassTopicsQueryVariables,
   CreateNewTopicMutation,
   CreateNewTopicMutationVariables,
-} from '../../../graphql/generated'
-import { useClassId } from '../../../utils'
+  GetClassInfoQuery,
+  GetClassInfoQueryVariables,
+} from '../../graphql/generated'
+import { useClassId } from '../../utils'
 
 export const getTopics = gql`
   query getClassTopics($classId: String!) {
@@ -47,6 +49,20 @@ export function useClassTopics() {
     },
   })
 }
+
+const getClassInfo = gql`
+  query getClassInfo($classId: String!) {
+    class(id: $classId) {
+      id
+      name
+      group {
+        id
+        code
+      }
+    }
+  }
+`
+
 export function useCreateNewTopic() {
   const classId = useClassId()
 
@@ -72,6 +88,15 @@ export function useCreateNewTopic() {
           },
         },
       })
+    },
+  })
+}
+
+export function useClassInfo() {
+  const classId = useClassId()
+  return useQuery<GetClassInfoQuery, GetClassInfoQueryVariables>(getClassInfo, {
+    variables: {
+      classId,
     },
   })
 }
