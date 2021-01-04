@@ -65,6 +65,7 @@ type Mutation {
     """ID of the topic to reorder"""
     id: String!
   ): Topic
+  updateClassName(id: String!, name: String!): Class
 }
 
 interface Node {

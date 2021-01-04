@@ -46,6 +46,7 @@ export type QueryGroupsArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   createClass?: Maybe<Class>;
+  updateClassName?: Maybe<Class>;
   createTopic?: Maybe<Topic>;
   reorderTopic?: Maybe<Topic>;
 };
@@ -54,6 +55,12 @@ export type Mutation = {
 export type MutationCreateClassArgs = {
   name: Scalars['String'];
   group: CreateClassGroupInput;
+};
+
+
+export type MutationUpdateClassNameArgs = {
+  id: Scalars['String'];
+  name: Scalars['String'];
 };
 
 
@@ -245,6 +252,20 @@ export type GetClassInfoQuery = (
       { __typename?: 'StudentGroup' }
       & Pick<StudentGroup, 'id' | 'code'>
     ) }
+  )> }
+);
+
+export type UpdateClassNameMutationVariables = Exact<{
+  id: Scalars['String'];
+  name: Scalars['String'];
+}>;
+
+
+export type UpdateClassNameMutation = (
+  { __typename?: 'Mutation' }
+  & { updateClassName?: Maybe<(
+    { __typename?: 'Class' }
+    & Pick<Class, 'id' | 'name'>
   )> }
 );
 

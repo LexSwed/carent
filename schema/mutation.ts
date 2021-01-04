@@ -55,6 +55,45 @@ export const Mutation = mutationType({
       },
     })
 
+    t.field('updateClassName', {
+      type: 'Class',
+      args: {
+        id: nonNull('String'),
+        name: nonNull('String'),
+      },
+      resolve: async (_, { id, name }, { prisma, session }) => {
+        try {
+          const classBelongsToUser = await prisma.class.findFirst({
+            where: {
+              id,
+              AND: {
+                teacher: {
+                  userId: session?.user?.id,
+                },
+              },
+            },
+            select: {
+              id: true,
+            },
+          })
+          if (classBelongsToUser) {
+            return prisma.class.update({
+              where: {
+                id,
+              },
+              data: {
+                name,
+              },
+            })
+          } else {
+            throw new ApolloError('Failed to update the name of the class', '400')
+          }
+        } catch (error) {
+          throw new ApolloError('Failed to update the name of the class', '400')
+        }
+      },
+    })
+
     t.field('createTopic', {
       type: 'Topic',
       args: {
@@ -86,7 +125,7 @@ export const Mutation = mutationType({
         })
         const orderKey = topic ? LexoRank.parse(topic.orderKey).genPrev().toString() : LexoRank.middle().toString()
 
-        return await prisma.topic.create({
+        return prisma.topic.create({
           data: {
             title,
             orderKey,

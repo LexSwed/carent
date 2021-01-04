@@ -9,7 +9,8 @@ const TopicCard = styled(Flex, {
   'px': '$2',
   'br': '$md',
   'bc': '$surfaceStill',
-  'transition': 'background-color 0.2s ease-in',
+  'transition': '0.2s ease-in,',
+  'transitionProperty': 'background-color, box-shadow',
 
   '&:not(:first-child:last-child)': {
     'position': 'relative',
@@ -33,7 +34,7 @@ const TopicCard = styled(Flex, {
     },
     dragging: {
       true: {
-        'shadow': '$base',
+        'shadow': '$xs',
         '&:after': {
           display: 'none',
         },

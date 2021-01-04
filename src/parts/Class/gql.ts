@@ -6,6 +6,8 @@ import type {
   CreateNewTopicMutationVariables,
   GetClassInfoQuery,
   GetClassInfoQueryVariables,
+  UpdateClassNameMutation,
+  UpdateClassNameMutationVariables,
 } from '../../graphql/generated'
 import { useClassId } from '../../utils'
 
@@ -62,6 +64,19 @@ const getClassInfo = gql`
     }
   }
 `
+
+const updateClassName = gql`
+  mutation updateClassName($id: String!, $name: String!) {
+    updateClassName(id: $id, name: $name) {
+      id
+      name
+    }
+  }
+`
+
+export function useUpdateClassName() {
+  return useMutation<UpdateClassNameMutation, UpdateClassNameMutationVariables>(updateClassName)
+}
 
 export function useCreateNewTopic() {
   const classId = useClassId()

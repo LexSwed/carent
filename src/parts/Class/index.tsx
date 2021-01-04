@@ -30,9 +30,13 @@ const ClassPage = () => {
       <Flex space="$4" css={styles.max}>
         <ClassHeader />
         <Box py="$2">Tabs</Box>
-        <Grid columns="300px 1fr" css={styles.fill}>
-          <Topics />
-          <Topic />
+        <Grid columns="300px 1fr" rows="100%" css={styles.fill}>
+          <Box height="100%">
+            <Topics />
+          </Box>
+          <Box height="100%">
+            <Topic />
+          </Box>
         </Grid>
       </Flex>
     </Box>

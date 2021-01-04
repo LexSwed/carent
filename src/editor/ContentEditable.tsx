@@ -36,13 +36,15 @@ function ContentEditable({ value, defaultValue, onInput, ...props }: ContentEdit
     updateHtml(defaultValue)
   }, [defaultValue, updateHtml])
 
-  React.useLayoutEffect(() => {
-    updateHtml(value)
+  React.useEffect(() => {
+    if (normalize(ref.current.innerHTML) !== value) {
+      updateHtml(value)
+    }
   }, [value, updateHtml])
 
   const handleInput = useCallback<React.KeyboardEventHandler<HTMLDivElement>>(
     (event) => {
-      onInput?.(event.currentTarget.innerHTML.replace?.(/&nbsp;|\u202F|\u00A0/g, ' '), event)
+      onInput?.(normalize(event.currentTarget.innerHTML), event)
     },
     [onInput]
   )
@@ -69,4 +71,8 @@ function replaceCaret(elementRef: React.RefObject<HTMLElement>) {
     }
     if (el instanceof HTMLElement) el.focus()
   }
+}
+
+function normalize(html: string) {
+  return html.replace?.(/&nbsp;|\u202F|\u00A0/g, ' ')
 }

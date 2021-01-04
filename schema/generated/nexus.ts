@@ -135,6 +135,7 @@ export interface NexusGenFieldTypes {
     createClass: NexusGenRootTypes['Class'] | null; // Class
     createTopic: NexusGenRootTypes['Topic'] | null; // Topic
     reorderTopic: NexusGenRootTypes['Topic'] | null; // Topic
+    updateClassName: NexusGenRootTypes['Class'] | null; // Class
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
@@ -205,6 +206,7 @@ export interface NexusGenFieldTypeNames {
     createClass: 'Class'
     createTopic: 'Topic'
     reorderTopic: 'Topic'
+    updateClassName: 'Class'
   }
   PageInfo: { // field return type name
     endCursor: 'String'
@@ -277,6 +279,10 @@ export interface NexusGenArgTypes {
       after?: string | null; // String
       before?: string | null; // String
       id: string; // String!
+    }
+    updateClassName: { // args
+      id: string; // String!
+      name: string; // String!
     }
   }
   Query: {
