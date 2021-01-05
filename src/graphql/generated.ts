@@ -93,6 +93,7 @@ export type Topic = Node & {
   __typename?: 'Topic';
   id: Scalars['String'];
   title: Scalars['String'];
+  description: Scalars['String'];
 };
 
 export type StudentGroup = Node & {

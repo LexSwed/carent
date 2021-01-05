@@ -85,6 +85,7 @@ export interface NexusGenObjects {
     node?: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
   }
   Topic: { // root type
+    description: string; // String!
     id: string; // String!
     title: string; // String!
   }
@@ -163,6 +164,7 @@ export interface NexusGenFieldTypes {
     node: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
   }
   Topic: { // field return type
+    description: string; // String!
     id: string; // String!
     title: string; // String!
   }
@@ -234,6 +236,7 @@ export interface NexusGenFieldTypeNames {
     node: 'StudentGroup'
   }
   Topic: { // field return type name
+    description: 'String'
     id: 'String'
     title: 'String'
   }

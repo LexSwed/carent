@@ -22,18 +22,10 @@ const ClassHeader = () => {
     }
   }
 
-  const code = data?.class.group.code
-
   return (
     <Flex flow="row" space="$4">
-      <ContentEditable
-        value={newName}
-        onInput={setNewName}
-        defaultValue={data?.class.name}
-        as={Heading}
-        onBlur={handleBlur}
-      />
-      <Heading variant="light">{code}</Heading>
+      <ContentEditable defaultValue={data?.class.name} onInput={setNewName} as={Heading} onBlur={handleBlur} />
+      <Heading variant="light">{data?.class.group.code}</Heading>
     </Flex>
   )
 }

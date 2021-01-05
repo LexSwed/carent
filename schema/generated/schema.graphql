@@ -156,6 +156,7 @@ type StudentGroupEdge {
 }
 
 type Topic implements Node {
+  description: String!
   id: String!
   title: String!
 }

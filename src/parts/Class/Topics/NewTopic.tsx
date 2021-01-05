@@ -27,7 +27,7 @@ export const NewTopic = () => {
         await create({
           variables: {
             classId,
-            title: title.trim(),
+            title: newTitle,
           },
         })
         setTitle('')

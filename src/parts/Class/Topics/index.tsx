@@ -13,17 +13,13 @@ const Topics = () => {
 
   const selectedTopicId = useTopicId()
   const classId = useClassId()
-  const { loading, data } = useClassTopics()
-
-  if (loading || !data) {
-    return null
-  }
+  const { data } = useClassTopics()
 
   function openTopic(id: string) {
     router.push(`/${classId}/topic/${id}`)
   }
 
-  const topics = data.class.topics.edges
+  const topics = data?.class.topics.edges || []
 
   return (
     <Box height="100%" overflow="hidden" pb="$2" display="grid" gridTemplateRows="auto 1fr">

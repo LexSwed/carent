@@ -26,6 +26,7 @@ export const Topic = objectType({
     t.implements(Node)
     t.model.id()
     t.model.title()
+    t.model.description()
   },
 })
 

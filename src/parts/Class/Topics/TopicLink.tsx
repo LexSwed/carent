@@ -8,6 +8,7 @@ const TopicCard = styled(Flex, {
   'py': '$4',
   'px': '$2',
   'br': '$md',
+  'cursor': 'default',
   'bc': '$surfaceStill',
   'transition': '0.2s ease-in,',
   'transitionProperty': 'background-color, box-shadow',
