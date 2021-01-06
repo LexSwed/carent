@@ -33,6 +33,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  ClassTopicsSortOrder: { // input type
+    key?: NexusGenEnums['TopicSortKey'] | null; // TopicSortKey
+    order?: NexusGenEnums['TopicSortOrder'] | null; // TopicSortOrder
+  }
   CreateClassGroupInput: { // input type
     code?: string | null; // String
     id?: string | null; // String
@@ -40,6 +44,9 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  ClassTopicsOrder: "orderKey_asc" | "orderKey_desc" | "updatedAt_asc" | "updatedAt_desc"
+  TopicSortKey: "orderKey" | "updatedAt"
+  TopicSortOrder: "asc" | "desc"
 }
 
 export interface NexusGenScalars {
@@ -85,9 +92,11 @@ export interface NexusGenObjects {
     node?: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
   }
   Topic: { // root type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
     id: string; // String!
     title: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   TopicConnection: { // root type
     edges?: Array<NexusGenRootTypes['TopicEdge'] | null> | null; // [TopicEdge]
@@ -114,7 +123,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenInterfaces & NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   Class: { // field return type
@@ -149,6 +158,7 @@ export interface NexusGenFieldTypes {
     classes: NexusGenRootTypes['ClassConnection'] | null; // ClassConnection
     groups: NexusGenRootTypes['StudentGroupConnection'] | null; // StudentGroupConnection
     me: NexusGenRootTypes['User'] | null; // User
+    topic: NexusGenRootTypes['Topic'] | null; // Topic
   }
   StudentGroup: { // field return type
     code: string; // String!
@@ -164,9 +174,11 @@ export interface NexusGenFieldTypes {
     node: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
   }
   Topic: { // field return type
+    createdAt: NexusGenScalars['DateTime']; // DateTime!
     description: string; // String!
     id: string; // String!
     title: string; // String!
+    updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
   TopicConnection: { // field return type
     edges: Array<NexusGenRootTypes['TopicEdge'] | null> | null; // [TopicEdge]
@@ -221,6 +233,7 @@ export interface NexusGenFieldTypeNames {
     classes: 'ClassConnection'
     groups: 'StudentGroupConnection'
     me: 'User'
+    topic: 'Topic'
   }
   StudentGroup: { // field return type name
     code: 'String'
@@ -236,9 +249,11 @@ export interface NexusGenFieldTypeNames {
     node: 'StudentGroup'
   }
   Topic: { // field return type name
+    createdAt: 'DateTime'
     description: 'String'
     id: 'String'
     title: 'String'
+    updatedAt: 'DateTime'
   }
   TopicConnection: { // field return type name
     edges: 'TopicEdge'
@@ -267,6 +282,7 @@ export interface NexusGenArgTypes {
       before?: string | null; // String
       first?: number | null; // Int
       last?: number | null; // Int
+      sort: NexusGenInputs['ClassTopicsSortOrder'] | null; // ClassTopicsSortOrder
     }
   }
   Mutation: {
@@ -304,6 +320,9 @@ export interface NexusGenArgTypes {
       first?: number | null; // Int
       last?: number | null; // Int
     }
+    topic: { // args
+      id: string; // String!
+    }
   }
 }
 
@@ -322,7 +341,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = keyof NexusGenInputs;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = keyof NexusGenInterfaces;
 

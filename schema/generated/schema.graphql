@@ -18,6 +18,7 @@ type Class implements Node {
 
     """Returns the last n elements from the list."""
     last: Int
+    sort: ClassTopicsSortOrder = {key: ORDER, order: ASC}
   ): TopicConnection
 }
 
@@ -40,6 +41,18 @@ type ClassEdge {
 
   """https://facebook.github.io/relay/graphql/connections.htm#sec-Node"""
   node: Class
+}
+
+enum ClassTopicsOrder {
+  ORDER_ASC
+  ORDER_DESC
+  UPDATED_ASC
+  UPDATED_DESC
+}
+
+input ClassTopicsSortOrder {
+  key: TopicSortKey
+  order: TopicSortOrder
 }
 
 input CreateClassGroupInput {
@@ -127,6 +140,7 @@ type Query {
     last: Int
   ): StudentGroupConnection
   me: User
+  topic(id: String!): Topic
 }
 
 type StudentGroup implements Node {
@@ -156,9 +170,11 @@ type StudentGroupEdge {
 }
 
 type Topic implements Node {
+  createdAt: DateTime!
   description: String!
   id: String!
   title: String!
+  updatedAt: DateTime!
 }
 
 type TopicConnection {
@@ -180,6 +196,19 @@ type TopicEdge {
 
   """https://facebook.github.io/relay/graphql/connections.htm#sec-Node"""
   node: Topic
+}
+
+enum TopicSortKey {
+  ORDER
+  UPDATED
+}
+
+"""
+Sort direction, ASC = ascending (normal - latest on top), DESC = descending (reverse - oldest on top)
+"""
+enum TopicSortOrder {
+  ASC
+  DESC
 }
 
 type User implements Node {

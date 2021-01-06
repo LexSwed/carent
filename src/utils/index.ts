@@ -7,10 +7,11 @@ export function copyText(text: string) {
 export function useClassId() {
   const { query } = useRouter()
 
-  return query.classId?.[0]
+  return query.classId as string
 }
 
 export function useTopicId() {
   const { query } = useRouter()
-  return query.classId?.[2]
+
+  return query.topicId?.[0] as string
 }

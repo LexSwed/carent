@@ -8,7 +8,7 @@ const EditableBlock = styled('div', {
   'cursor': 'text',
   '&[placeholder]:empty:before': {
     content: 'attr(placeholder)',
-    color: '$gray300',
+    color: '$textLight',
   },
 })
 

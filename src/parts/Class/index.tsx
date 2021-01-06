@@ -1,9 +1,8 @@
 import React from 'react'
-import { Box, Flex, Grid, StyleRecord } from '@fxtrot/ui'
+import { Flex, Grid, StyleRecord } from '@fxtrot/ui'
 
-import Topics from './Topics'
 import ClassHeader from './Header'
-import Topic from './Topic'
+import MaterialsSection from './MaterialsSection'
 
 const styles: StyleRecord = {
   fill: {
@@ -14,32 +13,19 @@ const styles: StyleRecord = {
     maxHeight: '100%',
     overflow: 'hidden',
   },
-  main: {
-    p: '$4',
-    pb: 0,
-    bc: 'rgba(255,255,255,0.9)',
-    shadow: '-5px 10px 25px -5px rgba(0, 0, 0, 0.03), -5px 5px 10px -5px rgba(0, 0, 0, 0.01)',
-    maxHeight: '100%',
-    overflow: 'hidden',
-  },
 }
 
 const ClassPage = () => {
   return (
-    <Box as="main" css={styles.main}>
-      <Flex space="$4" css={styles.max}>
-        <ClassHeader />
-        <Box py="$2">Tabs</Box>
-        <Grid columns="300px 1fr" rows="100%" css={styles.fill}>
-          <Box height="100%">
-            <Topics />
-          </Box>
-          <Box height="100%">
-            <Topic />
-          </Box>
-        </Grid>
-      </Flex>
-    </Box>
+    <Flex space="$12" css={styles.max}>
+      <ClassHeader />
+      <Grid columns="5fr 3fr">
+        <Flex space="$8">
+          <MaterialsSection />
+        </Flex>
+        <Flex>Updates feed</Flex>
+      </Grid>
+    </Flex>
   )
 }
 

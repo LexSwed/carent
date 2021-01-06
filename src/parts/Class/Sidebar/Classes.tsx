@@ -4,10 +4,10 @@ import { gql, useQuery } from '@apollo/client'
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { GetClassesQuery } from '../../graphql/generated'
+import type { GetClassesQuery } from '../../../graphql/generated'
 import CreateNewClass from './CreateNewClass'
 import { useRouter } from 'next/router'
-import { useClassId } from '../../utils'
+import { useClassId } from '../../../utils'
 
 const getClassesQuery = gql`
   query getClasses {
@@ -29,11 +29,9 @@ const getClassesQuery = gql`
 
 const styles: StyleRecord = {
   tile: {
-    display: 'grid',
+    display: 'grid !important',
     gridTemplateColumns: '1fr auto',
     gap: '$2',
-    height: 'auto !important',
-    p: '$3',
   },
 }
 const { Item } = MenuList
@@ -67,7 +65,7 @@ const Classes = () => {
               <Link href={`/${item.node.id}`} key={item.node.id}>
                 <Item css={styles.tile} selected={item.node.id === classId} as="a">
                   <Text ellipsis>{item.node.name} </Text>
-                  <Text as={Box} tone="light" size="xs" whiteSpace="nowrap">
+                  <Text tone="light" size="xs">
                     {item.node.group.code}
                   </Text>
                 </Item>

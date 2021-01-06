@@ -9,7 +9,6 @@ const TopicCard = styled(Flex, {
   'px': '$2',
   'br': '$md',
   'cursor': 'default',
-  'bc': '$surfaceStill',
   'transition': '0.2s ease-in,',
   'transitionProperty': 'background-color, box-shadow',
 
@@ -30,11 +29,13 @@ const TopicCard = styled(Flex, {
   'variants': {
     selected: {
       true: {
-        bc: '$surfaceHover',
+        bc: '$surfaceActive',
       },
     },
     dragging: {
       true: {
+        'bc': '$surfaceStill',
+        'zIndex': 10,
         'shadow': '$xs',
         '&:after': {
           display: 'none',
@@ -67,7 +68,13 @@ export const TopicLink = React.memo<TopicCardProps>(({ id, title, selected, inde
           ref={provided.innerRef}
         >
           <Flex flow="row" space="$2" cross="center">
-            <Button size="sm" title="Reorder this topic" onClick={stopPropagation} {...provided.dragHandleProps}>
+            <Button
+              variant="flat"
+              size="sm"
+              title="Reorder this topic"
+              onClick={stopPropagation}
+              {...provided.dragHandleProps}
+            >
               <Icon size="sm" as={HiMenuAlt4} />
             </Button>
             <Text size="sm">{title}</Text>

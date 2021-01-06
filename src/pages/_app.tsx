@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { ThemeProvider } from '@fxtrot/ui'
 import type { AppProps } from 'next/app'
 import { ApolloProvider } from '@apollo/client'
+
 import { useApollo } from '../apollo'
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -60,6 +60,27 @@ export const Query = queryType({
       },
     })
 
+    t.field('topic', {
+      type: 'Topic',
+      args: {
+        id: nonNull('String'),
+      },
+      resolve: (_, { id }, { prisma, session }) => {
+        return prisma.topic.findFirst({
+          where: {
+            id,
+            AND: {
+              class: {
+                teacher: {
+                  userId: session?.user?.id,
+                },
+              },
+            },
+          },
+        })
+      },
+    })
+
     t.connectionField('groups', {
       type: 'StudentGroup',
       totalCount: (root, args, { session, prisma }) => {

@@ -3,16 +3,11 @@ import { Box, Button, Flex, Icon, styled, TextField, useKeyboardHandles } from '
 import { HiPlus } from 'react-icons/hi'
 import { useClassId } from '../../../utils'
 
-import { useCreateNewTopic } from '../gql'
+import { useCreateNewTopic } from '../../Class/gql'
 
 const MainCard = styled('div', {
   py: '$4',
-  position: 'sticky',
-  top: 0,
-  bc: '$surfaceStill',
-  zIndex: 10,
-  shadow: '$sm',
-  clipPath: 'inset(0 0 -5px 0)',
+  px: '$2',
 })
 
 export const NewTopic = () => {
@@ -41,13 +36,13 @@ export const NewTopic = () => {
         <TextField
           placeholder="New topic title..."
           hint="press Enter ↵ to create"
-          variant="underlined"
+          variant="inline"
           autoComplete="off"
           value={title}
           onChange={setTitle}
           onKeyDown={handleKeyDown}
         />
-        <Box pl="$2" pt="$1">
+        <Box pt="$2" mr="-$1">
           <Button size="sm" variant="flat" aria-label="Create new topic">
             <Icon size="sm" as={HiPlus} />
           </Button>

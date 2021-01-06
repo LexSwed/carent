@@ -11,8 +11,8 @@ const ClassHeader = () => {
   const [update] = useUpdateClassName()
 
   function handleBlur() {
-    const name = newName.trim()
-    if (name) {
+    const name = newName?.trim()
+    if (name && name !== data?.class.name) {
       update({
         variables: {
           id,
@@ -24,7 +24,7 @@ const ClassHeader = () => {
 
   return (
     <Flex flow="row" space="$4">
-      <ContentEditable defaultValue={data?.class.name} onInput={setNewName} as={Heading} onBlur={handleBlur} />
+      <ContentEditable value={data?.class.name} onInput={setNewName} as={Heading} onBlur={handleBlur} />
       <Heading variant="light">{data?.class.group.code}</Heading>
     </Flex>
   )

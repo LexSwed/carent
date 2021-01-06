@@ -19,6 +19,7 @@ export type Query = {
   me?: Maybe<User>;
   classes?: Maybe<ClassConnection>;
   class?: Maybe<Class>;
+  topic?: Maybe<Topic>;
   groups?: Maybe<StudentGroupConnection>;
 };
 
@@ -32,6 +33,11 @@ export type QueryClassesArgs = {
 
 
 export type QueryClassArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryTopicArgs = {
   id: Scalars['String'];
 };
 
@@ -94,6 +100,8 @@ export type Topic = Node & {
   id: Scalars['String'];
   title: Scalars['String'];
   description: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type StudentGroup = Node & {
@@ -101,6 +109,13 @@ export type StudentGroup = Node & {
   id: Scalars['String'];
   code: Scalars['String'];
 };
+
+export enum ClassTopicsOrder {
+  OrderAsc = 'ORDER_ASC',
+  OrderDesc = 'ORDER_DESC',
+  UpdatedAsc = 'UPDATED_ASC',
+  UpdatedDesc = 'UPDATED_DESC'
+}
 
 export type Class = Node & {
   __typename?: 'Class';
@@ -112,6 +127,7 @@ export type Class = Node & {
 
 
 export type ClassTopicsArgs = {
+  sort?: Maybe<ClassTopicsSortOrder>;
   first?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
   last?: Maybe<Scalars['Int']>;
@@ -186,6 +202,113 @@ export type TopicEdge = {
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
   node?: Maybe<Topic>;
 };
+
+export type ClassTopicsSortOrder = {
+  key?: Maybe<TopicSortKey>;
+  order?: Maybe<TopicSortOrder>;
+};
+
+export enum TopicSortKey {
+  Order = 'ORDER',
+  Updated = 'UPDATED'
+}
+
+/** Sort direction, ASC = ascending (normal - latest on top), DESC = descending (reverse - oldest on top) */
+export enum TopicSortOrder {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
+
+export type GetLastUpdatedTopicQueryVariables = Exact<{
+  classId: Scalars['String'];
+  sortOrder: ClassTopicsSortOrder;
+}>;
+
+
+export type GetLastUpdatedTopicQuery = (
+  { __typename?: 'Query' }
+  & { class?: Maybe<(
+    { __typename?: 'Class' }
+    & Pick<Class, 'id'>
+    & { topics?: Maybe<(
+      { __typename?: 'TopicConnection' }
+      & { edges?: Maybe<Array<Maybe<(
+        { __typename?: 'TopicEdge' }
+        & { node?: Maybe<(
+          { __typename?: 'Topic' }
+          & Pick<Topic, 'id' | 'title'>
+        )> }
+      )>>> }
+    )> }
+  )> }
+);
+
+export type GetClassesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetClassesQuery = (
+  { __typename?: 'Query' }
+  & { classes?: Maybe<(
+    { __typename?: 'ClassConnection' }
+    & Pick<ClassConnection, 'totalCount'>
+    & { edges?: Maybe<Array<Maybe<(
+      { __typename?: 'ClassEdge' }
+      & { node?: Maybe<(
+        { __typename?: 'Class' }
+        & Pick<Class, 'id' | 'name'>
+        & { group: (
+          { __typename?: 'StudentGroup' }
+          & Pick<StudentGroup, 'id' | 'code'>
+        ) }
+      )> }
+    )>>> }
+  )> }
+);
+
+export type ClassFragmentFragment = (
+  { __typename?: 'Class' }
+  & Pick<Class, 'id' | 'name'>
+  & { group: (
+    { __typename?: 'StudentGroup' }
+    & Pick<StudentGroup, 'id' | 'code'>
+  ) }
+);
+
+export type GroupFragmentFragment = (
+  { __typename?: 'StudentGroup' }
+  & Pick<StudentGroup, 'id' | 'code'>
+);
+
+export type CreateClassMutationVariables = Exact<{
+  name: Scalars['String'];
+  group: CreateClassGroupInput;
+}>;
+
+
+export type CreateClassMutation = (
+  { __typename?: 'Mutation' }
+  & { createClass?: Maybe<(
+    { __typename?: 'Class' }
+    & ClassFragmentFragment
+  )> }
+);
+
+export type GetGroupsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGroupsQuery = (
+  { __typename?: 'Query' }
+  & { groups?: Maybe<(
+    { __typename?: 'StudentGroupConnection' }
+    & { edges?: Maybe<Array<Maybe<(
+      { __typename?: 'StudentGroupEdge' }
+      & { node?: Maybe<(
+        { __typename?: 'StudentGroup' }
+        & GroupFragmentFragment
+      )> }
+    )>>> }
+  )> }
+);
 
 export type GetClassTopicsQueryVariables = Exact<{
   classId: Scalars['String'];
@@ -270,69 +393,15 @@ export type UpdateClassNameMutation = (
   )> }
 );
 
-export type GetClassesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetClassesQuery = (
-  { __typename?: 'Query' }
-  & { classes?: Maybe<(
-    { __typename?: 'ClassConnection' }
-    & Pick<ClassConnection, 'totalCount'>
-    & { edges?: Maybe<Array<Maybe<(
-      { __typename?: 'ClassEdge' }
-      & { node?: Maybe<(
-        { __typename?: 'Class' }
-        & Pick<Class, 'id' | 'name'>
-        & { group: (
-          { __typename?: 'StudentGroup' }
-          & Pick<StudentGroup, 'id' | 'code'>
-        ) }
-      )> }
-    )>>> }
-  )> }
-);
-
-export type ClassFragmentFragment = (
-  { __typename?: 'Class' }
-  & Pick<Class, 'id' | 'name'>
-  & { group: (
-    { __typename?: 'StudentGroup' }
-    & Pick<StudentGroup, 'id' | 'code'>
-  ) }
-);
-
-export type GroupFragmentFragment = (
-  { __typename?: 'StudentGroup' }
-  & Pick<StudentGroup, 'id' | 'code'>
-);
-
-export type CreateClassMutationVariables = Exact<{
-  name: Scalars['String'];
-  group: CreateClassGroupInput;
+export type GetTopicDetailsQueryVariables = Exact<{
+  id: Scalars['String'];
 }>;
 
 
-export type CreateClassMutation = (
-  { __typename?: 'Mutation' }
-  & { createClass?: Maybe<(
-    { __typename?: 'Class' }
-    & ClassFragmentFragment
-  )> }
-);
-
-export type GetGroupsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetGroupsQuery = (
+export type GetTopicDetailsQuery = (
   { __typename?: 'Query' }
-  & { groups?: Maybe<(
-    { __typename?: 'StudentGroupConnection' }
-    & { edges?: Maybe<Array<Maybe<(
-      { __typename?: 'StudentGroupEdge' }
-      & { node?: Maybe<(
-        { __typename?: 'StudentGroup' }
-        & GroupFragmentFragment
-      )> }
-    )>>> }
+  & { topic?: Maybe<(
+    { __typename?: 'Topic' }
+    & Pick<Topic, 'id' | 'title' | 'description'>
   )> }
 );

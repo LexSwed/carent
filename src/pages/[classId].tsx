@@ -4,7 +4,7 @@ import { Flex, Spinner } from '@fxtrot/ui'
 import { useRouter } from 'next/router'
 
 import Layout from '../parts/Layout'
-import Sidebar from '../parts/Sidebar'
+import Sidebar from '../parts/Class/Sidebar'
 import ClassPage from '../parts/Class'
 
 const Home: React.FC = () => {

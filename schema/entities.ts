@@ -1,4 +1,4 @@
-import { interfaceType, objectType } from 'nexus'
+import { arg, enumType, inputObjectType, interfaceType, objectType } from 'nexus'
 import { relayToPrismaPagination } from './utils'
 
 export const Node = interfaceType({
@@ -27,6 +27,8 @@ export const Topic = objectType({
     t.model.id()
     t.model.title()
     t.model.description()
+    t.model.createdAt()
+    t.model.updatedAt()
   },
 })
 
@@ -36,6 +38,16 @@ export const StudentGroup = objectType({
     t.implements(Node)
     t.model.id()
     t.model.code()
+  },
+})
+
+export const sortTopicsInput = enumType({
+  name: 'ClassTopicsOrder',
+  members: {
+    ORDER_ASC: 'orderKey_asc',
+    ORDER_DESC: 'orderKey_desc',
+    UPDATED_ASC: 'updatedAt_asc',
+    UPDATED_DESC: 'updatedAt_desc',
   },
 })
 
@@ -50,12 +62,36 @@ export const Class = objectType({
     })
     t.connectionField('topics', {
       type: 'Topic',
+      additionalArgs: {
+        sort: arg({
+          type: inputObjectType({
+            name: 'ClassTopicsSortOrder',
+            definition(t) {
+              t.field('key', {
+                type: enumType({ name: 'TopicSortKey', members: { ORDER: 'orderKey', UPDATED: 'updatedAt' } }),
+              })
+              t.field('order', {
+                type: enumType({
+                  name: 'TopicSortOrder',
+                  description:
+                    'Sort direction, ASC = ascending (normal - latest on top), DESC = descending (reverse - oldest on top)',
+                  members: { ASC: 'asc', DESC: 'desc' },
+                }),
+              })
+            },
+          }),
+          default: {
+            key: 'orderKey',
+            order: 'asc',
+          },
+        }),
+      },
       totalCount: (root: any, args, { prisma }) => prisma.topic.count({ where: root.id }),
-      nodes: (root, args, { prisma }) => {
+      nodes: (root, { sort, ...args }, { prisma }) => {
         return prisma.topic.findMany({
           ...relayToPrismaPagination(args),
           orderBy: {
-            orderKey: 'asc',
+            [sort.key]: sort.order,
           },
           where: {
             classId: root.id,
