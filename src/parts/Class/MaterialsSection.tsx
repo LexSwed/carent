@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { gql, useQuery } from '@apollo/client'
 import Link from 'next/link'
 import { Box, Button, Flex, Heading, Icon, Text, TextField } from '@fxtrot/ui'
@@ -15,30 +15,30 @@ import { useCreateNewTopic } from './gql'
 
 const MaterialsSection = () => {
   const classId = useClassId()
-  const { data } = useLastUpdatedTopic()
+  const { data, loading } = useLastUpdatedTopic()
 
   const topic = data?.class?.topics?.edges?.[0]?.node
 
   return (
-    <Flex as="section" space="$6">
-      <Link href={`/${classId}/materials`}>
-        <Text as="a">
-          <Flex flow="row" cross="center" space="$2">
-            <Heading level={2}>Materials</Heading>
-            <Button title="View all" variant="flat">
-              <Icon as={HiChevronRight} size="xl" />
-            </Button>
+    <Flex as="section" space="$2">
+      <Box>
+        <Link href={`/${classId}/materials`}>
+          <Button as="a" variant="flat">
+            <Text size="xl">Materials</Text>
+            <Icon as={HiChevronRight} size="xl" />
+          </Button>
+        </Link>
+      </Box>
+      {!loading && (
+        <Flex space="$4">
+          {topic ? <LatestTopic topic={topic} /> : <NoMaterials />}
+          <Flex>
+            <Text tone="light" size="sm">
+              Create new materials
+            </Text>
           </Flex>
-        </Text>
-      </Link>
-      <Flex space="$4">
-        {topic ? <LatestTopic topic={topic} /> : <NoMaterials />}
-        <Flex>
-          <Text tone="light" size="sm">
-            Create new materials
-          </Text>
         </Flex>
-      </Flex>
+      )}
     </Flex>
   )
 }
@@ -61,19 +61,6 @@ const getLastUpdatedTopic = gql`
   }
 `
 
-function useLastUpdatedTopic() {
-  const classId = useClassId()
-  return useQuery<GetLastUpdatedTopicQuery, GetLastUpdatedTopicQueryVariables>(getLastUpdatedTopic, {
-    variables: {
-      classId,
-      sortOrder: {
-        key: TopicSortKey.Updated,
-        order: TopicSortOrder.Desc,
-      },
-    },
-  })
-}
-
 function LatestTopic({
   topic,
 }: {
@@ -95,7 +82,7 @@ function LatestTopic({
           <Box ml="auto">
             <Link href={`/${classId}/materials/${topic.id}`}>
               <Button variant="primary" as="a">
-                <Icon as={HiArrowRight} size="xl" />
+                <Icon as={HiArrowRight} size="lg" />
               </Button>
             </Link>
           </Box>
@@ -103,6 +90,19 @@ function LatestTopic({
       </Flex>
     </Box>
   )
+}
+
+function useLastUpdatedTopic() {
+  const classId = useClassId()
+  return useQuery<GetLastUpdatedTopicQuery, GetLastUpdatedTopicQueryVariables>(getLastUpdatedTopic, {
+    variables: {
+      classId,
+      sortOrder: {
+        key: TopicSortKey.Updated,
+        order: TopicSortOrder.Desc,
+      },
+    },
+  })
 }
 
 function NoMaterials() {

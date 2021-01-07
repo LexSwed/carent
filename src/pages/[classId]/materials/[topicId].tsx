@@ -3,7 +3,7 @@ import React from 'react'
 import Topics from '../../../parts/Materials/Sidebar'
 import Layout from '../../../parts/Layout'
 
-const ClassTopics = () => {
+const TopicsPage = () => {
   return (
     <Layout>
       <Topics />
@@ -12,4 +12,4 @@ const ClassTopics = () => {
   )
 }
 
-export default ClassTopics
+export default TopicsPage

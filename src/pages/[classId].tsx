@@ -1,36 +1,37 @@
 import React from 'react'
-import { useSession } from 'next-auth/client'
-import { Flex, Spinner } from '@fxtrot/ui'
-import { useRouter } from 'next/router'
+import { getSession } from 'next-auth/client'
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
 import Layout from '../parts/Layout'
 import Sidebar from '../parts/Class/Sidebar'
 import ClassPage from '../parts/Class'
 
-const Home: React.FC = () => {
-  const [session, loading] = useSession()
-  const router = useRouter()
-
-  if (!session && !loading) {
-    router.push('/auth/signin')
-
-    return null
-  }
-
-  if (loading) {
-    return (
-      <Flex main="center" cross="center" css={{ width: '100vw', height: '100vh' }}>
-        <Spinner size="md" />
-      </Flex>
-    )
-  }
-
+const Home: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ redirectUrl }) => {
   return (
     <Layout>
       <Sidebar />
       <ClassPage />
     </Layout>
   )
+}
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx)
+  if (!session) {
+    ctx.res.writeHead(302, { Location: '/auth/signin' })
+    ctx.res.end()
+
+    return {
+      props: {
+        redirectUrl: '/auth/signin',
+      },
+    }
+  }
+  return {
+    props: {
+      redirectUrl: null,
+    },
+  }
 }
 
 export default Home

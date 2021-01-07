@@ -13,5 +13,5 @@ export function useClassId() {
 export function useTopicId() {
   const { query } = useRouter()
 
-  return query.topicId?.[0] as string
+  return query.topicId as string
 }
