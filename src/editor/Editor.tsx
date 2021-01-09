@@ -1,48 +1,48 @@
-import React, { FC } from 'react'
-import { HeadingExtension } from 'remirror/extension/heading'
-import { HistoryExtension } from 'remirror/extension/history'
-import { LinkExtension } from 'remirror/extension/link'
-import { ParagraphExtension } from 'remirror/extension/paragraph'
-import { PlaceholderExtension } from 'remirror/extension/placeholder'
-import { ImageExtension } from 'remirror/extension/image'
-import { ListItemExtension } from 'remirror/preset/list'
-import { RemirrorProvider, useManager, useRemirror } from 'remirror/react'
-import { CorePreset } from 'remirror/preset/core'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
+import { useKeyboardHandles } from '@fxtrot/ui'
+import BlockEditor from './BlockEditor'
+import type { Block } from './types'
 
-const EXTENSIONS = () => [
-  new HistoryExtension({}),
-  new HeadingExtension({}),
-  new LinkExtension({}),
-  new ListItemExtension(),
-  new ParagraphExtension(),
-  new PlaceholderExtension(),
-  new ImageExtension(),
-  new CorePreset({}),
+const blocks: Block[] = [
+  {
+    id: 'some-id',
+    layout: 'full',
+    type: 'p',
+    content: [
+      ['Text ', []],
+      ['in between of ', []],
+      ['text ', [['a', 'href'], ['b']]],
+      [
+        'text ',
+        [
+          ['a', 'href'],
+          ['b', 'u'],
+        ],
+      ],
+      ['other text ', [['b', 's', 'u']]],
+      ['and another text', [['s', 'b', 'u']]],
+    ],
+  },
 ]
 
-const SmallEditor: FC = () => {
-  const { getRootProps, ...rest } = useRemirror()
-  console.log(rest)
-  console.log(getRootProps())
+const Editor: React.FC = () => {
+  const handleKeyDown = useKeyboardHandles({
+    Enter: (e) => {},
+  })
+
   return (
-    <div>
-      <div {...getRootProps()} />
-    </div>
+    <>
+      {blocks.map((block) => (
+        <BlockEditor
+          block={block}
+          onChange={(newBlock) => {
+            console.log(newBlock)
+          }}
+          onKeyDown={handleKeyDown}
+        />
+      ))}
+    </>
   )
 }
 
-const SmallEditorContainer = () => {
-  const extensionManager = useManager(EXTENSIONS)
-
-  function handleChange(...args) {
-    console.log(...args)
-  }
-
-  return (
-    <RemirrorProvider manager={extensionManager} onChange={handleChange}>
-      <SmallEditor />
-    </RemirrorProvider>
-  )
-}
-
-export default SmallEditorContainer
+export default Editor

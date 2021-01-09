@@ -6,6 +6,7 @@ import { useTopicId } from '../../../utils'
 import Header from './Header'
 import Placeholder from './Placeholder'
 import type { GetTopicDetailsQuery, GetTopicDetailsQueryVariables } from '../../../graphql/generated'
+import Editor from '../../../editor'
 
 const getTopicDetails = gql`
   query getTopicDetails($id: String!) {
@@ -34,8 +35,9 @@ const Topic = () => {
   }
 
   return (
-    <Flex>
-      <Header title={data?.topic.title} description={data?.topic.description} />
+    <Flex space="$4">
+      <Header title={data?.topic.title} />
+      <Editor />
     </Flex>
   )
 }
