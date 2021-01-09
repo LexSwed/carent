@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { useAllHandlers } from '@fxtrot/ui'
 import ContentEditable from './ContentEditable'
 import type { Block } from './types'
-import { parseTreeToContent, parseBlock } from './utils'
+import { parseTreeToContent, parseBlock, createWalker } from './utils'
 
 interface Props {
   block: Block
@@ -27,21 +27,14 @@ const BlockEditor = React.memo<Props>(({ block, onChange, ...props }) => {
   })
 
   useEffect(() => {
-    const newHtml = parseBlock(block.content)
+    const newHtml = parseBlock(block)
+    console.log(newHtml)
     setHTML(newHtml)
-  }, [block.content])
+  }, [block])
 
-  return <ContentEditable html={html} as={block.type} ref={refs} onInput={handleInput} {...props} />
+  return <ContentEditable data-id={block.id} html={html} as={block.type} ref={refs} onInput={handleInput} {...props} />
 })
 
 BlockEditor.displayName = 'BlockEditor'
 
 export default BlockEditor
-
-function createWalker(node: Node): TreeWalker | null {
-  return node
-    ? document.createTreeWalker(node, NodeFilter.SHOW_ELEMENT, {
-        acceptNode: (node) => ((node as HTMLElement).dataset.item ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP),
-      })
-    : null
-}

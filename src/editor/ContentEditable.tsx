@@ -7,6 +7,9 @@ import debounce from 'debounce'
 const Editable = styled('div', {
   'outline': 'none',
   'cursor': 'text',
+  'p': 0,
+  'm': 0,
+  'caret-color': '$textLight',
   '&[placeholder]:empty:before': {
     content: 'attr(placeholder)',
     color: '$textSubtle',
@@ -38,31 +41,32 @@ const Editable = styled('div', {
 })
 
 interface ContentEditableProps {
-  as?: React.ElementType
-  css?: StitchesProps<typeof Editable>['css']
-  placeholder?: string
-  html: string
-  onInput?: (html: string) => void
-  onBlur?: (html: string) => void
-  onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>
+  'as'?: React.ElementType
+  'css'?: StitchesProps<typeof Editable>['css']
+  'placeholder'?: string
+  'html': string
+  'onInput'?: (html: string) => void
+  'onBlur'?: (html: string) => void
+  'onKeyDown'?: React.KeyboardEventHandler<HTMLDivElement>
+  'data-id': string
 }
 
 const ContentEditable = React.forwardRef<HTMLDivElement, ContentEditableProps>(
   ({ html, onInput, onBlur, ...props }, ref) => {
     const innerRef = useRef<HTMLDivElement>(null)
 
-    const latestOnInput = useLatest(onInput)
+    const onInputRef = useLatest(onInput)
 
     const refs = useForkRef(innerRef, ref)
 
     const debouncedInput = useMemo(
       () =>
         debounce((innerHTML: string) => {
-          if (!latestOnInput.current) return
+          if (!onInputRef.current) return
           const html = normalize(innerHTML)
-          latestOnInput.current(html)
+          onInputRef.current(html)
         }, 800),
-      [latestOnInput]
+      [onInputRef]
     )
 
     useEffect(() => {
@@ -94,19 +98,23 @@ ContentEditable.displayName = 'ContentEditable'
 
 export default ContentEditable
 
-function replaceCaret(elementRef: React.RefObject<HTMLElement>) {
-  const el = elementRef.current
+function replaceCaret(el: HTMLElement) {
+  // Place the caret at the end of the element
   const target = document.createTextNode('')
   el.appendChild(target)
-  const sel = window.getSelection()
-  if (sel !== null) {
-    const range = document.createRange()
-    range.setStart(target, target.nodeValue.length)
-    range.collapse(true)
-    sel.removeAllRanges()
-    sel.addRange(range)
+  // do not move caret if element was not focused
+  const isTargetFocused = document.activeElement === el
+  if (target !== null && target.nodeValue !== null && isTargetFocused) {
+    var sel = window.getSelection()
+    if (sel !== null) {
+      var range = document.createRange()
+      range.setStart(target, target.nodeValue.length)
+      range.collapse(true)
+      sel.removeAllRanges()
+      sel.addRange(range)
+    }
+    if (el instanceof HTMLElement) el.focus()
   }
-  if (el instanceof HTMLElement) el.focus()
 }
 
 function normalize(html: string) {
@@ -114,9 +122,7 @@ function normalize(html: string) {
 }
 
 function updateInnerHtml(newHtml: string, ref: React.RefObject<HTMLElement>) {
-  if (!ref) return
+  if (!ref.current) return
   ref.current.innerHTML = DOMPurify.sanitize(newHtml, { USE_PROFILES: { html: true } })
-  if (document.activeElement === ref.current) {
-    replaceCaret(ref)
-  }
+  replaceCaret(ref.current)
 }

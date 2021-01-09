@@ -9,7 +9,7 @@ export type BlockAttributesWithTag = [BlockTagAttributes, BlockStylesAttribute]
 export type BlockAttributesOnly = [BlockStylesAttribute]
 export type BlockAttributes = BlockAttributesWithTag | BlockAttributesOnly | []
 
-type BlockContent = [text: string, attrs: BlockAttributes]
+type BlockContent = [text: string, attrs?: BlockAttributes]
 
 export interface Block {
   id: string

@@ -7,8 +7,12 @@ import type {
   BlockTagTypes,
 } from './types'
 
-export function parseBlock(content: Block['content']): string {
-  return content.reduce((res, [text, attrs], index) => {
+export function parseBlock(block: Block): string {
+  return block.content.reduce((res, [text, attrs], index) => {
+    if (!attrs || attrs.length === 0) {
+      res += text
+      return res
+    }
     let tag = 'span'
     let tagAttrs = ''
     let styles: BlockStylesAttribute
@@ -23,7 +27,7 @@ export function parseBlock(content: Block['content']): string {
 
     const style = getStyle(styles)
 
-    res += `<${tag} ${tagAttrs} data-item="${index}" ${style}>${text}</${tag}>`
+    res += `<${tag} ${tagAttrs} data-token="${block.id}:-:${index}" ${style}>${text}</${tag}>`
 
     return res
   }, '')
@@ -32,30 +36,51 @@ export function parseBlock(content: Block['content']): string {
 export function parseTreeToContent(walker: TreeWalker, currentContent: Block['content']): Block['content'] {
   // the node is empty
   if ('' === walker.root.textContent) {
-    return [['', []]]
+    return [['']]
   }
+
   const newContent: Block['content'] = []
   let currentNode = walker.nextNode()
-
   while (currentNode) {
-    const attrs: BlockAttributes = currentContent[(currentNode as HTMLElement).dataset.item]?.[1] || []
-    if (deepEqual(attrs, newContent[newContent.length - 1]?.[1])) {
-      newContent[newContent.length - 1][0] += currentNode.textContent
+    const prevBlock = newContent[newContent.length - 1]
+    const textBlock = currentNode.parentElement
+    // add text node to the previous block
+    if (textBlock === walker.root) {
+      if (prevBlock) {
+        prevBlock[0] += currentNode.textContent
+      } else {
+        newContent.push([currentNode.textContent, []])
+      }
     } else {
-      newContent.push([currentNode.textContent, attrs])
+      const attrs: BlockAttributes = currentContent[getTextNodeToken(textBlock as HTMLElement)?.[1]]?.[1] || []
+    
+      if (prevBlock && deepEqual(attrs, prevBlock[1])) {
+        prevBlock[0] += currentNode.textContent
+      } else {
+        newContent.push([currentNode.textContent, attrs])
+      }
     }
 
     currentNode = walker.nextNode()
   }
   walker.currentNode = walker.root
-
+console.log(newContent)
   // block was cleared up so the only parent was root itself
   if (newContent.length === 0) {
     newContent.push([walker.currentNode.textContent, []])
   }
 
+  console.log(newContent)
+
   return newContent
 }
+
+export function getTextNodeToken(node: HTMLElement): [id: string, index: number] {
+  const [id, index] = node.dataset.token.split(':-:')
+
+  return [id, parseInt(index, 10)]
+}
+
 
 function deepEqual(left: any[], right: any[]) {
   if (!left || !right) return false
@@ -81,4 +106,12 @@ function getStyle(styles: BlockStyleTags[]) {
   }
 
   return ''
+}
+
+
+
+export function createWalker(node: Node): TreeWalker | null {
+  return node
+    ? document.createTreeWalker(node, NodeFilter.SHOW_TEXT)
+    : null
 }

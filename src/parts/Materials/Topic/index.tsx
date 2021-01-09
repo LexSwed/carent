@@ -26,12 +26,12 @@ const Topic = () => {
     },
   })
 
-  if (!topicId) {
-    return <Placeholder />
-  }
-
   if (loading) {
     return null
+  }
+
+  if (!topicId) {
+    return <Placeholder />
   }
 
   return (
