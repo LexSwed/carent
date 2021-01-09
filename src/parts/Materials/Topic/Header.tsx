@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Flex, Heading } from '@fxtrot/ui'
 
-import ContentEditable from '../../../editor/ContentEditable'
+import ContentEditable from '../../../editor/own/ContentEditable'
 
 interface Props {
   title: string

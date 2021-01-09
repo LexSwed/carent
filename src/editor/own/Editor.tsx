@@ -14,9 +14,9 @@ const initBlock: Block[] = [
     content: [
       ['Text '],
       ['in between of ', []],
-      ['text ', [['a', 'href'], ['b']]],
+      ['text', [['a', 'href'], ['b']]],
       [
-        'text ',
+        ' text ',
         [
           ['a', 'href'],
           ['b', 'u'],

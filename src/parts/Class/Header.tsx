@@ -1,6 +1,6 @@
 import { Flex, Heading } from '@fxtrot/ui'
 import React, { useState } from 'react'
-import ContentEditable from '../../editor/ContentEditable'
+import ContentEditable from '../../editor/own/ContentEditable'
 import { useClassId } from '../../utils'
 import { useClassInfo, useUpdateClassName } from './gql'
 
@@ -24,7 +24,7 @@ const ClassHeader = () => {
 
   return (
     <Flex flow="row" space="$4">
-      <ContentEditable value={data?.class.name} onInput={setNewName} as={Heading} onBlur={handleBlur} />
+      <ContentEditable html={data?.class.name} onInput={setNewName} as={Heading} onBlur={handleBlur} />
       <Heading variant="light">{data?.class.group.code}</Heading>
     </Flex>
   )

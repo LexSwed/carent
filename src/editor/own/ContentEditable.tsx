@@ -48,7 +48,7 @@ interface ContentEditableProps {
   'onInput'?: (html: string) => void
   'onBlur'?: (html: string) => void
   'onKeyDown'?: React.KeyboardEventHandler<HTMLDivElement>
-  'data-id': string
+  'data-id'?: string
 }
 
 const ContentEditable = React.forwardRef<HTMLDivElement, ContentEditableProps>(
@@ -65,7 +65,7 @@ const ContentEditable = React.forwardRef<HTMLDivElement, ContentEditableProps>(
           if (!onInputRef.current) return
           const html = normalize(innerHTML)
           onInputRef.current(html)
-        }, 800),
+        }, 400),
       [onInputRef]
     )
 
@@ -89,7 +89,15 @@ const ContentEditable = React.forwardRef<HTMLDivElement, ContentEditableProps>(
     )
 
     return (
-      <Editable contentEditable spellCheck={false} ref={refs} onInput={handleInput} onBlur={handleBlur} {...props} />
+      <Editable
+        role="textbox"
+        contentEditable
+        spellCheck={false}
+        ref={refs}
+        onInput={handleInput}
+        onBlur={handleBlur}
+        {...props}
+      />
     )
   }
 )
@@ -105,9 +113,9 @@ function replaceCaret(el: HTMLElement) {
   // do not move caret if element was not focused
   const isTargetFocused = document.activeElement === el
   if (target !== null && target.nodeValue !== null && isTargetFocused) {
-    var sel = window.getSelection()
+    const sel = window.getSelection()
     if (sel !== null) {
-      var range = document.createRange()
+      const range = document.createRange()
       range.setStart(target, target.nodeValue.length)
       range.collapse(true)
       sel.removeAllRanges()
@@ -118,11 +126,15 @@ function replaceCaret(el: HTMLElement) {
 }
 
 function normalize(html: string) {
-  return html.replace?.(/&nbsp;|\u202F|\u00A0/g, ' ')
+  return html.replace?.(/&nbsp;|\u202F|\u00A0/g, ' ').trim()
 }
 
 function updateInnerHtml(newHtml: string, ref: React.RefObject<HTMLElement>) {
   if (!ref.current) return
+  const sel = window.getSelection()
   ref.current.innerHTML = DOMPurify.sanitize(newHtml, { USE_PROFILES: { html: true } })
-  replaceCaret(ref.current)
+
+  if (document.activeElement === ref.current) {
+    sel.setPosition(sel.focusNode, sel.focusOffset)
+  }
 }

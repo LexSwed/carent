@@ -46,11 +46,7 @@ export function parseTreeToContent(walker: TreeWalker, currentContent: Block['co
     const textBlock = currentNode.parentElement
     // add text node to the previous block
     if (textBlock === walker.root) {
-      if (prevBlock) {
-        prevBlock[0] += currentNode.textContent
-      } else {
-        newContent.push([currentNode.textContent, []])
-      }
+      newContent.push([currentNode.textContent, []])
     } else {
       const attrs: BlockAttributes = currentContent[getTextNodeToken(textBlock as HTMLElement)?.[1]]?.[1] || []
     
@@ -64,7 +60,7 @@ export function parseTreeToContent(walker: TreeWalker, currentContent: Block['co
     currentNode = walker.nextNode()
   }
   walker.currentNode = walker.root
-console.log(newContent)
+
   // block was cleared up so the only parent was root itself
   if (newContent.length === 0) {
     newContent.push([walker.currentNode.textContent, []])
@@ -107,8 +103,6 @@ function getStyle(styles: BlockStyleTags[]) {
 
   return ''
 }
-
-
 
 export function createWalker(node: Node): TreeWalker | null {
   return node
