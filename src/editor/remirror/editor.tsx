@@ -41,7 +41,8 @@ const Sheet = styled('div', {
 const Editable = styled('div', {
   'cursor': 'text',
   '& > .remirror-editor': {
-    outline: 'none',
+    'outline': 'none',
+    'caret-color': '$textLight',
   },
   '& .remirror-is-empty:first-child:before': {
     content: 'attr(data-placeholder)',
@@ -54,13 +55,41 @@ const Editable = styled('div', {
     color: '$textLight',
   },
   '& *': {
-    'boxSizing': 'border-box',
-    'wordWrap': 'break-word',
-    'whiteSpace': 'pre-wrap',
-    'textDecorationColor': '$borderLight',
-    'p': 0,
-    'm': 0,
-    'caret-color': '$textLight',
+    boxSizing: 'border-box',
+    wordWrap: 'break-word',
+    whiteSpace: 'pre-wrap',
+    textDecorationColor: '$borderLight',
+  },
+  '& p': {
+    px: 0,
+    py: '$1',
+    m: 0,
+  },
+  '& ul, & ol': {
+    py: '$1',
+    pl: '$6',
+    m: 0,
+  },
+  '& ol': {
+    '& > li': {
+      '&::marker': {
+        color: '$textSubtle',
+      },
+    },
+  },
+  '& ul': {
+    '> li': {
+      '&::marker': {
+        color: '$textSubtle',
+      },
+    },
+  },
+  '& blockquote': {
+    m: 0,
+    pl: '$4',
+    py: '$2',
+    color: '$textLight',
+    borderLeft: '2px solid $borderHover',
   },
 })
 
