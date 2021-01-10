@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Flex, Icon, styled, Text } from '@fxtrot/ui'
+import { Button, Flex, Icon, Box, styled, Text } from '@fxtrot/ui'
 import { HiChevronRight, HiMenuAlt4 } from 'react-icons/hi'
 import type { GetClassTopicsQuery } from '../../../graphql/generated'
 import { Draggable } from 'react-beautiful-dnd'
@@ -8,7 +8,7 @@ const TopicCard = styled(Flex, {
   'py': '$4',
   'px': '$2',
   'br': '$md',
-  'cursor': 'default',
+  'cursor': 'pointer',
   'transition': '0.2s ease-in,',
   'transitionProperty': 'background-color, box-shadow',
 
@@ -23,6 +23,8 @@ const TopicCard = styled(Flex, {
       width: '80%',
       height: '1px',
       bc: '$borderLight',
+      transformOrigin: 'left',
+      transition: 'transform 0.24s ease-in-out',
     },
   },
 
@@ -38,7 +40,7 @@ const TopicCard = styled(Flex, {
         'zIndex': 10,
         'shadow': '$xs',
         '&:after': {
-          display: 'none',
+          transform: 'scaleX(0)',
         },
       },
     },
@@ -62,26 +64,29 @@ export const TopicLink = React.memo<TopicCardProps>(({ id, title, selected, inde
           dragging={snapshot.isDragging}
           flow="row"
           cross="center"
-          main="spread"
+          main="start"
+          space="$2"
           onClick={() => onClick(id)}
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
-          <Flex flow="row" space="$2" cross="center">
-            <Button
-              variant="flat"
-              size="sm"
-              title="Reorder this topic"
-              onClick={stopPropagation}
-              {...provided.dragHandleProps}
-            >
-              <Icon size="sm" as={HiMenuAlt4} />
-            </Button>
-            <Text size="sm">{title}</Text>
-          </Flex>
-          <Button variant="flat" aria-label="Show topic details">
-            <Icon size="lg" as={HiChevronRight} />
+          <Button
+            variant="flat"
+            size="sm"
+            title="Reorder this topic"
+            onClick={stopPropagation}
+            {...provided.dragHandleProps}
+          >
+            <Icon size="sm" as={HiMenuAlt4} />
           </Button>
+          <Text size="sm" ellipsis>
+            {title}
+          </Text>
+          <Box ml="auto">
+            <Button variant="flat" size="sm" aria-label="Show topic details">
+              <Icon size="lg" as={HiChevronRight} />
+            </Button>
+          </Box>
         </TopicCard>
       )}
     </Draggable>

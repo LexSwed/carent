@@ -15,7 +15,9 @@
     "importsNotUsedAsValues": "error",
     "useDefineForClassFields": true,
     "jsx": "preserve",
-    "typeRoots": ["node_modules/@types", "types"]
+    "typeRoots": ["node_modules/@types", "types"],
+    // remirror
+    "experimentalDecorators": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex } from '@fxtrot/ui'
+import { Flex, Box, styled } from '@fxtrot/ui'
 import { gql, useQuery } from '@apollo/client'
 
 import { useTopicId } from '../../../utils'
@@ -18,6 +18,12 @@ const getTopicDetails = gql`
   }
 `
 
+const EditorPage = styled('section', {
+  display: 'grid',
+  maxWidth: 800,
+  m: '0 auto',
+})
+
 const Topic = () => {
   const topicId = useTopicId()
   const { data, loading } = useQuery<GetTopicDetailsQuery, GetTopicDetailsQueryVariables>(getTopicDetails, {
@@ -35,10 +41,14 @@ const Topic = () => {
   }
 
   return (
-    <Flex space="$4">
-      <Header title={data?.topic.title} />
-      <Editor />
-    </Flex>
+    <EditorPage>
+      <Flex space="$8">
+        <Box pl="$8">
+          <Header title={data?.topic.title} />
+        </Box>
+        <Editor />
+      </Flex>
+    </EditorPage>
   )
 }
 

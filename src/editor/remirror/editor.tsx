@@ -1,33 +1,40 @@
 import React, { FC, useCallback } from 'react'
 import { styled } from '@fxtrot/ui'
-
+import { BlockquoteExtension } from 'remirror/extension/blockquote'
+import { BoldExtension } from 'remirror/extension/bold'
+import { CalloutExtension } from 'remirror/extension/callout'
 import { HeadingExtension } from 'remirror/extension/heading'
+import { HistoryExtension } from 'remirror/extension/history'
+import { ImageExtension } from 'remirror/extension/image'
+import { ItalicExtension } from 'remirror/extension/italic'
 import { LinkExtension } from 'remirror/extension/link'
 import { ParagraphExtension } from 'remirror/extension/paragraph'
 import { PlaceholderExtension } from 'remirror/extension/placeholder'
-import { ImageExtension } from 'remirror/extension/image'
-import { BulletListExtension, ListItemExtension, OrderedListExtension } from 'remirror/preset/list'
-import { BlockquoteExtension } from 'remirror/extension/blockquote'
+import { StrikeExtension } from 'remirror/extension/strike'
+import { UnderlineExtension } from 'remirror/extension/underline'
+import { ListPreset } from 'remirror/preset/wysiwyg'
 import { RemirrorProvider, useManager, useRemirror } from 'remirror/react'
-import { usePositioner, useEditorFocus } from 'remirror/react/hooks'
 
 const EXTENSIONS = () => [
+  new ImageExtension(),
+  new BoldExtension({ weight: 600 }),
+  new CalloutExtension(),
+  new HistoryExtension({ depth: 50 }),
+  new ItalicExtension(),
   new HeadingExtension({}),
-  new LinkExtension({ autoLink: false }),
-  new BlockquoteExtension(),
-  new BulletListExtension(),
-  new ListItemExtension(),
-  new OrderedListExtension(),
+  new LinkExtension({}),
   new ParagraphExtension(),
   new PlaceholderExtension(),
-  new ImageExtension(),
+  new StrikeExtension(),
+  new UnderlineExtension(),
+  new BlockquoteExtension(),
+  new ListPreset(),
 ]
 
 const Sheet = styled('div', {
-  width: 900,
   minHeight: '60vh',
   cursor: 'text',
-  px: '$20',
+  px: '$8',
   pb: '$32',
 })
 
@@ -35,6 +42,13 @@ const Editable = styled('div', {
   'cursor': 'text',
   '& > .remirror-editor': {
     outline: 'none',
+  },
+  '& .remirror-is-empty:first-child:before': {
+    content: 'attr(data-placeholder)',
+    color: '$textSubtle',
+    pointerEvents: 'none',
+    height: 0,
+    float: 'left',
   },
   '& a': {
     color: '$textLight',
@@ -52,8 +66,8 @@ const Editable = styled('div', {
 
 const SmallEditor: FC = () => {
   const { getRootProps, focus, ...rest } = useRemirror({ autoUpdate: true })
-  console.log(rest)
-  console.log(rest.getState())
+  // console.log(rest)
+  // console.log(rest.getState())
 
   const handleFocus = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -75,12 +89,12 @@ const SmallEditor: FC = () => {
 const Editor = () => {
   const extensionManager = useManager(EXTENSIONS)
 
-  function handleChange(...args) {
-    console.log(...args)
-  }
+  const handleChange = useCallback<React.ComponentProps<typeof RemirrorProvider>['onChange']>(({ tr, getJSON }) => {
+    // console.log(getJSON())
+  }, [])
 
   return (
-    <RemirrorProvider manager={extensionManager} onChange={handleChange}>
+    <RemirrorProvider placeholder="Start typing..." manager={extensionManager} onChange={handleChange}>
       <SmallEditor />
     </RemirrorProvider>
   )

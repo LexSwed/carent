@@ -43,7 +43,7 @@ export const NewTopic = () => {
           onKeyDown={handleKeyDown}
         />
         <Box pt="$2" mr="-$1">
-          <Button size="sm" variant="flat" aria-label="Create new topic">
+          <Button size="xs" variant="flat" aria-label="Create new topic">
             <Icon size="sm" as={HiPlus} />
           </Button>
         </Box>
