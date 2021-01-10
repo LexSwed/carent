@@ -600,14 +600,6 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@editorjs/editorjs@^2.19.1":
-  version "2.19.1"
-  resolved "https://registry.yarnpkg.com/@editorjs/editorjs/-/editorjs-2.19.1.tgz#081daf80dc4f524d457e415f07eb73d0ca6d86ce"
-  integrity sha512-5lN7r5B2NCE8VJdsS3poX3Qg9rNwzpxZ+6Jjif3hAVZTYpQwg5wXEpAHFNbuavS0T5Ji+0ID31DQFotVI4PosA==
-  dependencies:
-    codex-notifier "^1.1.2"
-    codex-tooltip "^1.0.1"
-
 "@emotion/is-prop-valid@^0.8.2", "@emotion/is-prop-valid@^0.8.8":
   version "0.8.8"
   resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.8.8.tgz#db28b1c4368a259b60a97311d6a952d4fd01ac1a"
@@ -1971,22 +1963,10 @@
     "@types/keygrip" "*"
     "@types/node" "*"
 
-"@types/debounce@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@types/debounce/-/debounce-1.2.0.tgz#9ee99259f41018c640b3929e1bb32c3dcecdb192"
-  integrity sha512-bWG5wapaWgbss9E238T0R6bfo5Fh3OkeoSt245CM7JJwVwpw6MEBCbIxLq5z8KzsE3uJhzcIuQkyiZmzV3M/Dw==
-
 "@types/direction@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@types/direction/-/direction-1.0.0.tgz#6a0962feade8502f9e986e87abe1130b611b13be"
   integrity sha512-et1wmqXm/5smJ8lTJfBnwD12/2Y7eVJLKbuaRT0h2xaKAoo1h8Dz2Io22GObDLFwxY1ddXRTLH3Gq5v44Fl/2w==
-
-"@types/dompurify@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@types/dompurify/-/dompurify-2.2.0.tgz#edd24cc4a43a8051b825fc13a6ed8695e77bffa0"
-  integrity sha512-hfW7oNQ9Zeiy+Jd1nGswjui3Kn+yrUC5fbKzR3j9f9x7mT1bYskzI1YQU66BlD37SxKPdQBoMJ2yaa+GlkEqcw==
-  dependencies:
-    "@types/trusted-types" "*"
 
 "@types/emoji-regex@^8.0.0":
   version "8.0.0"
@@ -2339,11 +2319,6 @@
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@types/throttle-debounce/-/throttle-debounce-2.1.0.tgz#1c3df624bfc4b62f992d3012b84c56d41eab3776"
   integrity sha512-5eQEtSCoESnh2FsiLTxE121IiE60hnMqcb435fShf4bpLRjEu1Eoekht23y6zXS9Ts3l+Szu3TARnTsA0GkOkQ==
-
-"@types/trusted-types@*":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-2.0.0.tgz#aee6e868fcef74f2b8c71614b6df81a601a42f17"
-  integrity sha512-I8MnZqNXsOLHsU111oHbn3khtvKMi5Bn4qVFsIWSJcCP1KKDiXX5AEw8UPk0nSopeC+Hvxt6yAy1/a5PailFqg==
 
 "@types/ungap__global-this@^0.3.1":
   version "0.3.1"
@@ -3989,16 +3964,6 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codex-notifier@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/codex-notifier/-/codex-notifier-1.1.2.tgz#a733079185f4c927fa296f1d71eb8753fe080895"
-  integrity sha512-DCp6xe/LGueJ1N5sXEwcBc3r3PyVkEEDNWCVigfvywAkeXcZMk9K41a31tkEFBW0Ptlwji6/JlAb49E3Yrxbtg==
-
-codex-tooltip@^1.0.1:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/codex-tooltip/-/codex-tooltip-1.0.2.tgz#81a9d3e2937658c6e5312106b47b9f094ff7be63"
-  integrity sha512-oC+Bu5X/zyhbPydgMSLWKoM/+vkJMqaLWu3Dt/jZgXS3MWK23INwC5DMBrVXZSufAFk0i0SUni38k9rLMyZn/w==
-
 collection-visit@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/collection-visit/-/collection-visit-1.0.0.tgz#4bc0373c164bc3291b4d368c829cf1a80a59dca0"
@@ -4737,11 +4702,6 @@ domhandler@^4.0.0:
   integrity sha512-KPTbnGQ1JeEMQyO1iYXoagsI6so/C96HZiFyByU3T6iAzpXn8EGEvct6unm1ZGoed8ByO2oirxgwxBmqKF9haA==
   dependencies:
     domelementtype "^2.1.0"
-
-dompurify@^2.2.6:
-  version "2.2.6"
-  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.2.6.tgz#54945dc5c0b45ce5ae228705777e8e59d7b2edc4"
-  integrity sha512-7b7ZArhhH0SP6W2R9cqK6RjaU82FZ2UPM7RO8qN1b1wyvC/NY1FNWcX1Pu00fFOAnzEORtwXe4bPaClg6pUybQ==
 
 domutils@2.4.2:
   version "2.4.2"
@@ -6255,11 +6215,6 @@ ignore@^5.1.4:
   version "5.1.8"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.1.8.tgz#f150a8b50a34289b33e22f5889abd4d8016f0e57"
   integrity sha512-BMpfD7PpiETpBl/A6S498BaIJ6Y/ABT93ETbby2fP00v4EbvPBXWEoaR1UBPKs3iR53pJY7EtZk5KACI57i1Uw==
-
-immer@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-8.0.0.tgz#08763549ba9dd7d5e2eb4bec504a8315bd9440c2"
-  integrity sha512-jm87NNBAIG4fHwouilCHIecFXp5rMGkiFrAuhVO685UnMAlOneEAnOyzPt8OnP47TC11q/E7vpzZe0WvwepFTg==
 
 immutable@~3.7.6:
   version "3.7.6"

@@ -1,1 +1,1 @@
-export { default } from './own/Editor'
+export { default } from './remirror/editor'

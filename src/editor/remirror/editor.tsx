@@ -1,4 +1,5 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
+import { styled } from '@fxtrot/ui'
 
 import { HeadingExtension } from 'remirror/extension/heading'
 import { LinkExtension } from 'remirror/extension/link'
@@ -9,12 +10,10 @@ import { BulletListExtension, ListItemExtension, OrderedListExtension } from 're
 import { BlockquoteExtension } from 'remirror/extension/blockquote'
 import { RemirrorProvider, useManager, useRemirror } from 'remirror/react'
 import { usePositioner, useEditorFocus } from 'remirror/react/hooks'
-import { CorePreset } from 'remirror/preset/core'
-import { styled } from '@fxtrot/ui'
 
 const EXTENSIONS = () => [
   new HeadingExtension({}),
-  new LinkExtension({}),
+  new LinkExtension({ autoLink: false }),
   new BlockquoteExtension(),
   new BulletListExtension(),
   new ListItemExtension(),
@@ -22,7 +21,6 @@ const EXTENSIONS = () => [
   new ParagraphExtension(),
   new PlaceholderExtension(),
   new ImageExtension(),
-  new CorePreset({}),
 ]
 
 const Sheet = styled('div', {
@@ -34,38 +32,21 @@ const Sheet = styled('div', {
 })
 
 const Editable = styled('div', {
-  'outline': 'none',
   'cursor': 'text',
-  'p': 0,
-  'm': 0,
-  'caret-color': '$textLight',
-  '&[placeholder]:empty:before': {
-    content: 'attr(placeholder)',
-    color: '$textSubtle',
+  '& > .remirror-editor': {
+    outline: 'none',
   },
-  '& > a': {
+  '& a': {
     color: '$textLight',
   },
-  '& > *': {
-    boxSizing: 'border-box',
-    wordWrap: 'break-word',
-    whiteSpace: 'pre-wrap',
-    textDecorationColor: '$borderLight',
-  },
-  '& > [data-style*="b"]': {
-    fontWeight: 600,
-  },
-  '& > [data-style*="u"]': {
-    textDecorationLine: 'underline',
-  },
-  '& > [data-style*="s"]': {
-    textDecorationLine: 'line-through',
-  },
-  '& > [data-style*="u"][data-style*="s"]': {
-    textDecorationLine: 'underline line-through',
-  },
-  '& > [data-style*="i"]': {
-    fontStyle: 'italic',
+  '& *': {
+    'boxSizing': 'border-box',
+    'wordWrap': 'break-word',
+    'whiteSpace': 'pre-wrap',
+    'textDecorationColor': '$borderLight',
+    'p': 0,
+    'm': 0,
+    'caret-color': '$textLight',
   },
 })
 
@@ -74,12 +55,16 @@ const SmallEditor: FC = () => {
   console.log(rest)
   console.log(rest.getState())
 
-  function handleFocus(e) {
-    if (e.currentTarget.contains(document.activeElement)) {
-      return null
-    }
-    focus()
-  }
+  const handleFocus = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (e.currentTarget.contains(document.activeElement)) {
+        return null
+      }
+      focus()
+    },
+    [focus]
+  )
+
   return (
     <Sheet onClick={handleFocus}>
       <Editable {...getRootProps()} />
