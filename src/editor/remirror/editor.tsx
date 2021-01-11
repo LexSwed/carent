@@ -95,8 +95,7 @@ const Editable = styled('div', {
 
 const SmallEditor: FC = () => {
   const { getRootProps, focus, ...rest } = useRemirror({ autoUpdate: true })
-  // console.log(rest)
-  // console.log(rest.getState())
+  console.log(rest)
 
   const handleFocus = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {

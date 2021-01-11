@@ -10,10 +10,14 @@ import {
   setBlockType,
 } from '@remirror/core'
 
+interface Options {
+  optional?: string | null
+}
 @extensionDecorator({
+  defaultOptions: {},
   defaultPriority: ExtensionPriority.Medium,
 })
-export class BlockExtension extends NodeExtension {
+export class BlockExtension extends NodeExtension<Options> {
   get name() {
     return 'block' as const
   }
@@ -22,11 +26,11 @@ export class BlockExtension extends NodeExtension {
 
   createNodeSpec(extra: ApplySchemaAttributes): NodeExtensionSpec {
     return {
-      content: 'inline*',
+      content: 'block',
       attrs: {
         ...extra.defaults(),
       },
-      draggable: false,
+      draggable: true,
       group: 'block+',
       parseDOM: [
         {
@@ -42,19 +46,6 @@ export class BlockExtension extends NodeExtension {
       },
     }
   }
-
-  createNodeViews
-
-  //   get view() {
-  //     return {
-  //       template: `
-  //         <div data-type="drag_item" contenteditable="false">
-  //           <div data-drag-handle></div>
-  //           <div ref="content" contenteditable="true"></div>
-  //         </div>
-  //       `,
-  //     }
-  //   }
 
   /**
    * Provides the commands that this extension uses.
