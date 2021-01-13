@@ -56,6 +56,8 @@ export interface NexusGenScalars {
   Boolean: boolean
   ID: string
   DateTime: any
+  JSON: any
+  Json: any
 }
 
 export interface NexusGenObjects {
@@ -92,8 +94,8 @@ export interface NexusGenObjects {
     node?: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
   }
   Topic: { // root type
+    content: NexusGenScalars['Json']; // Json!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    description: string; // String!
     id: string; // String!
     title: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -146,6 +148,7 @@ export interface NexusGenFieldTypes {
     createTopic: NexusGenRootTypes['Topic'] | null; // Topic
     reorderTopic: NexusGenRootTypes['Topic'] | null; // Topic
     updateClassName: NexusGenRootTypes['Class'] | null; // Class
+    updateTopic: NexusGenRootTypes['Topic'] | null; // Topic
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
@@ -174,8 +177,8 @@ export interface NexusGenFieldTypes {
     node: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
   }
   Topic: { // field return type
+    content: NexusGenScalars['Json']; // Json!
     createdAt: NexusGenScalars['DateTime']; // DateTime!
-    description: string; // String!
     id: string; // String!
     title: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -221,6 +224,7 @@ export interface NexusGenFieldTypeNames {
     createTopic: 'Topic'
     reorderTopic: 'Topic'
     updateClassName: 'Class'
+    updateTopic: 'Topic'
   }
   PageInfo: { // field return type name
     endCursor: 'String'
@@ -249,8 +253,8 @@ export interface NexusGenFieldTypeNames {
     node: 'StudentGroup'
   }
   Topic: { // field return type name
+    content: 'Json'
     createdAt: 'DateTime'
-    description: 'String'
     id: 'String'
     title: 'String'
     updatedAt: 'DateTime'
@@ -291,22 +295,27 @@ export interface NexusGenArgTypes {
       name: string; // String!
     }
     createTopic: { // args
-      classId: string; // String!
+      classId: string; // ID!
       title: string; // String!
     }
     reorderTopic: { // args
-      after?: string | null; // String
-      before?: string | null; // String
-      id: string; // String!
+      after?: string | null; // ID
+      before?: string | null; // ID
+      id: string; // ID!
     }
     updateClassName: { // args
-      id: string; // String!
+      id: string; // ID!
       name: string; // String!
+    }
+    updateTopic: { // args
+      content?: NexusGenScalars['JSON'] | null; // JSON
+      id: string; // ID!
+      title?: string | null; // String
     }
   }
   Query: {
     class: { // args
-      id: string; // String!
+      id: string; // ID!
     }
     classes: { // args
       after?: string | null; // String
@@ -321,7 +330,7 @@ export interface NexusGenArgTypes {
       last?: number | null; // Int
     }
     topic: { // args
-      id: string; // String!
+      id: string; // ID!
     }
   }
 }

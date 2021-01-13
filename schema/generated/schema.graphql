@@ -65,20 +65,38 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
+scalar Json
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
 type Mutation {
   createClass(group: CreateClassGroupInput!, name: String!): Class
-  createTopic(classId: String!, title: String!): Topic
+  createTopic(
+    """ID of the class create topic into"""
+    classId: ID!
+    title: String!
+  ): Topic
   reorderTopic(
     """ID of the topic to insert after"""
-    after: String
+    after: ID
 
     """ID of the topic to insert before"""
-    before: String
+    before: ID
 
     """ID of the topic to reorder"""
-    id: String!
+    id: ID!
   ): Topic
-  updateClassName(id: String!, name: String!): Class
+  updateClassName(id: ID!, name: String!): Class
+  updateTopic(
+    content: JSON
+
+    """ID of the topic"""
+    id: ID!
+    title: String
+  ): Topic
 }
 
 interface Node {
@@ -112,7 +130,7 @@ type PageInfo {
 }
 
 type Query {
-  class(id: String!): Class
+  class(id: ID!): Class
   classes(
     """Returns the elements in the list that come after the specified cursor"""
     after: String
@@ -140,7 +158,7 @@ type Query {
     last: Int
   ): StudentGroupConnection
   me: User
-  topic(id: String!): Topic
+  topic(id: ID!): Topic
 }
 
 type StudentGroup implements Node {
@@ -170,8 +188,8 @@ type StudentGroupEdge {
 }
 
 type Topic implements Node {
+  content: Json!
   createdAt: DateTime!
-  description: String!
   id: String!
   title: String!
   updatedAt: DateTime!

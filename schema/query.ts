@@ -1,4 +1,4 @@
-import { nonNull, queryType } from 'nexus'
+import { idArg, nonNull, queryType } from 'nexus'
 import { relayToPrismaPagination } from './utils'
 
 export const Query = queryType({
@@ -44,7 +44,7 @@ export const Query = queryType({
     t.field('class', {
       type: 'Class',
       args: {
-        id: nonNull('String'),
+        id: nonNull(idArg()),
       },
       resolve: (_, { id }, { prisma, session }) => {
         return prisma.class.findFirst({
@@ -63,7 +63,7 @@ export const Query = queryType({
     t.field('topic', {
       type: 'Topic',
       args: {
-        id: nonNull('String'),
+        id: nonNull(idArg()),
       },
       resolve: (_, { id }, { prisma, session }) => {
         return prisma.topic.findFirst({

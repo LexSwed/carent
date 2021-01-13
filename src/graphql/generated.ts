@@ -11,7 +11,11 @@ export type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: any;
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  JSON: any;
+  Json: any;
 };
+
 
 
 export type Query = {
@@ -33,12 +37,12 @@ export type QueryClassesArgs = {
 
 
 export type QueryClassArgs = {
-  id: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 
 export type QueryTopicArgs = {
-  id: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 
@@ -55,6 +59,7 @@ export type Mutation = {
   updateClassName?: Maybe<Class>;
   createTopic?: Maybe<Topic>;
   reorderTopic?: Maybe<Topic>;
+  updateTopic?: Maybe<Topic>;
 };
 
 
@@ -65,21 +70,28 @@ export type MutationCreateClassArgs = {
 
 
 export type MutationUpdateClassNameArgs = {
-  id: Scalars['String'];
+  id: Scalars['ID'];
   name: Scalars['String'];
 };
 
 
 export type MutationCreateTopicArgs = {
-  classId: Scalars['String'];
+  classId: Scalars['ID'];
   title: Scalars['String'];
 };
 
 
 export type MutationReorderTopicArgs = {
-  id: Scalars['String'];
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  before?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['ID']>;
+};
+
+
+export type MutationUpdateTopicArgs = {
+  id: Scalars['ID'];
+  title?: Maybe<Scalars['String']>;
+  content?: Maybe<Scalars['JSON']>;
 };
 
 export type Node = {
@@ -99,7 +111,7 @@ export type Topic = Node & {
   __typename?: 'Topic';
   id: Scalars['String'];
   title: Scalars['String'];
-  description: Scalars['String'];
+  content: Scalars['Json'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
 };
@@ -186,6 +198,7 @@ export type CreateClassGroupInput = {
   code?: Maybe<Scalars['String']>;
 };
 
+
 export type TopicConnection = {
   __typename?: 'TopicConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
@@ -220,7 +233,7 @@ export enum TopicSortOrder {
 }
 
 export type GetLastUpdatedTopicQueryVariables = Exact<{
-  classId: Scalars['String'];
+  classId: Scalars['ID'];
   sortOrder: ClassTopicsSortOrder;
 }>;
 
@@ -311,7 +324,7 @@ export type GetGroupsQuery = (
 );
 
 export type GetClassTopicsQueryVariables = Exact<{
-  classId: Scalars['String'];
+  classId: Scalars['ID'];
 }>;
 
 
@@ -334,7 +347,7 @@ export type GetClassTopicsQuery = (
 );
 
 export type CreateNewTopicMutationVariables = Exact<{
-  classId: Scalars['String'];
+  classId: Scalars['ID'];
   title: Scalars['String'];
 }>;
 
@@ -348,9 +361,9 @@ export type CreateNewTopicMutation = (
 );
 
 export type UpdateTopicOrderMutationVariables = Exact<{
-  id: Scalars['String'];
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  before?: Maybe<Scalars['ID']>;
+  after?: Maybe<Scalars['ID']>;
 }>;
 
 
@@ -363,7 +376,7 @@ export type UpdateTopicOrderMutation = (
 );
 
 export type GetClassInfoQueryVariables = Exact<{
-  classId: Scalars['String'];
+  classId: Scalars['ID'];
 }>;
 
 
@@ -380,7 +393,7 @@ export type GetClassInfoQuery = (
 );
 
 export type UpdateClassNameMutationVariables = Exact<{
-  id: Scalars['String'];
+  id: Scalars['ID'];
   name: Scalars['String'];
 }>;
 
@@ -394,7 +407,7 @@ export type UpdateClassNameMutation = (
 );
 
 export type GetTopicDetailsQueryVariables = Exact<{
-  id: Scalars['String'];
+  id: Scalars['ID'];
 }>;
 
 
@@ -402,6 +415,21 @@ export type GetTopicDetailsQuery = (
   { __typename?: 'Query' }
   & { topic?: Maybe<(
     { __typename?: 'Topic' }
-    & Pick<Topic, 'id' | 'title' | 'description'>
+    & Pick<Topic, 'id' | 'title' | 'content'>
+  )> }
+);
+
+export type UpdateTopicMutationVariables = Exact<{
+  id: Scalars['ID'];
+  title?: Maybe<Scalars['String']>;
+  content?: Maybe<Scalars['JSON']>;
+}>;
+
+
+export type UpdateTopicMutation = (
+  { __typename?: 'Mutation' }
+  & { updateTopic?: Maybe<(
+    { __typename?: 'Topic' }
+    & Pick<Topic, 'id'>
   )> }
 );

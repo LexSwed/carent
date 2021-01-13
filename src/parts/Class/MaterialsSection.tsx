@@ -46,7 +46,7 @@ const MaterialsSection = () => {
 export default MaterialsSection
 
 const getLastUpdatedTopic = gql`
-  query getLastUpdatedTopic($classId: String!, $sortOrder: ClassTopicsSortOrder!) {
+  query getLastUpdatedTopic($classId: ID!, $sortOrder: ClassTopicsSortOrder!) {
     class(id: $classId) {
       id
       topics(first: 1, sort: $sortOrder) {

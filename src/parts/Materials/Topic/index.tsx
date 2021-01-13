@@ -32,7 +32,7 @@ const Topic = () => {
           <Box pl="$7">
             <TextField defaultValue={data?.topic.title} variant="inline" css={style.title} />
           </Box>
-          <Editor />
+          <Editor content={content} />
         </Flex>
       </Flex>
     </EditorPage>
@@ -57,11 +57,11 @@ const EditorPage = styled('section', {
 })
 
 const getTopicDetails = gql`
-  query getTopicDetails($id: String!) {
+  query getTopicDetails($id: ID!) {
     topic(id: $id) {
       id
       title
-      description
+      content
     }
   }
 `

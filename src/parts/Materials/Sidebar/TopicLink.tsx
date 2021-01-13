@@ -22,7 +22,6 @@ export const TopicLink = React.memo<TopicCardProps>(({ id, title, selected, inde
           flow="row"
           cross="center"
           main="start"
-          space="$2"
           onClick={() => onClick(id)}
           {...provided.draggableProps}
           ref={provided.innerRef}
@@ -39,18 +38,11 @@ export const TopicLink = React.memo<TopicCardProps>(({ id, title, selected, inde
           <Button variant="transparent" size="sm" ellipsis>
             {title}
           </Button>
-          {selected && <Icon size="lg" as={HiChevronRight} css={style.icon} />}
         </TopicCard>
       )}
     </Draggable>
   )
 })
-
-const style: StyleRecord = {
-  icon: {
-    ml: 'auto',
-  },
-}
 
 const TopicCard = styled(Flex, {
   'py': '$2',

@@ -12,7 +12,7 @@ import type {
 import { useClassId } from '../../utils'
 
 export const getTopics = gql`
-  query getClassTopics($classId: String!) {
+  query getClassTopics($classId: ID!) {
     class(id: $classId) {
       id
       topics(first: 30) {
@@ -27,7 +27,7 @@ export const getTopics = gql`
   }
 `
 export const createNewTopic = gql`
-  mutation createNewTopic($classId: String!, $title: String!) {
+  mutation createNewTopic($classId: ID!, $title: String!) {
     createTopic(classId: $classId, title: $title) {
       id
       title
@@ -35,7 +35,7 @@ export const createNewTopic = gql`
   }
 `
 export const updateOrder = gql`
-  mutation updateTopicOrder($id: String!, $before: String, $after: String) {
+  mutation updateTopicOrder($id: ID!, $before: ID, $after: ID) {
     reorderTopic(id: $id, before: $before, after: $after) {
       id
       title
@@ -53,7 +53,7 @@ export function useClassTopics() {
 }
 
 const getClassInfo = gql`
-  query getClassInfo($classId: String!) {
+  query getClassInfo($classId: ID!) {
     class(id: $classId) {
       id
       name
@@ -66,7 +66,7 @@ const getClassInfo = gql`
 `
 
 const updateClassName = gql`
-  mutation updateClassName($id: String!, $name: String!) {
+  mutation updateClassName($id: ID!, $name: String!) {
     updateClassName(id: $id, name: $name) {
       id
       name

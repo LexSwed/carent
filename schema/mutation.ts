@@ -1,4 +1,4 @@
-import { inputObjectType, mutationType, nonNull, stringArg } from 'nexus'
+import { idArg, inputObjectType, mutationType, nonNull, stringArg } from 'nexus'
 import { ApolloError } from 'apollo-server-micro'
 import { LexoRank } from 'lexorank'
 
@@ -58,7 +58,7 @@ export const Mutation = mutationType({
     t.field('updateClassName', {
       type: 'Class',
       args: {
-        id: nonNull('String'),
+        id: nonNull(idArg()),
         name: nonNull('String'),
       },
       resolve: async (_, { id, name }, { prisma, session }) => {
@@ -97,7 +97,11 @@ export const Mutation = mutationType({
     t.field('createTopic', {
       type: 'Topic',
       args: {
-        classId: nonNull('String'),
+        classId: nonNull(idArg(
+          {
+            description: 'ID of the class create topic into'
+          }
+        )),
         title: nonNull('String'),
       },
       /** I decided that having two consequent DB transactions is better than parallel if one fails */
@@ -143,9 +147,9 @@ export const Mutation = mutationType({
     t.field('reorderTopic', {
       type: 'Topic',
       args: {
-        id: nonNull(stringArg({ description: 'ID of the topic to reorder' })),
-        before: stringArg({ description: 'ID of the topic to insert before' }),
-        after: stringArg({ description: 'ID of the topic to insert after' }),
+        id: nonNull(idArg({ description: 'ID of the topic to reorder' })),
+        before: idArg({ description: 'ID of the topic to insert before' }),
+        after: idArg({ description: 'ID of the topic to insert after' }),
       },
       resolve: async (_root, { id, before, after }, { prisma, session }) => {
         const referenceId = before || after
@@ -186,6 +190,45 @@ export const Mutation = mutationType({
           },
         })
       },
+    })
+
+    t.field('updateTopic', {
+      type: 'Topic',
+      args: {
+        id: nonNull(idArg({
+          description: 'ID of the topic'
+        })),
+        title: 'String',
+        content: 'JSON'
+      },
+      resolve: async (_root, {id, title, content }, { prisma, session }) => {
+        const item = await prisma.topic.findFirst({
+          where: {
+            id,
+            AND: {
+              class: {
+                teacher: {
+                  userId: session.user.id,
+                },
+              },
+            },
+          },
+        })
+
+        if (!item) {
+          throw new ApolloError('Topic with specified ID not found', '400')
+        }
+
+        return prisma.topic.update({
+          where: {
+            id,
+          },
+          data: {
+            content,
+            title
+          }
+        })
+      }
     })
   },
 })
