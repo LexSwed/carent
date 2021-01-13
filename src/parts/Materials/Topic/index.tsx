@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Box, styled } from '@fxtrot/ui'
+import { Flex, Box, TextField, styled, StyleRecord } from '@fxtrot/ui'
 import { gql, useQuery } from '@apollo/client'
 
 import { useTopicId } from '../../../utils'
@@ -7,22 +7,6 @@ import Header from './Header'
 import Placeholder from './Placeholder'
 import type { GetTopicDetailsQuery, GetTopicDetailsQueryVariables } from '../../../graphql/generated'
 import Editor from '../../../editor'
-
-const getTopicDetails = gql`
-  query getTopicDetails($id: String!) {
-    topic(id: $id) {
-      id
-      title
-      description
-    }
-  }
-`
-
-const EditorPage = styled('section', {
-  display: 'grid',
-  maxWidth: 800,
-  m: '0 auto',
-})
 
 const Topic = () => {
   const topicId = useTopicId()
@@ -42,14 +26,42 @@ const Topic = () => {
 
   return (
     <EditorPage>
-      <Flex space="$8">
-        <Box pl="$8">
-          <Header title={data?.topic.title} />
-        </Box>
-        <Editor />
+      <Flex space="$4">
+        <Header />
+        <Flex space="$8">
+          <Box pl="$7">
+            <TextField defaultValue={data?.topic.title} variant="inline" css={style.title} />
+          </Box>
+          <Editor />
+        </Flex>
       </Flex>
     </EditorPage>
   )
 }
 
 export default Topic
+
+const style: StyleRecord = {
+  title: {
+    '& input': {
+      fontSize: '$2xl',
+      fontWeight: 600,
+      p: 0,
+    },
+  },
+}
+const EditorPage = styled('section', {
+  display: 'grid',
+  maxWidth: 800,
+  m: '0 auto',
+})
+
+const getTopicDetails = gql`
+  query getTopicDetails($id: String!) {
+    topic(id: $id) {
+      id
+      title
+      description
+    }
+  }
+`

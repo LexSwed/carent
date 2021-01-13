@@ -1,23 +1,29 @@
 import React from 'react'
-import { Flex, TextField } from '@fxtrot/ui'
-import type { StylesObject } from '@fxtrot/ui/dist/utils'
+import { Button, Flex, Icon, Spinner } from '@fxtrot/ui'
+import { useTopicId } from '../../../utils'
+import { HiCheck, HiOutlineTrash } from 'react-icons/hi'
+import type { ValuesOfCorrectTypeRule } from 'graphql'
 
-interface Props {
-  title: string
-}
+const Header: React.FC = () => {
+  const topicId = useTopicId()
+  const loading = true
 
-const style: StylesObject = {
-  '& input': {
-    fontSize: '$2xl',
-    fontWeight: 600,
-    p: 0,
-  },
-}
-
-const Header: React.FC<Props> = ({ title }) => {
   return (
-    <Flex space="$4">
-      <TextField defaultValue={title} variant="inline" css={style} />
+    <Flex space="$4" flow="row" main="end">
+      {loading ? (
+        <Button size="sm" aria-label="Saving the updates" variant="flat">
+          <Spinner size="sm" />
+          <span>Saving</span>
+        </Button>
+      ) : (
+        <Button size="sm" aria-label="Updates are saved" variant="flat">
+          <Icon size="md" as={HiCheck} />
+          <span>Saved</span>
+        </Button>
+      )}
+      <Button size="sm" aria-label="Delete the document" variant="flat">
+        <Icon size="md" as={HiOutlineTrash} />
+      </Button>
     </Flex>
   )
 }
