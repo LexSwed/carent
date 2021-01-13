@@ -1,51 +1,8 @@
 import React from 'react'
-import { Button, Flex, Icon, Box, styled, Text } from '@fxtrot/ui'
+import { Button, Flex, Icon, Box, styled, Text, StyleRecord } from '@fxtrot/ui'
 import { HiChevronRight, HiMenuAlt4 } from 'react-icons/hi'
 import type { GetClassTopicsQuery } from '../../../graphql/generated'
 import { Draggable } from 'react-beautiful-dnd'
-
-const TopicCard = styled(Flex, {
-  'py': '$4',
-  'px': '$2',
-  'br': '$md',
-  'cursor': 'pointer',
-  'transition': '0.2s ease-in,',
-  'transitionProperty': 'background-color, box-shadow',
-
-  '&:not(:first-child:last-child)': {
-    'position': 'relative',
-
-    '&:after': {
-      position: 'absolute',
-      content: '""',
-      bottom: 0,
-      left: 0,
-      width: '80%',
-      height: '1px',
-      bc: '$borderLight',
-      transformOrigin: 'left',
-      transition: 'transform 0.24s ease-in-out',
-    },
-  },
-
-  'variants': {
-    selected: {
-      true: {
-        bc: '$surfaceActive',
-      },
-    },
-    dragging: {
-      true: {
-        'bc': '$surfaceStill',
-        'zIndex': 10,
-        'shadow': '$xs',
-        '&:after': {
-          transform: 'scaleX(0)',
-        },
-      },
-    },
-  },
-})
 
 type FetchedTopic = GetClassTopicsQuery['class']['topics']['edges'][number]['node']
 interface TopicCardProps extends FetchedTopic {
@@ -71,26 +28,59 @@ export const TopicLink = React.memo<TopicCardProps>(({ id, title, selected, inde
           ref={provided.innerRef}
         >
           <Button
-            variant="flat"
-            size="sm"
+            variant="transparent"
+            size="xs"
             title="Reorder this topic"
             onClick={stopPropagation}
             {...provided.dragHandleProps}
           >
             <Icon size="sm" as={HiMenuAlt4} />
           </Button>
-          <Text size="sm" ellipsis>
+          <Button variant="transparent" size="sm" ellipsis>
             {title}
-          </Text>
-          <Box ml="auto">
-            <Button variant="flat" size="sm" aria-label="Show topic details">
-              <Icon size="lg" as={HiChevronRight} />
-            </Button>
-          </Box>
+          </Button>
+          {selected && <Icon size="lg" as={HiChevronRight} css={style.icon} />}
         </TopicCard>
       )}
     </Draggable>
   )
+})
+
+const style: StyleRecord = {
+  icon: {
+    ml: 'auto',
+  },
+}
+
+const TopicCard = styled(Flex, {
+  'py': '$2',
+  'px': '$2',
+  'br': '$md',
+  'cursor': 'default',
+  'transition': '0.2s ease-in,',
+  'transitionProperty': 'background-color, box-shadow',
+
+  '&:hover': {
+    bc: '$flatHover',
+  },
+
+  'variants': {
+    selected: {
+      true: {
+        bc: '$flatActive',
+      },
+    },
+    dragging: {
+      true: {
+        'bc': '$surfaceStill',
+        'zIndex': 10,
+        'shadow': '$xs',
+        '&:after': {
+          transform: 'scaleX(0)',
+        },
+      },
+    },
+  },
 })
 
 function stopPropagation(e) {

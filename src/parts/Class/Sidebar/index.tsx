@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex } from '@fxtrot/ui'
-import UserPanel from './UserPanel'
+import UserPanel from '../../UserPanel'
 import Classes from './Classes'
 
 const Sidebar = () => {

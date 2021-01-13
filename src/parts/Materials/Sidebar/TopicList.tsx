@@ -6,12 +6,6 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import type { GetClassTopicsQuery, GetClassTopicsQueryVariables } from '../../../graphql/generated'
 import { getTopics, updateOrder } from '../../Class/gql'
 
-const List = styled(Flex, {
-  p: 0,
-  margin: 0,
-  overflow: 'auto',
-})
-
 export const TopicsList = ({ children }) => {
   const handleDrop = useOnDrop()
   return (
@@ -27,6 +21,12 @@ export const TopicsList = ({ children }) => {
     </DragDropContext>
   )
 }
+
+const List = styled(Flex, {
+  p: 0,
+  margin: 0,
+  overflow: 'auto',
+})
 
 function useOnDrop() {
   const { cache, mutate } = useApolloClient()

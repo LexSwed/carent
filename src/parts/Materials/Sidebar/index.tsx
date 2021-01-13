@@ -7,7 +7,7 @@ import { NewTopic } from './NewTopic'
 import { TopicsList } from './TopicList'
 import { TopicLink } from './TopicLink'
 import { useClassTopics } from '../../Class/gql'
-import UserPanel from '../../Class/Sidebar/UserPanel'
+import UserPanel from '../../UserPanel'
 
 const Topics = () => {
   const router = useRouter()
