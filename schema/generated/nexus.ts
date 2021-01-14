@@ -146,6 +146,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createClass: NexusGenRootTypes['Class'] | null; // Class
     createTopic: NexusGenRootTypes['Topic'] | null; // Topic
+    deleteTopic: NexusGenRootTypes['Topic'] | null; // Topic
     reorderTopic: NexusGenRootTypes['Topic'] | null; // Topic
     updateClassName: NexusGenRootTypes['Class'] | null; // Class
     updateTopic: NexusGenRootTypes['Topic'] | null; // Topic
@@ -222,6 +223,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     createClass: 'Class'
     createTopic: 'Topic'
+    deleteTopic: 'Topic'
     reorderTopic: 'Topic'
     updateClassName: 'Class'
     updateTopic: 'Topic'
@@ -297,6 +299,9 @@ export interface NexusGenArgTypes {
     createTopic: { // args
       classId: string; // ID!
       title: string; // String!
+    }
+    deleteTopic: { // args
+      id: string; // ID!
     }
     reorderTopic: { // args
       after?: string | null; // ID

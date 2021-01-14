@@ -75,6 +75,9 @@ export const Query = queryType({
                   userId: session?.user?.id,
                 },
               },
+              archivedAt: {
+                equals: null
+              }
             },
           },
         })

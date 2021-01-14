@@ -79,6 +79,10 @@ type Mutation {
     classId: ID!
     title: String!
   ): Topic
+  deleteTopic(
+    """ID of the topic to delete"""
+    id: ID!
+  ): Topic
   reorderTopic(
     """ID of the topic to insert after"""
     after: ID

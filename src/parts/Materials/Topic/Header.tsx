@@ -11,12 +11,12 @@ const Header: React.FC = () => {
   return (
     <Flex space="$4" flow="row" main="end">
       {loading ? (
-        <Button size="sm" aria-label="Saving the updates" variant="flat">
+        <Button size="sm" aria-label="Saving the updates" variant="flat" disabled>
           <Spinner size="sm" />
           <span>Saving</span>
         </Button>
       ) : (
-        <Button size="sm" aria-label="Updates are saved" variant="flat">
+        <Button size="sm" aria-label="Updates are saved" variant="flat" disabled>
           <Icon size="md" as={HiCheck} />
           <span>Saved</span>
         </Button>

@@ -1,4 +1,4 @@
-import { idArg, inputObjectType, mutationType, nonNull, stringArg } from 'nexus'
+import { idArg, inputObjectType, mutationType, nonNull, stringArg, } from 'nexus'
 import { ApolloError } from 'apollo-server-micro'
 import { LexoRank } from 'lexorank'
 
@@ -132,6 +132,7 @@ export const Mutation = mutationType({
         return prisma.topic.create({
           data: {
             title,
+            content: { type: 'doc', content: [] },
             orderKey,
             class: {
               connect: {
@@ -161,6 +162,9 @@ export const Mutation = mutationType({
         const referenceItem = await prisma.topic.findFirst({
           where: {
             id: referenceId,
+            archivedAt: {
+              equals: null
+            },
             AND: {
               class: {
                 teacher: {
@@ -205,6 +209,9 @@ export const Mutation = mutationType({
         const item = await prisma.topic.findFirst({
           where: {
             id,
+            archivedAt: {
+              equals: null
+            },
             AND: {
               class: {
                 teacher: {
@@ -225,7 +232,46 @@ export const Mutation = mutationType({
           },
           data: {
             content,
-            title
+            title,
+            updatedAt: new Date(),
+          }
+        })
+      }
+    })
+
+    t.field('deleteTopic', {
+      type: 'Topic',
+      args: {
+        id: nonNull(idArg({
+          description: 'ID of the topic to delete'
+        })),
+      },
+      resolve: async (_root, { id }, { prisma, session }) => {
+
+        const item = await prisma.topic.findFirst({
+          where: {
+            id,
+            archivedAt: {
+              equals: null
+            },
+            class: {
+              teacher: {
+                userId: session?.user?.id
+              }
+            }
+          }
+        })
+
+        if (!item) {
+          throw new ApolloError('Topic with specified ID not found', '400')
+        }
+
+        return prisma.topic.update({
+          where: {
+            id,
+          },
+          data: {
+            archivedAt: new Date()
           }
         })
       }

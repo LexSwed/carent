@@ -35,8 +35,10 @@ export const TopicLink = React.memo<TopicCardProps>(({ id, title, selected, inde
           >
             <Icon size="sm" as={HiMenuAlt4} />
           </Button>
-          <Button variant="transparent" size="sm" ellipsis>
-            {title}
+          <Button variant="transparent" size="sm">
+            <Text size="sm" ellipsis>
+              {title}
+            </Text>
           </Button>
         </TopicCard>
       )}

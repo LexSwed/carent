@@ -126,7 +126,8 @@ const Editor: React.FC<Props> = ({ content }) => {
 
   return (
     <RemirrorProvider
-      initialContent={content}
+      // do not use empty doc because it causes placeholder to be hidden
+      initialContent={content?.content?.length ? content : undefined}
       placeholder="Start typing..."
       manager={extensionManager}
       onChange={handleChange}

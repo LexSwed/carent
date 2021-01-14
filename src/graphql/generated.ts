@@ -60,6 +60,7 @@ export type Mutation = {
   createTopic?: Maybe<Topic>;
   reorderTopic?: Maybe<Topic>;
   updateTopic?: Maybe<Topic>;
+  deleteTopic?: Maybe<Topic>;
 };
 
 
@@ -92,6 +93,11 @@ export type MutationUpdateTopicArgs = {
   id: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['JSON']>;
+};
+
+
+export type MutationDeleteTopicArgs = {
+  id: Scalars['ID'];
 };
 
 export type Node = {

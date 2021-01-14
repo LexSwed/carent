@@ -50,7 +50,7 @@ const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => 
     <Dialog.Trigger defaultOpen={defaultOpen}>
       <Button main="center" variant="flat">
         <Icon as={HiPlus} />
-        <span>Create new</span>
+        <span>Create new class</span>
       </Button>
       {(close) => <NewGroupModal close={close} />}
     </Dialog.Trigger>
@@ -82,12 +82,19 @@ function NewGroupModal({ close }: { close: () => void }) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
+    let name = className.trim()
+    let code = newGroupCode.trim()
+
+    if (!name && (groupId || code)) {
+      return
+    }
+
     const { data } = await createClass({
       variables: {
-        name: className.trim(),
+        name,
         group: {
           id: groupId,
-          code: newGroupCode.trim(),
+          code,
         },
       },
     })

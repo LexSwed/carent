@@ -1,7 +1,7 @@
 import NextAuth, { InitOptions } from 'next-auth'
 import Providers from 'next-auth/providers'
 import Adapters from 'next-auth/adapters'
-import { NextApiHandler } from 'next'
+import type { NextApiHandler } from 'next'
 
 import { prisma } from '../../../../prisma'
 

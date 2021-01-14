@@ -1,7 +1,7 @@
 import React from 'react'
 import { gql, useQuery } from '@apollo/client'
 import Link from 'next/link'
-import { Box, Button, Flex, Heading, Icon, Text, TextField } from '@fxtrot/ui'
+import { Box, Button, Flex, Heading, Icon, Text, TextField, TextLink } from '@fxtrot/ui'
 import {
   GetLastUpdatedTopicQuery,
   GetLastUpdatedTopicQueryVariables,
@@ -29,16 +29,7 @@ const MaterialsSection = () => {
           </Button>
         </Link>
       </Box>
-      {!loading && (
-        <Flex space="$4">
-          {topic ? <LatestTopic topic={topic} /> : <NoMaterials />}
-          <Flex>
-            <Text tone="light" size="sm">
-              Create new materials
-            </Text>
-          </Flex>
-        </Flex>
-      )}
+      {!loading && <Flex space="$4">{topic ? <LatestTopic topic={topic} /> : <NoMaterials />}</Flex>}
     </Flex>
   )
 }
@@ -67,20 +58,25 @@ function LatestTopic({
   topic: ReturnType<typeof useLastUpdatedTopic>['data']['class']['topics']['edges'][number]['node']
 }) {
   const classId = useClassId()
+  const href = `/${classId}/materials/${topic.id}`
   return (
     <Box bc="$primaryLightActive" br="$md" px="$4" pt="$4" pb="$6">
       <Flex space="$4">
         <Text css={{ color: '$primaryStill', opacity: 0.8 }} size="sm">
           Continue your work on
         </Text>
-        <Flex flow="row" main="start" cross="center" space="$4">
-          <Icon as={TopicIcon} size="xl" stroke="$primaryStill" />
-          <Box py="$4" borderRight="2px solid $primaryStill" />
-          <Heading level={3} css={{ color: '$primaryStill' }}>
-            {topic.title}
-          </Heading>
+        <Flex flow="row" main="start" cross="center">
+          <Link href={href}>
+            <Flex as={TextLink} flow="row" main="start" cross="center" space="$4">
+              <Icon as={TopicIcon} size="xl" stroke="$primaryStill" />
+              <Box py="$4" borderRight="2px solid $primaryStill" />
+              <Heading level={3} css={{ color: '$primaryStill', m: 0 }}>
+                {topic.title}
+              </Heading>
+            </Flex>
+          </Link>
           <Box ml="auto">
-            <Link href={`/${classId}/materials/${topic.id}`}>
+            <Link href={href}>
               <Button variant="primary" as="a">
                 <Icon as={HiArrowRight} size="lg" />
               </Button>
@@ -107,7 +103,7 @@ function useLastUpdatedTopic() {
 
 function NoMaterials() {
   const classId = useClassId()
-  const [create] = useCreateNewTopic()
+  const [create, { loading }] = useCreateNewTopic()
   const router = useRouter()
 
   async function handleSubmit(e: React.FormEvent<any>) {
@@ -143,7 +139,7 @@ function NoMaterials() {
           />
         </Box>
         <Flex flow="row" main="end">
-          <Button variant="primary" type="submit">
+          <Button variant="primary" disabled={loading} type="submit">
             Create
           </Button>
         </Flex>

@@ -95,6 +95,9 @@ export const Class = objectType({
           },
           where: {
             classId: root.id,
+            archivedAt: {
+              equals: null
+            }
           },
         })
       },
