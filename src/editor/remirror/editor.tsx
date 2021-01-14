@@ -114,7 +114,10 @@ const SmallEditor: FC = () => {
   )
 }
 
-const Editor = () => {
+interface Props {
+  content: $tempAny
+}
+const Editor: React.FC<Props> = ({ content }) => {
   const extensionManager = useManager(EXTENSIONS)
 
   const handleChange = useCallback<React.ComponentProps<typeof RemirrorProvider>['onChange']>(({ tr, getJSON }) => {
@@ -122,7 +125,12 @@ const Editor = () => {
   }, [])
 
   return (
-    <RemirrorProvider placeholder="Start typing..." manager={extensionManager} onChange={handleChange}>
+    <RemirrorProvider
+      initialContent={content}
+      placeholder="Start typing..."
+      manager={extensionManager}
+      onChange={handleChange}
+    >
       <SmallEditor />
     </RemirrorProvider>
   )

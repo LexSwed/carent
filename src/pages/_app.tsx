@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Carent</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
-      <ThemeProvider theme="orange">
+      <ThemeProvider theme="purple">
         <ApolloProvider client={apolloClient}>
           <Component {...pageProps} />
         </ApolloProvider>
@@ -24,7 +24,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           body {
             margin: 0;
             padding: 0;
-            background-image: radial-gradient(farthest-corner at 20% 20%, #473dc915 50%, #0188c415 100%);
+            background-image: radial-gradient(
+              farthest-corner at 20% 20%,
+              var(--colors-orange50) 50%,
+              var(--colors-blueGray200) 100%
+            );
           }
           body * {
             box-sizing: border-box;

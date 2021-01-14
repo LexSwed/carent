@@ -32,7 +32,7 @@ const Topic = () => {
           <Box pl="$7">
             <TextField defaultValue={data?.topic.title} variant="inline" css={style.title} />
           </Box>
-          <Editor content={content} />
+          <Editor content={data?.topic?.content} />
         </Flex>
       </Flex>
     </EditorPage>
