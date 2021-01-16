@@ -132,7 +132,7 @@ export const Mutation = mutationType({
         return prisma.topic.create({
           data: {
             title,
-            content: { type: 'doc', content: [] },
+            content: {},
             orderKey,
             class: {
               connect: {

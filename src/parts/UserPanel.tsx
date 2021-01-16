@@ -42,9 +42,9 @@ const UserPanel = () => {
           <Dummy />
         </Avatar>
       )}
-      <Text ellipsis>{user.name}</Text>
+      <Text>{user.name}</Text>
       <Menu>
-        <Menu.Button variant="flat">
+        <Menu.Button size="sm" variant="flat">
           <Icon as={HiOutlineDotsHorizontal} />
         </Menu.Button>
         <Menu.List css={{ width: '$32' }} placement="bottom-end">

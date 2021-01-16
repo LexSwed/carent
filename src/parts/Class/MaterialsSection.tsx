@@ -23,7 +23,7 @@ const MaterialsSection = () => {
     <Flex as="section" space="$2">
       <Box>
         <Link href={`/${classId}/materials`}>
-          <Button as="a" variant="flat">
+          <Button as="a" variant="flat" size="lg">
             <Text size="xl">Materials</Text>
             <Icon as={HiChevronRight} size="xl" />
           </Button>
@@ -78,7 +78,7 @@ function LatestTopic({
           <Box ml="auto">
             <Link href={href}>
               <Button variant="primary" as="a">
-                <Icon as={HiArrowRight} size="lg" />
+                <Icon as={HiArrowRight} size="xl" />
               </Button>
             </Link>
           </Box>
