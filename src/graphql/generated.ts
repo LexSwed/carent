@@ -18,13 +18,151 @@ export type Scalars = {
 
 
 
+export type Node = {
+  /** Resource ID */
+  id: Scalars['String'];
+};
+
+export enum ClassTopicsOrder {
+  OrderAsc = 'ORDER_ASC',
+  OrderDesc = 'ORDER_DESC',
+  UpdatedAsc = 'UPDATED_ASC',
+  UpdatedDesc = 'UPDATED_DESC'
+}
+
+export type CreateClassGroupInput = {
+  id?: Maybe<Scalars['String']>;
+  code?: Maybe<Scalars['String']>;
+};
+
+export type Class = Node & {
+  __typename?: 'Class';
+  id: Scalars['String'];
+  name: Scalars['String'];
+  group: StudentGroup;
+  topics?: Maybe<TopicConnection>;
+};
+
+
+export type ClassTopicsArgs = {
+  sort?: Maybe<ClassTopicsSortOrder>;
+  first?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+};
+
+export type StudentGroup = Node & {
+  __typename?: 'StudentGroup';
+  id: Scalars['String'];
+  code: Scalars['String'];
+};
+
+export type Topic = Node & {
+  __typename?: 'Topic';
+  id: Scalars['String'];
+  title: Scalars['String'];
+  content: Scalars['Json'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type User = Node & {
+  __typename?: 'User';
+  id: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+};
+
+export type ClassConnection = {
+  __typename?: 'ClassConnection';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
+  edges?: Maybe<Array<Maybe<ClassEdge>>>;
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
+  pageInfo: PageInfo;
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type ClassEdge = {
+  __typename?: 'ClassEdge';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
+  cursor: Scalars['String'];
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
+  node?: Maybe<Class>;
+};
+
+/** PageInfo cursor, as defined in https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  /** Used to indicate whether more edges exist following the set defined by the clients arguments. */
+  hasNextPage: Scalars['Boolean'];
+  /** Used to indicate whether more edges exist prior to the set defined by the clients arguments. */
+  hasPreviousPage: Scalars['Boolean'];
+  /** The cursor corresponding to the first nodes in edges. Null if the connection is empty. */
+  startCursor?: Maybe<Scalars['String']>;
+  /** The cursor corresponding to the last nodes in edges. Null if the connection is empty. */
+  endCursor?: Maybe<Scalars['String']>;
+};
+
+export type TopicConnection = {
+  __typename?: 'TopicConnection';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
+  edges?: Maybe<Array<Maybe<TopicEdge>>>;
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
+  pageInfo: PageInfo;
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type TopicEdge = {
+  __typename?: 'TopicEdge';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
+  cursor: Scalars['String'];
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
+  node?: Maybe<Topic>;
+};
+
+export type ClassTopicsSortOrder = {
+  key?: Maybe<TopicSortKey>;
+  order?: Maybe<TopicSortOrder>;
+};
+
+export type StudentGroupConnection = {
+  __typename?: 'StudentGroupConnection';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
+  edges?: Maybe<Array<Maybe<StudentGroupEdge>>>;
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
+  pageInfo: PageInfo;
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type StudentGroupEdge = {
+  __typename?: 'StudentGroupEdge';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
+  cursor: Scalars['String'];
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
+  node?: Maybe<StudentGroup>;
+};
+
+
+export enum TopicSortKey {
+  Order = 'ORDER',
+  Updated = 'UPDATED'
+}
+
+/** Sort direction, ASC = ascending (normal - latest on top), DESC = descending (reverse - oldest on top) */
+export enum TopicSortOrder {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
+
 export type Query = {
   __typename?: 'Query';
-  me?: Maybe<User>;
   classes?: Maybe<ClassConnection>;
   class?: Maybe<Class>;
-  topic?: Maybe<Topic>;
   groups?: Maybe<StudentGroupConnection>;
+  topic?: Maybe<Topic>;
+  me?: Maybe<User>;
 };
 
 
@@ -41,16 +179,16 @@ export type QueryClassArgs = {
 };
 
 
-export type QueryTopicArgs = {
-  id: Scalars['ID'];
-};
-
-
 export type QueryGroupsArgs = {
   first?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryTopicArgs = {
+  id: Scalars['ID'];
 };
 
 export type Mutation = {
@@ -99,144 +237,6 @@ export type MutationUpdateTopicArgs = {
 export type MutationDeleteTopicArgs = {
   id: Scalars['ID'];
 };
-
-export type Node = {
-  /** Resource ID */
-  id: Scalars['String'];
-};
-
-export type User = Node & {
-  __typename?: 'User';
-  id: Scalars['String'];
-  name?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-};
-
-export type Topic = Node & {
-  __typename?: 'Topic';
-  id: Scalars['String'];
-  title: Scalars['String'];
-  content: Scalars['Json'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-};
-
-export type StudentGroup = Node & {
-  __typename?: 'StudentGroup';
-  id: Scalars['String'];
-  code: Scalars['String'];
-};
-
-export enum ClassTopicsOrder {
-  OrderAsc = 'ORDER_ASC',
-  OrderDesc = 'ORDER_DESC',
-  UpdatedAsc = 'UPDATED_ASC',
-  UpdatedDesc = 'UPDATED_DESC'
-}
-
-export type Class = Node & {
-  __typename?: 'Class';
-  id: Scalars['String'];
-  name: Scalars['String'];
-  group: StudentGroup;
-  topics?: Maybe<TopicConnection>;
-};
-
-
-export type ClassTopicsArgs = {
-  sort?: Maybe<ClassTopicsSortOrder>;
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-};
-
-export type ClassConnection = {
-  __typename?: 'ClassConnection';
-  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
-  edges?: Maybe<Array<Maybe<ClassEdge>>>;
-  /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
-  pageInfo: PageInfo;
-  totalCount?: Maybe<Scalars['Int']>;
-};
-
-export type ClassEdge = {
-  __typename?: 'ClassEdge';
-  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
-  cursor: Scalars['String'];
-  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
-  node?: Maybe<Class>;
-};
-
-/** PageInfo cursor, as defined in https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
-export type PageInfo = {
-  __typename?: 'PageInfo';
-  /** Used to indicate whether more edges exist following the set defined by the clients arguments. */
-  hasNextPage: Scalars['Boolean'];
-  /** Used to indicate whether more edges exist prior to the set defined by the clients arguments. */
-  hasPreviousPage: Scalars['Boolean'];
-  /** The cursor corresponding to the first nodes in edges. Null if the connection is empty. */
-  startCursor?: Maybe<Scalars['String']>;
-  /** The cursor corresponding to the last nodes in edges. Null if the connection is empty. */
-  endCursor?: Maybe<Scalars['String']>;
-};
-
-export type StudentGroupConnection = {
-  __typename?: 'StudentGroupConnection';
-  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
-  edges?: Maybe<Array<Maybe<StudentGroupEdge>>>;
-  /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
-  pageInfo: PageInfo;
-  totalCount?: Maybe<Scalars['Int']>;
-};
-
-export type StudentGroupEdge = {
-  __typename?: 'StudentGroupEdge';
-  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
-  cursor: Scalars['String'];
-  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
-  node?: Maybe<StudentGroup>;
-};
-
-export type CreateClassGroupInput = {
-  id?: Maybe<Scalars['String']>;
-  code?: Maybe<Scalars['String']>;
-};
-
-
-export type TopicConnection = {
-  __typename?: 'TopicConnection';
-  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
-  edges?: Maybe<Array<Maybe<TopicEdge>>>;
-  /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
-  pageInfo: PageInfo;
-  totalCount?: Maybe<Scalars['Int']>;
-};
-
-export type TopicEdge = {
-  __typename?: 'TopicEdge';
-  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
-  cursor: Scalars['String'];
-  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
-  node?: Maybe<Topic>;
-};
-
-export type ClassTopicsSortOrder = {
-  key?: Maybe<TopicSortKey>;
-  order?: Maybe<TopicSortOrder>;
-};
-
-export enum TopicSortKey {
-  Order = 'ORDER',
-  Updated = 'UPDATED'
-}
-
-/** Sort direction, ASC = ascending (normal - latest on top), DESC = descending (reverse - oldest on top) */
-export enum TopicSortOrder {
-  Asc = 'ASC',
-  Desc = 'DESC'
-}
 
 export type GetLastUpdatedTopicQueryVariables = Exact<{
   classId: Scalars['ID'];

@@ -2,12 +2,10 @@ import { makeSchema, connectionPlugin, fieldAuthorizePlugin } from 'nexus'
 import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema'
 import path from 'path'
 import * as entities from './entities'
-import { Query } from './query'
-import { Mutation } from './mutation'
 import * as scalars from './scalars'
 
 export const schema = makeSchema({
-  types: { Query, Mutation, ...scalars, ...entities },
+  types: { ...scalars, ...entities },
   plugins: [
     nexusSchemaPrisma({
       experimentalCRUD: true,

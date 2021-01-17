@@ -22,7 +22,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.7",
     "@apollo/link-batch-http": "^2.0.0-beta.3",
-    "@fxtrot/ui": "^1.0.123",
+    "@fxtrot/ui": "^1.0.125",
     "@prisma/client": "2.14.0",
     "@remirror/pm": "^1.0.0-next.60",
     "@stitches/react": "^0.0.3-canary.4",

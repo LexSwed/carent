@@ -52,8 +52,6 @@ const style: StyleRecord = {
 }
 const EditorPage = styled('section', {
   display: 'grid',
-  maxWidth: 800,
-  m: '0 auto',
 })
 
 const getTopicDetails = gql`

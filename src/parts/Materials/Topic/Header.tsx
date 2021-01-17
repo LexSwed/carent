@@ -16,7 +16,7 @@ const Header: React.FC = () => {
         <Menu.Button size="sm" variant="flat" space="$2">
           <Icon as={HiChevronDown} />
         </Menu.Button>
-        <Menu.List>
+        <Menu.List placement="bottom-end">
           <DeleteTopicButton />
         </Menu.List>
       </Menu>
