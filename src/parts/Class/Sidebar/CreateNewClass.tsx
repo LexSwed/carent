@@ -47,13 +47,13 @@ const getGroupsQuery = gql`
 
 const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => {
   return (
-    <Dialog.Trigger defaultOpen={defaultOpen}>
-      <Button main="center" variant="flat">
+    <Dialog defaultOpen={defaultOpen}>
+      <Dialog.Trigger main="center" variant="flat">
         <Icon as={HiPlus} />
         <span>Create new class</span>
-      </Button>
+      </Dialog.Trigger>
       {(close) => <NewGroupModal close={close} />}
-    </Dialog.Trigger>
+    </Dialog>
   )
 }
 

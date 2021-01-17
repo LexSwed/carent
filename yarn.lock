@@ -638,10 +638,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fxtrot/ui@^1.0.121":
-  version "1.0.121"
-  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.121.tgz#b07292973e09a6709c839d390a1df1ecf7ff344f"
-  integrity sha512-y29O+TASiI/xSLXqIRXPRw0hiKsKqR0z07mrOBauNTZJZpqOq/UkVGKZEplELcwUrtGwo9BbLoDoI1Cebt8dkA==
+"@fxtrot/ui@^1.0.123":
+  version "1.0.123"
+  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.123.tgz#83dc819721216d29eeb0716300dfa018b22c490b"
+  integrity sha512-BZeZVOThg30+bTaqX5fzyTsYji85Jz6st81yvaQ5uIIZbCZoZCcgx6SbBA+ceUcnLPWtKSznELf4cxIvf0M+dQ==
   dependencies:
     "@popperjs/core" "^2.6.0"
     "@react-aria/focus" "^3.2.3"
@@ -649,7 +649,7 @@
     "@react-aria/visually-hidden" "^3.2.1"
     "@stitches/react" "^0.0.3-canary.4"
     framer-motion "^3.2.1"
-    jotai "^0.12.4"
+    jotai "^0.12.5"
     react-uid "^2.3.1"
     react-virtual "^2.3.2"
 
@@ -6727,7 +6727,7 @@ jose@^1.27.2, jose@^1.28.0:
   dependencies:
     "@panva/asn1.js" "^1.0.0"
 
-jotai@^0.12.4:
+jotai@^0.12.5:
   version "0.12.5"
   resolved "https://registry.yarnpkg.com/jotai/-/jotai-0.12.5.tgz#ca556a3eb319412f68d3f1e53077effc734e3d85"
   integrity sha512-PuN96YURjEBMRfDDbtC81BJFHg73XQ26UzFy8OkGr70giLygBX5LMy42NtGjjlPbJ40xhguTcHPhDO1+vfFXeQ==

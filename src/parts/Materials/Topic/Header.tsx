@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Dialog, Flex, Heading, Text, Icon, Menu, Spinner } from '@fxtrot/ui'
+import { Button, Box, Dialog, Flex, Text, Icon, Menu, Spinner } from '@fxtrot/ui'
 import { useTopicId } from '../../../utils'
 import { HiCheck, HiChevronDown, HiOutlineTrash } from 'react-icons/hi'
 import { useDeleteTopic } from '../gql'
@@ -17,10 +17,7 @@ const Header: React.FC = () => {
           <Icon as={HiChevronDown} />
         </Menu.Button>
         <Menu.List>
-          <Menu.Item aria-label="Delete the document" css={{ color: '$danger' }} onClick={() => deleteTopic()}>
-            <Icon size="md" as={HiOutlineTrash} />
-            <span>Delete topic</span>
-          </Menu.Item>
+          <DeleteTopicButton />
         </Menu.List>
       </Menu>
     </Flex>
@@ -29,30 +26,31 @@ const Header: React.FC = () => {
 
 export default Header
 
-// const DeleteTopicButton = () => {
-//   const [deleteTopic] = useDeleteTopic()
+const DeleteTopicButton = () => {
+  const [deleteTopic] = useDeleteTopic()
 
-//   return (
-//     <Dialog.Trigger>
-//       <Menu.Item aria-label="Delete the document" css={{ color: '$danger' }}>
-//         <Icon size="md" as={HiOutlineTrash} />
-//         <span>Delete topic</span>
-//       </Menu.Item>
-//       {(close) => (
-//         <Dialog.Modal>
-//           <Heading>Delete topic?</Heading>
-//           <Text>This will delete the topic itself and all the materials associated with it.</Text>
-//           <Flex flow="row" space="sm">
-//             <Button onClick={close}>Cancel</Button>
-//             <Button onClick={() => deleteTopic()} variant="flat">
-//               Submit
-//             </Button>
-//           </Flex>
-//         </Dialog.Modal>
-//       )}
-//     </Dialog.Trigger>
-//   )
-// }
+  return (
+    <Dialog>
+      <Dialog.Trigger as={Menu.Item} aria-label="Delete the document" css={{ color: '$danger' }} variant="flat">
+        <Icon size="md" as={HiOutlineTrash} />
+        <span>Delete topic</span>
+      </Dialog.Trigger>
+      {(close) => (
+        <Dialog.Modal>
+          <Dialog.Title level={3}>Delete topic?</Dialog.Title>
+          <Text>This will archive the topic itself and all the materials associated with it.</Text>
+          <Box pb="$10" />
+          <Flex flow="row" main="end" cross="center" space="sm">
+            <Button onClick={close}>Cancel</Button>
+            <Button onClick={() => deleteTopic()} variant="flat">
+              Submit
+            </Button>
+          </Flex>
+        </Dialog.Modal>
+      )}
+    </Dialog>
+  )
+}
 
 const SaveIndicator: React.FC<{ loading: boolean }> = ({ loading }) => {
   return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, Icon, Menu, styled, Flex, StyleRecord } from '@fxtrot/ui'
+import { Text, Icon, Menu, styled, Flex } from '@fxtrot/ui'
 import { signOut, useSession } from 'next-auth/client'
 import { HiOutlineCog, HiOutlineDotsHorizontal, HiOutlineLogout } from 'react-icons/hi'
 
@@ -50,11 +50,11 @@ const UserPanel = () => {
         <Menu.List css={{ width: '$32' }} placement="bottom-end">
           <Menu.Item space="$3">
             <Icon as={HiOutlineCog} />
-            <span>Settings</span>
+            <Text size="sm">Settings</Text>
           </Menu.Item>
           <Menu.Item space="$3" onClick={() => signOut()}>
             <Icon as={HiOutlineLogout} />
-            <span>Sign Out</span>
+            <Text size="sm">Sign Out</Text>
           </Menu.Item>
         </Menu.List>
       </Menu>
