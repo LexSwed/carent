@@ -148,7 +148,6 @@ export const updateTopicTitleAndContent = mutationField((t) => {
         })
       ),
       title: 'String',
-      content: 'JSON',
     },
     resolve: async (_root, { id, title, content }, { prisma, session }) => {
       const item = await prisma.topic.findFirst({
@@ -176,7 +175,6 @@ export const updateTopicTitleAndContent = mutationField((t) => {
           id,
         },
         data: {
-          content,
           title,
           updatedAt: new Date(),
         },
@@ -232,7 +230,6 @@ export const Topic = objectType({
     t.implements('Node')
     t.model.id()
     t.model.title()
-    t.model.content()
     t.model.createdAt()
     t.model.updatedAt()
   },

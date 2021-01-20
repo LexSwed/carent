@@ -57,13 +57,12 @@ export interface NexusGenScalars {
   ID: string
   DateTime: any
   JSON: any
-  Json: any
 }
 
 export interface NexusGenObjects {
   Class: { // root type
-    id: string; // String!
-    name: string; // String!
+    id?: string | null; // String
+    name?: string | null; // String
   }
   ClassConnection: { // root type
     edges?: Array<NexusGenRootTypes['ClassEdge'] | null> | null; // [ClassEdge]
@@ -82,8 +81,8 @@ export interface NexusGenObjects {
   }
   Query: {};
   StudentGroup: { // root type
-    code: string; // String!
-    id: string; // String!
+    code?: string | null; // String
+    id?: string | null; // String
   }
   StudentGroupConnection: { // root type
     edges?: Array<NexusGenRootTypes['StudentGroupEdge'] | null> | null; // [StudentGroupEdge]
@@ -94,11 +93,10 @@ export interface NexusGenObjects {
     node?: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
   }
   Topic: { // root type
-    content: NexusGenScalars['Json']; // Json!
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
-    id: string; // String!
-    title: string; // String!
-    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    createdAt?: NexusGenScalars['DateTime'] | null; // DateTime
+    id?: string | null; // String
+    title?: string | null; // String
+    updatedAt?: NexusGenScalars['DateTime'] | null; // DateTime
   }
   TopicConnection: { // root type
     edges?: Array<NexusGenRootTypes['TopicEdge'] | null> | null; // [TopicEdge]
@@ -110,7 +108,7 @@ export interface NexusGenObjects {
   }
   User: { // root type
     email?: string | null; // String
-    id: string; // String!
+    id?: string | null; // String
     image?: string | null; // String
     name?: string | null; // String
   }
@@ -129,9 +127,9 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 
 export interface NexusGenFieldTypes {
   Class: { // field return type
-    group: NexusGenRootTypes['StudentGroup']; // StudentGroup!
-    id: string; // String!
-    name: string; // String!
+    group: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
+    id: string | null; // String
+    name: string | null; // String
     topics: NexusGenRootTypes['TopicConnection'] | null; // TopicConnection
   }
   ClassConnection: { // field return type
@@ -165,8 +163,8 @@ export interface NexusGenFieldTypes {
     topic: NexusGenRootTypes['Topic'] | null; // Topic
   }
   StudentGroup: { // field return type
-    code: string; // String!
-    id: string; // String!
+    code: string | null; // String
+    id: string | null; // String
   }
   StudentGroupConnection: { // field return type
     edges: Array<NexusGenRootTypes['StudentGroupEdge'] | null> | null; // [StudentGroupEdge]
@@ -178,11 +176,10 @@ export interface NexusGenFieldTypes {
     node: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
   }
   Topic: { // field return type
-    content: NexusGenScalars['Json']; // Json!
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
-    id: string; // String!
-    title: string; // String!
-    updatedAt: NexusGenScalars['DateTime']; // DateTime!
+    createdAt: NexusGenScalars['DateTime'] | null; // DateTime
+    id: string | null; // String
+    title: string | null; // String
+    updatedAt: NexusGenScalars['DateTime'] | null; // DateTime
   }
   TopicConnection: { // field return type
     edges: Array<NexusGenRootTypes['TopicEdge'] | null> | null; // [TopicEdge]
@@ -195,7 +192,7 @@ export interface NexusGenFieldTypes {
   }
   User: { // field return type
     email: string | null; // String
-    id: string; // String!
+    id: string | null; // String
     image: string | null; // String
     name: string | null; // String
   }
@@ -255,7 +252,6 @@ export interface NexusGenFieldTypeNames {
     node: 'StudentGroup'
   }
   Topic: { // field return type name
-    content: 'Json'
     createdAt: 'DateTime'
     id: 'String'
     title: 'String'

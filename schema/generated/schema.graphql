@@ -3,9 +3,9 @@
 
 
 type Class implements Node {
-  group: StudentGroup!
-  id: String!
-  name: String!
+  group: StudentGroup
+  id: String
+  name: String
   topics(
     """Returns the elements in the list that come after the specified cursor"""
     after: String
@@ -64,8 +64,6 @@ input CreateClassGroupInput {
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
 scalar DateTime
-
-scalar Json
 
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
@@ -166,8 +164,8 @@ type Query {
 }
 
 type StudentGroup implements Node {
-  code: String!
-  id: String!
+  code: String
+  id: String
 }
 
 type StudentGroupConnection {
@@ -192,11 +190,10 @@ type StudentGroupEdge {
 }
 
 type Topic implements Node {
-  content: Json!
-  createdAt: DateTime!
-  id: String!
-  title: String!
-  updatedAt: DateTime!
+  createdAt: DateTime
+  id: String
+  title: String
+  updatedAt: DateTime
 }
 
 type TopicConnection {
@@ -235,7 +232,7 @@ enum TopicSortOrder {
 
 type User implements Node {
   email: String
-  id: String!
+  id: String
   image: String
   name: String
 }

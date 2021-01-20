@@ -88,6 +88,8 @@ model Class {
   teacherId      String       @map("teacher_id")
   studentGroupId String       @map("student_group_id")
   name           String
+  // """Public information avaiable to students, e.g. contact lines"""
+  info           String
   active         Boolean      @default(true)
   studentGroup   StudentGroup @relation(fields: [studentGroupId], references: [id])
   teacher        Teacher      @relation(fields: [teacherId], references: [id])
@@ -139,6 +141,16 @@ model Assignment {
   topicId    String              @map("topic_id")
   sections   AssignmentSection[]
   variants   AssignmentVariant[]
+  state      AssignmentState?
+}
+
+model AssignmentState {
+  id           String     @id @default(cuid())
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  open         Boolean
+  openedAt     DateTime   @default(now()) @map("opened_at")
+  closedAt     DateTime   @default(now()) @map("closed_at")
+  assignmentId String
 }
 
 model AssignmentSection {
@@ -235,7 +247,6 @@ model AssignmentAccess {
 
 model Layout {
   id        String                    @id @default(cuid())
-  name      String
-  iconName  String                    @map("icon_name")
+  name      String                    @unique
   questions AssignmentQuestionBlock[]
 }
