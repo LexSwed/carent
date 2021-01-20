@@ -73,10 +73,12 @@ model Workspace {
 }
 
 model Teacher {
-  id      String  @id @default(cuid())
-  userId  String  @unique @map("user_id")
-  user    User    @relation(fields: [userId], references: [id])
-  classes Class[]
+  id               String             @id @default(cuid())
+  userId           String             @unique @map("user_id")
+  user             User               @relation(fields: [userId], references: [id])
+  classes          Class[]
+  topics           Topic[]
+  assignmentAccess AssignmentAccess[]
 
   @@unique([id, userId])
 }
@@ -95,16 +97,19 @@ model Class {
 }
 
 model Topic {
-  id         String    @id @default(cuid())
-  title      String
-  content    Json      @default(dbgenerated())
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @default(now()) @map("updated_at")
-  classId    String
-  hidden     Boolean   @default(true)
-  orderKey   String
-  class      Class     @relation(fields: [classId], references: [id])
-  archivedAt DateTime?
+  id          String       @id @default(cuid())
+  title       String
+  content     Json         @default(dbgenerated())
+  creator     Teacher      @relation(fields: [teacherId], references: [id])
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @default(now()) @map("updated_at")
+  classId     String
+  hidden      Boolean      @default(true)
+  orderKey    String       @map("order_key")
+  class       Class        @relation(fields: [classId], references: [id])
+  archivedAt  DateTime?    @map("archived_at")
+  teacherId   String       @map("teacher_id")
+  assignments Assignment[]
 }
 
 model StudentGroup {
@@ -115,8 +120,121 @@ model StudentGroup {
 }
 
 model Student {
-  id           String         @id @default(cuid())
-  userId       String         @unique @map("user_id")
-  users        User           @relation(fields: [userId], references: [id])
-  studentGroup StudentGroup[]
+  id          String             @id @default(cuid())
+  userId      String             @unique @map("user_id")
+  users       User               @relation(fields: [userId], references: [id])
+  group       StudentGroup[]
+  assignments AssignmentAccess[]
+}
+
+model Assignment {
+  id         String              @id @default(cuid())
+  name       String
+  createdAt  DateTime            @default(now()) @map("created_at")
+  updatedAt  DateTime            @default(now()) @map("updated_at")
+  archivedAt DateTime?           @default(now()) @map("archived_at")
+  creatorId  String              @map("creator_id")
+  topic      Topic               @relation(fields: [topicId], references: [id])
+  topicId    String              @map("topic_id")
+  sections   AssignmentSection[]
+  variants   AssignmentVariant[]
+}
+
+model AssignmentSection {
+  id           String                    @id @default(cuid())
+  name         String
+  questions    AssignmentQuestionBlock[]
+  assignment   Assignment?               @relation(fields: [assignmentId], references: [id])
+  assignmentId String?                   @map("assignment_id")
+  createdAt    DateTime                  @default(now()) @map("created_at")
+  updatedAt    DateTime                  @default(now()) @map("updated_at")
+}
+
+model AssignmentQuestionBlock {
+  id                   String                         @id @default(cuid())
+  title                String
+  question             AssignmentQuestion             @relation(fields: [assignmentQuestionId], references: [id])
+  layout               Layout                         @relation(fields: [layoutId], references: [id])
+  weight               Float
+  images               AssignmentQuestionBlockImage[]
+  orderKey             String                         @map("order_key")
+  assignmentSection    AssignmentSection              @relation(fields: [assignmentSectionId], references: [id])
+  assignmentSectionId  String                         @map("assignment_section_id")
+  createdAt            DateTime                       @default(now()) @map("created_at")
+  updatedAt            DateTime                       @default(now()) @map("updated_at")
+  layoutId             String                         @map("layout_id")
+  assignmentQuestionId String
+}
+
+model AssignmentQuestionBlockImage {
+  id                        String                   @id @default(cuid())
+  url                       String
+  label                     String
+  questionBlock             AssignmentQuestionBlock? @relation(fields: [assignmentQuestionBlockId], references: [id])
+  assignmentQuestionBlockId String?                  @map("assignment_question_block_id")
+}
+
+model AssignmentQuestion {
+  id                  String                            @id @default(cuid())
+  task                Json
+  type                AssignmentQuestionType
+  block               AssignmentQuestionBlock[]
+  variant             AssignmentVariant                 @relation(fields: [assignmentVariantId], references: [id])
+  assignmentVariantId String                            @map("assignment_variant_id")
+  correctAnswers      AssignmentQuestionCorrectAnswer[]
+}
+
+model AssignmentQuestionCorrectAnswer {
+  id                   String                   @id @default(cuid())
+  questionId           AssignmentQuestion       @relation(fields: [assignmentQuestionId], references: [id])
+  correctOptions       AssignmentAnswerOption[]
+  assignmentQuestionId String                   @map("assignment_question_id")
+}
+
+enum AssignmentQuestionType {
+  OneOf
+  Multiple
+  Text
+  Image
+  Document
+}
+
+model AssignmentAnswerOption {
+  id                                String                           @id @default(cuid())
+  title                             String
+  descrition                        String
+  orderKey                          String
+  imageUrl                          String?
+  maxLenght                         String?
+  correctToQuestion                 AssignmentQuestionCorrectAnswer? @relation(fields: [assignmentQuestionCorrectAnswerId], references: [id])
+  assignmentQuestionCorrectAnswerId String?                          @map("assignment_question_correct_answer_id")
+}
+
+model AssignmentVariant {
+  id            String               @id @default(cuid())
+  assignment    Assignment           @relation(fields: [assignmentId], references: [id])
+  questions     AssignmentQuestion[]
+  assignedUsers AssignmentAccess[]
+  assignmentId  String               @map("assignment_id")
+}
+
+model AssignmentAccess {
+  id                  String            @id @default(cuid())
+  assignmentId        String            @map("assignment_id")
+  student             Student           @relation(fields: [studentId], references: [id])
+  studentId           String            @map("student_id")
+  assignmentVariant   AssignmentVariant @relation(fields: [assignmentVariantId], references: [id])
+  assignmentVariantId String            @map("assignment_variant_id")
+  createdAt           DateTime          @default(now()) @map("created_at")
+  updatedAt           DateTime          @default(now()) @map("updated_at")
+  givenBy             Teacher           @relation(fields: [teacherId], references: [id])
+  givenByTeacherId    String            @map("given_by_user_id")
+  teacherId           String
+}
+
+model Layout {
+  id        String                    @id @default(cuid())
+  name      String
+  iconName  String                    @map("icon_name")
+  questions AssignmentQuestionBlock[]
 }
