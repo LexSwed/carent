@@ -99,7 +99,6 @@ model Class {
 model Topic {
   id          String       @id @default(cuid())
   title       String
-  content     Json         @default(dbgenerated())
   creator     Teacher      @relation(fields: [teacherId], references: [id])
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime     @default(now()) @map("updated_at")
@@ -110,6 +109,8 @@ model Topic {
   archivedAt  DateTime?    @map("archived_at")
   teacherId   String       @map("teacher_id")
   assignments Assignment[]
+
+  @@unique([id, teacherId])
 }
 
 model StudentGroup {

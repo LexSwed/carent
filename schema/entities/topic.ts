@@ -67,7 +67,11 @@ export const createNewTopic = mutationField((t) => {
       return prisma.topic.create({
         data: {
           title,
-          content: {},
+          creator: {
+            connect: {
+              userId: session?.user?.id,
+            },
+          },
           orderKey,
           class: {
             connect: {
