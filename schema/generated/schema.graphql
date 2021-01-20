@@ -3,9 +3,9 @@
 
 
 type Class implements Node {
-  group: StudentGroup
-  id: String
-  name: String
+  group: StudentGroup!
+  id: String!
+  name: String!
   topics(
     """Returns the elements in the list that come after the specified cursor"""
     after: String
@@ -93,8 +93,6 @@ type Mutation {
   ): Topic
   updateClassName(id: ID!, name: String!): Class
   updateTopic(
-    content: JSON
-
     """ID of the topic"""
     id: ID!
     title: String
@@ -164,8 +162,8 @@ type Query {
 }
 
 type StudentGroup implements Node {
-  code: String
-  id: String
+  code: String!
+  id: String!
 }
 
 type StudentGroupConnection {
@@ -190,10 +188,10 @@ type StudentGroupEdge {
 }
 
 type Topic implements Node {
-  createdAt: DateTime
-  id: String
-  title: String
-  updatedAt: DateTime
+  createdAt: DateTime!
+  id: String!
+  title: String!
+  updatedAt: DateTime!
 }
 
 type TopicConnection {
@@ -232,7 +230,7 @@ enum TopicSortOrder {
 
 type User implements Node {
   email: String
-  id: String
+  id: String!
   image: String
   name: String
 }

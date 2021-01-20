@@ -73,12 +73,12 @@ model Workspace {
 }
 
 model Teacher {
-  id               String             @id @default(cuid())
-  userId           String             @unique @map("user_id")
-  user             User               @relation(fields: [userId], references: [id])
-  classes          Class[]
-  topics           Topic[]
-  assignmentAccess AssignmentAccess[]
+  id                String             @id @default(cuid())
+  userId            String             @unique @map("user_id")
+  user              User               @relation(fields: [userId], references: [id])
+  classes           Class[]
+  topics            Topic[]
+  assignmentsAccess AssignmentAccess[]
 
   @@unique([id, userId])
 }
@@ -89,7 +89,7 @@ model Class {
   studentGroupId String       @map("student_group_id")
   name           String
   // """Public information avaiable to students, e.g. contact lines"""
-  info           String
+  info           String?
   active         Boolean      @default(true)
   studentGroup   StudentGroup @relation(fields: [studentGroupId], references: [id])
   teacher        Teacher      @relation(fields: [teacherId], references: [id])

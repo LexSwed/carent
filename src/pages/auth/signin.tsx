@@ -32,7 +32,7 @@ const SignIn: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
                 required
               />
               <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-              <Button main="center" type="submit">
+              <Button main="center" type="submit" variant="primary">
                 Sign In
               </Button>
             </Flex>

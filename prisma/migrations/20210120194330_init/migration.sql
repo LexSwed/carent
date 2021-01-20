@@ -79,7 +79,7 @@ CREATE TABLE "Class" (
     "teacher_id" TEXT NOT NULL,
     "student_group_id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "info" TEXT NOT NULL,
+    "info" TEXT,
     "active" BOOLEAN NOT NULL DEFAULT true,
 
     PRIMARY KEY ("id")
@@ -233,7 +233,6 @@ CREATE TABLE "AssignmentAccess" (
 CREATE TABLE "Layout" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "icon_name" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -285,6 +284,9 @@ CREATE UNIQUE INDEX "Student.user_id_unique" ON "Student"("user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "AssignmentState_assignmentId_unique" ON "AssignmentState"("assignmentId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Layout.name_unique" ON "Layout"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_StudentToStudentGroup_AB_unique" ON "_StudentToStudentGroup"("A", "B");

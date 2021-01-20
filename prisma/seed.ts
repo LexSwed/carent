@@ -1,8 +1,8 @@
 import { prisma } from './index'
-import { seedLayouts } from './seeds'
+import { seedLayouts, seedUser } from './seeds'
 
 async function main() {
-  return Promise.allSettled([...seedLayouts()])
+  return Promise.allSettled([...seedLayouts(), seedUser()])
 }
 
 main()
