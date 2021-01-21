@@ -70,6 +70,8 @@ model Workspace {
   id    String @id @default(cuid())
   name  String
   users User[]
+
+  @@map("workspaces")
 }
 
 model Teacher {
@@ -81,6 +83,7 @@ model Teacher {
   assignmentsAccess AssignmentAccess[]
 
   @@unique([id, userId])
+  @@map("teachers")
 }
 
 model Class {
@@ -96,6 +99,7 @@ model Class {
   topics         Topic[]
 
   @@unique([id, teacherId])
+  @@map("classes")
 }
 
 model Topic {
@@ -113,6 +117,7 @@ model Topic {
   assignments Assignment[]
 
   @@unique([id, teacherId])
+  @@map("topics")
 }
 
 model StudentGroup {
@@ -120,6 +125,8 @@ model StudentGroup {
   code     String
   classes  Class[]
   students Student[]
+
+  @@map("student_groups")
 }
 
 model Student {
@@ -128,6 +135,8 @@ model Student {
   users       User               @relation(fields: [userId], references: [id])
   group       StudentGroup[]
   assignments AssignmentAccess[]
+
+  @@map("students")
 }
 
 model Assignment {
@@ -142,6 +151,8 @@ model Assignment {
   sections   AssignmentSection[]
   variants   AssignmentVariant[]
   state      AssignmentState?
+
+  @@map("assignments")
 }
 
 model AssignmentState {
@@ -151,6 +162,8 @@ model AssignmentState {
   openedAt     DateTime   @default(now()) @map("opened_at")
   closedAt     DateTime   @default(now()) @map("closed_at")
   assignmentId String
+
+  @@map("assignment_states")
 }
 
 model AssignmentSection {
@@ -161,13 +174,15 @@ model AssignmentSection {
   assignmentId String?                   @map("assignment_id")
   createdAt    DateTime                  @default(now()) @map("created_at")
   updatedAt    DateTime                  @default(now()) @map("updated_at")
+
+  @@map("assignment_sections")
 }
 
 model AssignmentQuestionBlock {
   id                   String                         @id @default(cuid())
   title                String
   question             AssignmentQuestion             @relation(fields: [assignmentQuestionId], references: [id])
-  layout               Layout                         @relation(fields: [layoutId], references: [id])
+  layout               AssignmentQuestionBlockLayout  @relation(fields: [layoutId], references: [id])
   weight               Float
   images               AssignmentQuestionBlockImage[]
   orderKey             String                         @map("order_key")
@@ -177,6 +192,8 @@ model AssignmentQuestionBlock {
   updatedAt            DateTime                       @default(now()) @map("updated_at")
   layoutId             String                         @map("layout_id")
   assignmentQuestionId String
+
+  @@map("assignment_question_blocks")
 }
 
 model AssignmentQuestionBlockImage {
@@ -185,6 +202,8 @@ model AssignmentQuestionBlockImage {
   label                     String
   questionBlock             AssignmentQuestionBlock? @relation(fields: [assignmentQuestionBlockId], references: [id])
   assignmentQuestionBlockId String?                  @map("assignment_question_block_id")
+
+  @@map("assignment_question_block_images")
 }
 
 model AssignmentQuestion {
@@ -195,6 +214,8 @@ model AssignmentQuestion {
   variant             AssignmentVariant                 @relation(fields: [assignmentVariantId], references: [id])
   assignmentVariantId String                            @map("assignment_variant_id")
   correctAnswers      AssignmentQuestionCorrectAnswer[]
+
+  @@map("assignment_question_block_tasks")
 }
 
 model AssignmentQuestionCorrectAnswer {
@@ -202,6 +223,8 @@ model AssignmentQuestionCorrectAnswer {
   questionId           AssignmentQuestion       @relation(fields: [assignmentQuestionId], references: [id])
   correctOptions       AssignmentAnswerOption[]
   assignmentQuestionId String                   @map("assignment_question_id")
+
+  @@map("assignment_question_block_correct_answers")
 }
 
 enum AssignmentQuestionType {
@@ -221,6 +244,8 @@ model AssignmentAnswerOption {
   maxLenght                         String?
   correctToQuestion                 AssignmentQuestionCorrectAnswer? @relation(fields: [assignmentQuestionCorrectAnswerId], references: [id])
   assignmentQuestionCorrectAnswerId String?                          @map("assignment_question_correct_answer_id")
+
+  @@map("assignment_question_block_answer_options")
 }
 
 model AssignmentVariant {
@@ -229,6 +254,8 @@ model AssignmentVariant {
   questions     AssignmentQuestion[]
   assignedUsers AssignmentAccess[]
   assignmentId  String               @map("assignment_id")
+
+  @@map("assignment_variants")
 }
 
 model AssignmentAccess {
@@ -243,10 +270,14 @@ model AssignmentAccess {
   givenBy             Teacher           @relation(fields: [teacherId], references: [id])
   givenByTeacherId    String            @map("given_by_user_id")
   teacherId           String
+
+  @@map("assignment_accesses")
 }
 
-model Layout {
+model AssignmentQuestionBlockLayout {
   id        String                    @id @default(cuid())
   name      String                    @unique
   questions AssignmentQuestionBlock[]
+
+  @@map("assignment_question_block_layouts")
 }

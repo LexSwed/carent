@@ -149,7 +149,7 @@ export const updateTopicTitleAndContent = mutationField((t) => {
       ),
       title: 'String',
     },
-    resolve: async (_root, { id, title, content }, { prisma, session }) => {
+    resolve: async (_root, { id, title }, { prisma, session }) => {
       const item = await prisma.topic.findFirst({
         where: {
           id,

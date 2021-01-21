@@ -20,7 +20,7 @@ const layouts = [
 
 export function seedLayouts() {
   return layouts.map(({ name }) => {
-    return prisma.layout.upsert({
+    return prisma.assignmentQuestionBlockLayout.upsert({
       where: {
         name,
       },
