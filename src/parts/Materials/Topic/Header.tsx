@@ -1,23 +1,26 @@
 import React from 'react'
-import { Button, Box, Dialog, Flex, Text, Icon, Menu, Spinner } from '@fxtrot/ui'
-import { useClassId, useTopicId } from '../../../utils'
+import { Button, Box, Dialog, Flex, TextField, Text, Icon, Menu, Spinner, StyleRecord } from '@fxtrot/ui'
 import { HiCheck, HiChevronDown, HiChevronLeft, HiOutlineTrash } from 'react-icons/hi'
-import { useClassInfo, useDeleteTopic } from '../gql'
-import { Card } from '../../Card'
+import { useDeleteTopic, useTopicDetails } from '../gql'
 import Link from 'next/link'
+import { useClassId } from '../../../utils'
+import { useRouter } from 'next/router'
 
 const Header: React.FC = () => {
-  const loading = true
-  const { data } = useClassInfo()
-  const [deleteTopic] = useDeleteTopic()
+  const [deleteTopic, { loading }] = useDeleteTopic()
+  const classId = useClassId()
+  const { data } = useTopicDetails()
 
   return (
     <Flex flow="row" main="spread" cross="center">
-      <Link href={`/${data?.class.id}`}>
-        <Button size="lg" variant="flat" as="a" css={{ pl: '$2' }}>
-          <Icon as={HiChevronLeft} size="lg" /> <Text size="lg">{data?.class.name}</Text>
-        </Button>
-      </Link>
+      <Flex flow="row" cross="center" space="$4">
+        <Link href={`/${classId}`}>
+          <Button variant="flat" as="a">
+            <Icon as={HiChevronLeft} size="xl" />
+          </Button>
+        </Link>
+        <TextField value={data?.topic.title} variant="inline" css={style.title} />
+      </Flex>
       <Flex space="$8" flow="row" main="end" cross="center">
         <SaveIndicator loading={loading} />
 
@@ -26,7 +29,7 @@ const Header: React.FC = () => {
             <Icon as={HiChevronDown} />
           </Menu.Button>
           <Menu.List placement="bottom-end">
-            <DeleteTopicButton />
+            <DeleteTopicButton deleteTopic={deleteTopic} />
           </Menu.List>
         </Menu>
       </Flex>
@@ -34,10 +37,26 @@ const Header: React.FC = () => {
   )
 }
 
+const style: StyleRecord = {
+  title: {
+    '& input': {
+      fontSize: '$2xl',
+      fontWeight: 600,
+      p: 0,
+    },
+  },
+}
+
 export default Header
 
-const DeleteTopicButton = () => {
-  const [deleteTopic] = useDeleteTopic()
+const DeleteTopicButton = ({ deleteTopic }) => {
+  const classId = useClassId()
+  const router = useRouter()
+
+  async function handleDelete() {
+    await deleteTopic()
+    router.push(`/${classId}`)
+  }
 
   return (
     <Dialog>
@@ -52,7 +71,7 @@ const DeleteTopicButton = () => {
           <Box pb="$10" />
           <Flex flow="row" main="end" cross="center" space="sm">
             <Button onClick={close}>Cancel</Button>
-            <Button onClick={() => deleteTopic()} variant="flat">
+            <Button onClick={handleDelete} variant="flat">
               Submit
             </Button>
           </Flex>

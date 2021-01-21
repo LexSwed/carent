@@ -408,19 +408,6 @@ export type UpdateClassNameMutation = (
   )> }
 );
 
-export type GetTopicDetailsQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type GetTopicDetailsQuery = (
-  { __typename?: 'Query' }
-  & { topic?: Maybe<(
-    { __typename?: 'Topic' }
-    & Pick<Topic, 'id' | 'title'>
-  )> }
-);
-
 export type UpdateTopicMutationVariables = Exact<{
   id: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
@@ -432,6 +419,19 @@ export type UpdateTopicMutation = (
   & { updateTopic?: Maybe<(
     { __typename?: 'Topic' }
     & Pick<Topic, 'id'>
+  )> }
+);
+
+export type GetTopicDetailsQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetTopicDetailsQuery = (
+  { __typename?: 'Query' }
+  & { topic?: Maybe<(
+    { __typename?: 'Topic' }
+    & Pick<Topic, 'id' | 'title'>
   )> }
 );
 

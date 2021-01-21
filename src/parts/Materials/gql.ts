@@ -6,6 +6,8 @@ import type {
   GetClassInfoQueryVariables,
   UpdateTopicMutation,
   UpdateTopicMutationVariables,
+  GetTopicDetailsQuery,
+  GetTopicDetailsQueryVariables,
 } from '../../graphql/generated'
 import { useClassId, useTopicId } from '../../utils'
 
@@ -16,6 +18,24 @@ const updateTopic = gql`
     }
   }
 `
+
+const getTopicDetails = gql`
+  query getTopicDetails($id: ID!) {
+    topic(id: $id) {
+      id
+      title
+    }
+  }
+`
+
+export function useTopicDetails() {
+  const topicId = useTopicId()
+  return useQuery<GetTopicDetailsQuery, GetTopicDetailsQueryVariables>(getTopicDetails, {
+    variables: {
+      id: topicId,
+    },
+  })
+}
 
 const getShortClassInfo = gql`
   query getShortClassInfo($classId: ID!) {
