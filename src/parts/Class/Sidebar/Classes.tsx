@@ -8,6 +8,7 @@ import type { GetClassesQuery } from '../../../graphql/generated'
 import CreateNewClass from './CreateNewClass'
 import { useRouter } from 'next/router'
 import { useClassId } from '../../../utils'
+import { Card } from '../../Card'
 
 const getClassesQuery = gql`
   query getClasses {
@@ -55,7 +56,7 @@ const Classes = () => {
   const noClasses = data.classes.edges.length === 0
 
   return (
-    <Box p="$4">
+    <Card>
       <Flex space="$4">
         {noClasses ? (
           <NoClasses />
@@ -75,7 +76,7 @@ const Classes = () => {
         )}
         <CreateNewClass defaultOpen={data.classes.edges.length === 0} />
       </Flex>
-    </Box>
+    </Card>
   )
 }
 
@@ -91,32 +92,3 @@ function NoClasses() {
     </Flex>
   )
 }
-
-// const Tile = styled(Card, {
-//   all: 'unset',
-//   border: '1px solid transparent',
-//   transition: '0.14s ease-in',
-//   p: '$2',
-//   variants: {
-//     selected: {
-//       true: {
-//         borderColor: '$primaryStill',
-//       },
-//     },
-//   },
-// })
-
-// function ClassTile({ name, id, group, ...props }: Class & { selected: boolean }) {
-//   return (
-//     <Link href={`/${id}`}>
-//       <Tile as="a" {...props}>
-//         <Flex cross="spread">
-//           <Text>{name}</Text>
-//           <Text tone="light" size="xs">
-//             {group.code}
-//           </Text>
-//         </Flex>
-//       </Tile>
-//     </Link>
-//   )
-// }

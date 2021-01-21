@@ -2,14 +2,13 @@ import React from 'react'
 import { Text, Icon, Menu, styled, Flex } from '@fxtrot/ui'
 import { signOut, useSession } from 'next-auth/client'
 import { HiOutlineCog, HiOutlineDotsHorizontal, HiOutlineLogout } from 'react-icons/hi'
+import { Card } from './Card'
 
-const Panel = styled('div', {
+const Panel = styled(Card, {
   display: 'grid',
   gridTemplateColumns: 'auto 1fr auto',
   gap: '$4',
   alignItems: 'center',
-  mx: '$4',
-  br: '$md',
 })
 
 const Avatar = styled(Flex, {

@@ -12,6 +12,7 @@ import { useClassId } from '../../utils'
 import { HiChevronRight, HiArrowRight } from 'react-icons/hi'
 import { useRouter } from 'next/router'
 import { useCreateNewTopic } from './gql'
+import { Card } from '../Card'
 
 const MaterialsSection = () => {
   const classId = useClassId()
@@ -19,18 +20,28 @@ const MaterialsSection = () => {
 
   const topic = data?.class?.topics?.edges?.[0]?.node
 
+  if (loading) {
+    return null
+  }
+
   return (
-    <Flex as="section" space="$2">
-      <Box>
-        <Link href={`/${classId}/materials`}>
-          <Button as="a" variant="flat" size="lg">
-            <Text size="xl">Materials</Text>
-            <Icon as={HiChevronRight} size="xl" />
-          </Button>
-        </Link>
-      </Box>
-      {!loading && <Flex space="$4">{topic ? <LatestTopic topic={topic} /> : <NoMaterials />}</Flex>}
-    </Flex>
+    <Card>
+      <Flex as="section" space="$2">
+        <Box>
+          <Link href={`/${classId}/materials`}>
+            <Button as="a" variant="flat" size="lg">
+              <Text size="xl">Materials</Text>
+              <Icon as={HiChevronRight} size="xl" />
+            </Button>
+          </Link>
+        </Box>
+        {!loading && (
+          <Box px="$4" pb="$4">
+            <Flex space="$4">{topic ? <LatestTopic topic={topic} /> : <NoMaterials />}</Flex>
+          </Box>
+        )}
+      </Flex>
+    </Card>
   )
 }
 
@@ -60,31 +71,29 @@ function LatestTopic({
   const classId = useClassId()
   const href = `/${classId}/materials/${topic.id}`
   return (
-    <Box bc="$primaryLightActive" br="$md" px="$4" pt="$4" pb="$6">
-      <Flex space="$4">
-        <Text css={{ color: '$primaryStill', opacity: 0.8 }} size="sm">
-          Continue your work on
-        </Text>
-        <Flex flow="row" main="start" cross="center">
+    <Flex space="$4">
+      <Text css={{ color: '$primaryStill', opacity: 0.8 }} size="sm">
+        Continue your work on
+      </Text>
+      <Flex flow="row" main="start" cross="center">
+        <Link href={href}>
+          <Flex as={TextLink} flow="row" main="start" cross="center" space="$4">
+            <Icon as={TopicIcon} size="xl" stroke="$primaryStill" />
+            <Box py="$4" borderRight="2px solid $primaryStill" />
+            <Heading level={3} css={{ color: '$primaryStill', m: 0 }}>
+              {topic.title}
+            </Heading>
+          </Flex>
+        </Link>
+        <Box ml="auto">
           <Link href={href}>
-            <Flex as={TextLink} flow="row" main="start" cross="center" space="$4">
-              <Icon as={TopicIcon} size="xl" stroke="$primaryStill" />
-              <Box py="$4" borderRight="2px solid $primaryStill" />
-              <Heading level={3} css={{ color: '$primaryStill', m: 0 }}>
-                {topic.title}
-              </Heading>
-            </Flex>
+            <Button variant="primary" as="a">
+              <Icon as={HiArrowRight} size="xl" />
+            </Button>
           </Link>
-          <Box ml="auto">
-            <Link href={href}>
-              <Button variant="primary" as="a">
-                <Icon as={HiArrowRight} size="xl" />
-              </Button>
-            </Link>
-          </Box>
-        </Flex>
+        </Box>
       </Flex>
-    </Box>
+    </Flex>
   )
 }
 
@@ -122,29 +131,27 @@ function NoMaterials() {
   }
 
   return (
-    <Box bc="$primaryLightActive" br="$md" p="$6">
-      <Flex space="$4" as="form" onSubmit={handleSubmit}>
-        <Flex space="$2">
-          <Heading>New start</Heading>
-          <Text tone="light">Create a new topic as a first teaching material for this class</Text>
-        </Flex>
-        <Box ml="-$3">
-          <TextField
-            name="topic-name"
-            placeholder="New topic title..."
-            hint="For example, Linear Equations or 1.2 Chain reactions"
-            variant="inline"
-            autoComplete="off"
-            css={{ '& input': { textSize: '$lg' } }}
-          />
-        </Box>
-        <Flex flow="row" main="end">
-          <Button variant="primary" disabled={loading} type="submit">
-            Create
-          </Button>
-        </Flex>
+    <Flex space="$6" as="form" onSubmit={handleSubmit}>
+      <Flex space="$2">
+        <Heading>New start</Heading>
+        <Text tone="light">Create a new topic as a first teaching material for this class</Text>
       </Flex>
-    </Box>
+      <TextField
+        name="topic-name"
+        placeholder="New topic title..."
+        hint="For example, Linear Equations or 1.2 Chain reactions"
+        variant="underlined"
+        autoComplete="off"
+        css={{
+          '& input': { textSize: '$lg' },
+        }}
+      />
+      <Flex flow="row" main="end">
+        <Button variant="primary" disabled={loading} type="submit">
+          Create
+        </Button>
+      </Flex>
+    </Flex>
   )
 }
 

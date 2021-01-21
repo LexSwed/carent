@@ -12,7 +12,7 @@ export const TopicsList = ({ children }) => {
     <DragDropContext onDragEnd={handleDrop}>
       <Droppable droppableId="topics">
         {(provided) => (
-          <List as="ul" {...provided.droppableProps} ref={provided.innerRef}>
+          <List as="ul" {...provided.droppableProps} ref={provided.innerRef} space="$1">
             {children}
             {provided.placeholder}
           </List>

@@ -1,16 +1,31 @@
-import { gql, useMutation } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import type {
   DeleteTopicMutation,
   DeleteTopicMutationVariables,
+  GetClassInfoQuery,
+  GetClassInfoQueryVariables,
   UpdateTopicMutation,
   UpdateTopicMutationVariables,
 } from '../../graphql/generated'
-import { useTopicId } from '../../utils'
+import { useClassId, useTopicId } from '../../utils'
 
 const updateTopic = gql`
-  mutation updateTopic($id: ID!, $title: String, $content: JSON) {
-    updateTopic(id: $id, title: $title, content: $content) {
+  mutation updateTopic($id: ID!, $title: String) {
+    updateTopic(id: $id, title: $title) {
       id
+    }
+  }
+`
+
+const getShortClassInfo = gql`
+  query getShortClassInfo($classId: ID!) {
+    class(id: $classId) {
+      id
+      name
+      group {
+        id
+        code
+      }
     }
   }
 `
@@ -31,4 +46,13 @@ export function useDeleteTopic() {
   const topicId = useTopicId()
 
   return useMutation<DeleteTopicMutation, DeleteTopicMutationVariables>(deleteTopic, { variables: { id: topicId } })
+}
+
+export function useClassInfo() {
+  const classId = useClassId()
+  return useQuery<GetClassInfoQuery, GetClassInfoQueryVariables>(getShortClassInfo, {
+    variables: {
+      classId,
+    },
+  })
 }

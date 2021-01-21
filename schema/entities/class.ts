@@ -93,6 +93,7 @@ export const createClass = mutationField((t) => {
                 id: teacher.id,
               },
             },
+            // NB!: connectOrCreate with where.id === undefined is not handled by prisma
             studentGroup: group.id
               ? {
                   connect: {

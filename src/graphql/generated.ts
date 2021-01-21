@@ -13,7 +13,6 @@ export type Scalars = {
   DateTime: any;
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any;
-  Json: any;
 };
 
 
@@ -62,7 +61,6 @@ export type Topic = Node & {
   __typename?: 'Topic';
   id: Scalars['String'];
   title: Scalars['String'];
-  content: Scalars['Json'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
 };
@@ -143,7 +141,6 @@ export type StudentGroupEdge = {
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
   node?: Maybe<StudentGroup>;
 };
-
 
 export enum TopicSortKey {
   Order = 'ORDER',
@@ -230,7 +227,6 @@ export type MutationReorderTopicArgs = {
 export type MutationUpdateTopicArgs = {
   id: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
-  content?: Maybe<Scalars['JSON']>;
 };
 
 
@@ -421,14 +417,13 @@ export type GetTopicDetailsQuery = (
   { __typename?: 'Query' }
   & { topic?: Maybe<(
     { __typename?: 'Topic' }
-    & Pick<Topic, 'id' | 'title' | 'content'>
+    & Pick<Topic, 'id' | 'title'>
   )> }
 );
 
 export type UpdateTopicMutationVariables = Exact<{
   id: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
-  content?: Maybe<Scalars['JSON']>;
 }>;
 
 
@@ -437,6 +432,23 @@ export type UpdateTopicMutation = (
   & { updateTopic?: Maybe<(
     { __typename?: 'Topic' }
     & Pick<Topic, 'id'>
+  )> }
+);
+
+export type GetShortClassInfoQueryVariables = Exact<{
+  classId: Scalars['ID'];
+}>;
+
+
+export type GetShortClassInfoQuery = (
+  { __typename?: 'Query' }
+  & { class?: Maybe<(
+    { __typename?: 'Class' }
+    & Pick<Class, 'id' | 'name'>
+    & { group: (
+      { __typename?: 'StudentGroup' }
+      & Pick<StudentGroup, 'id' | 'code'>
+    ) }
   )> }
 );
 

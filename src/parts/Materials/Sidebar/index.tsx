@@ -8,6 +8,7 @@ import { TopicsList } from './TopicList'
 import { TopicLink } from './TopicLink'
 import { useClassTopics } from '../../Class/gql'
 import UserPanel from '../../UserPanel'
+import { Card } from '../../Card'
 
 const Topics = () => {
   const router = useRouter()
@@ -23,10 +24,10 @@ const Topics = () => {
   const topics = data?.class.topics.edges || []
 
   return (
-    <Box pl="$2" pr="$2">
-      <Flex space="$4">
-        <UserPanel />
-        <Flex>
+    <Flex space="$4">
+      <UserPanel />
+      <Card>
+        <Flex space="$4">
           <NewTopic />
           <TopicsList>
             {topics.map(({ node }, index) => (
@@ -40,8 +41,8 @@ const Topics = () => {
             ))}
           </TopicsList>
         </Flex>
-      </Flex>
-    </Box>
+      </Card>
+    </Flex>
   )
 }
 

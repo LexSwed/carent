@@ -7,6 +7,7 @@ import Header from './Header'
 import Placeholder from './Placeholder'
 import type { GetTopicDetailsQuery, GetTopicDetailsQueryVariables } from '../../../graphql/generated'
 import Editor from '../../../editor'
+import { Card } from '../../Card'
 
 const Topic = () => {
   const topicId = useTopicId()
@@ -28,12 +29,13 @@ const Topic = () => {
     <EditorPage>
       <Flex space="$4">
         <Header />
-        <Flex space="$8">
-          <Box pl="$7">
-            <TextField defaultValue={data?.topic.title} variant="inline" css={style.title} />
-          </Box>
-          <Editor content={data?.topic?.content} />
-        </Flex>
+        <Card>
+          <Flex space="$8" key={topicId}>
+            <Box p="$4">
+              <TextField defaultValue={data?.topic.title} variant="inline" css={style.title} />
+            </Box>
+          </Flex>
+        </Card>
       </Flex>
     </EditorPage>
   )
@@ -59,7 +61,6 @@ const getTopicDetails = gql`
     topic(id: $id) {
       id
       title
-      content
     }
   }
 `

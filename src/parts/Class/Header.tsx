@@ -41,9 +41,9 @@ const ClassHeader = () => {
   return (
     <Grid columns="1fr auto" space="$4">
       <TextField css={styles.input} value={newName} onChange={setNewName} variant="inline" onBlur={handleBlur} />
-      <Heading css={styles.group} variant="light">
+      {/* <Heading css={styles.group} level={4} variant="light">
         {data?.class.group.code}
-      </Heading>
+      </Heading> */}
     </Grid>
   )
 }

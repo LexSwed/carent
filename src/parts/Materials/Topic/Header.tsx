@@ -1,25 +1,35 @@
 import React from 'react'
 import { Button, Box, Dialog, Flex, Text, Icon, Menu, Spinner } from '@fxtrot/ui'
-import { useTopicId } from '../../../utils'
-import { HiCheck, HiChevronDown, HiOutlineTrash } from 'react-icons/hi'
-import { useDeleteTopic } from '../gql'
+import { useClassId, useTopicId } from '../../../utils'
+import { HiCheck, HiChevronDown, HiChevronLeft, HiOutlineTrash } from 'react-icons/hi'
+import { useClassInfo, useDeleteTopic } from '../gql'
+import { Card } from '../../Card'
+import Link from 'next/link'
 
 const Header: React.FC = () => {
   const loading = true
+  const { data } = useClassInfo()
   const [deleteTopic] = useDeleteTopic()
 
   return (
-    <Flex space="$8" flow="row" main="end" cross="center">
-      <SaveIndicator loading={loading} />
+    <Flex flow="row" main="spread" cross="center">
+      <Link href={`/${data?.class.id}`}>
+        <Button size="lg" variant="flat" as="a" css={{ pl: '$2' }}>
+          <Icon as={HiChevronLeft} size="lg" /> <Text size="lg">{data?.class.name}</Text>
+        </Button>
+      </Link>
+      <Flex space="$8" flow="row" main="end" cross="center">
+        <SaveIndicator loading={loading} />
 
-      <Menu>
-        <Menu.Button size="sm" variant="flat" space="$2">
-          <Icon as={HiChevronDown} />
-        </Menu.Button>
-        <Menu.List placement="bottom-end">
-          <DeleteTopicButton />
-        </Menu.List>
-      </Menu>
+        <Menu>
+          <Menu.Button size="sm" space="$2" variant="flat">
+            <Icon as={HiChevronDown} />
+          </Menu.Button>
+          <Menu.List placement="bottom-end">
+            <DeleteTopicButton />
+          </Menu.List>
+        </Menu>
+      </Flex>
     </Flex>
   )
 }
