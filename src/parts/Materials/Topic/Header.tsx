@@ -5,6 +5,7 @@ import { useDeleteTopic, useTopicDetails } from '../gql'
 import Link from 'next/link'
 import { useClassId } from '../../../utils'
 import { useRouter } from 'next/router'
+import { useClassTopics } from '../../Class/gql'
 
 const Header: React.FC = () => {
   const [deleteTopic, { loading }] = useDeleteTopic()
@@ -49,13 +50,15 @@ const style: StyleRecord = {
 
 export default Header
 
-const DeleteTopicButton = ({ deleteTopic }) => {
-  const classId = useClassId()
+const DeleteTopicButton: React.FC<{
+  deleteTopic: () => void
+}> = ({ deleteTopic }) => {
   const router = useRouter()
+  const { data } = useClassTopics()
 
   async function handleDelete() {
     await deleteTopic()
-    router.push(`/${classId}`)
+    router.push(`/${data?.class.id}/${data?.class.topics.edges[0].node.id}`)
   }
 
   return (

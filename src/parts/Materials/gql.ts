@@ -2,14 +2,12 @@ import { gql, useMutation, useQuery } from '@apollo/client'
 import type {
   DeleteTopicMutation,
   DeleteTopicMutationVariables,
-  GetClassInfoQuery,
-  GetClassInfoQueryVariables,
   UpdateTopicMutation,
   UpdateTopicMutationVariables,
   GetTopicDetailsQuery,
   GetTopicDetailsQueryVariables,
 } from '../../graphql/generated'
-import { useClassId, useTopicId } from '../../utils'
+import { useTopicId } from '../../utils'
 
 const updateTopic = gql`
   mutation updateTopic($id: ID!, $title: String) {
@@ -37,19 +35,6 @@ export function useTopicDetails() {
   })
 }
 
-const getShortClassInfo = gql`
-  query getShortClassInfo($classId: ID!) {
-    class(id: $classId) {
-      id
-      name
-      group {
-        id
-        code
-      }
-    }
-  }
-`
-
 export function useUpdateTopic() {
   return useMutation<UpdateTopicMutation, UpdateTopicMutationVariables>(updateTopic)
 }
@@ -66,13 +51,4 @@ export function useDeleteTopic() {
   const topicId = useTopicId()
 
   return useMutation<DeleteTopicMutation, DeleteTopicMutationVariables>(deleteTopic, { variables: { id: topicId } })
-}
-
-export function useClassInfo() {
-  const classId = useClassId()
-  return useQuery<GetClassInfoQuery, GetClassInfoQueryVariables>(getShortClassInfo, {
-    variables: {
-      classId,
-    },
-  })
 }

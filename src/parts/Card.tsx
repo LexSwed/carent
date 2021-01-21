@@ -5,5 +5,5 @@ export const Card = styled('div', {
   bc: '#fff',
   color: '$text',
   p: '$4',
-  br: '$xl',
+  br: '$lg',
 })

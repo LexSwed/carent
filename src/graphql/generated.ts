@@ -435,23 +435,6 @@ export type GetTopicDetailsQuery = (
   )> }
 );
 
-export type GetShortClassInfoQueryVariables = Exact<{
-  classId: Scalars['ID'];
-}>;
-
-
-export type GetShortClassInfoQuery = (
-  { __typename?: 'Query' }
-  & { class?: Maybe<(
-    { __typename?: 'Class' }
-    & Pick<Class, 'id' | 'name'>
-    & { group: (
-      { __typename?: 'StudentGroup' }
-      & Pick<StudentGroup, 'id' | 'code'>
-    ) }
-  )> }
-);
-
 export type DeleteTopicMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
