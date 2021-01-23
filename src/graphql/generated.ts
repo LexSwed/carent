@@ -447,3 +447,17 @@ export type DeleteTopicMutation = (
     & Pick<Topic, 'id'>
   )> }
 );
+
+export type UpdateTopicTitleMutationVariables = Exact<{
+  id: Scalars['ID'];
+  title: Scalars['String'];
+}>;
+
+
+export type UpdateTopicTitleMutation = (
+  { __typename?: 'Mutation' }
+  & { updateTopic?: Maybe<(
+    { __typename?: 'Topic' }
+    & Pick<Topic, 'id' | 'title'>
+  )> }
+);

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex } from '@fxtrot/ui'
+import { Flex } from '@fxtrot/ui'
 import { useRouter } from 'next/router'
 import { useClassId, useTopicId } from '../../../utils'
 

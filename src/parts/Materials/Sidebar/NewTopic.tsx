@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, Flex, Icon, styled, TextField, useKeyboardHandles } from '@fxtrot/ui'
+import { Box, Button, Flex, Icon, TextField, useKeyboardHandles } from '@fxtrot/ui'
 import { HiPlus } from 'react-icons/hi'
 import { useClassId } from '../../../utils'
 

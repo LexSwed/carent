@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button, Flex, Icon, Box, styled, Text, StyleRecord } from '@fxtrot/ui'
-import { HiChevronRight, HiMenuAlt4 } from 'react-icons/hi'
+import { Button, Flex, Icon, styled, Text } from '@fxtrot/ui'
+import { HiMenuAlt4 } from 'react-icons/hi'
 import type { GetClassTopicsQuery } from '../../../graphql/generated'
 import { Draggable } from 'react-beautiful-dnd'
 
@@ -55,13 +55,13 @@ const TopicCard = styled(Flex, {
   'transitionProperty': 'background-color, box-shadow',
 
   '&:hover': {
-    bc: '$flatHover',
+    bc: '$surfaceHover',
   },
 
   'variants': {
     selected: {
       true: {
-        bc: '$flatActive',
+        bc: '$surfaceActive',
       },
     },
     dragging: {

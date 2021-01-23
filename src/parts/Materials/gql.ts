@@ -1,4 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
+import { useCallback } from 'react'
 import type {
   DeleteTopicMutation,
   DeleteTopicMutationVariables,
@@ -6,6 +7,8 @@ import type {
   UpdateTopicMutationVariables,
   GetTopicDetailsQuery,
   GetTopicDetailsQueryVariables,
+  UpdateTopicTitleMutationVariables,
+  UpdateTopicTitleMutation,
 } from '../../graphql/generated'
 import { useTopicId } from '../../utils'
 
@@ -51,4 +54,34 @@ export function useDeleteTopic() {
   const topicId = useTopicId()
 
   return useMutation<DeleteTopicMutation, DeleteTopicMutationVariables>(deleteTopic, { variables: { id: topicId } })
+}
+
+const updateTopicTitle = gql`
+  mutation updateTopicTitle($id: ID!, $title: String!) {
+    updateTopic(id: $id, title: $title) {
+      id
+      title
+    }
+  }
+`
+export function useOnBlurUpdateTopicTitle() {
+  const topicId = useTopicId()
+
+  const [update] = useMutation<UpdateTopicTitleMutation, UpdateTopicTitleMutationVariables>(updateTopicTitle)
+
+  const handleBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      const title = e.target.value
+
+      update({
+        variables: {
+          id: topicId,
+          title,
+        },
+      })
+    },
+    [topicId, update]
+  )
+
+  return handleBlur
 }

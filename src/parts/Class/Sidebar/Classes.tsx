@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Box, Flex, MenuList, Text, StyleRecord } from '@fxtrot/ui'
+import { Flex, MenuList, Text, StyleRecord } from '@fxtrot/ui'
 import { gql, useQuery } from '@apollo/client'
 import Image from 'next/image'
 import Link from 'next/link'

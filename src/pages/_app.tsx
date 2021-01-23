@@ -24,10 +24,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           body {
             margin: 0;
             padding: 0;
+            background-color: #fff;
             background-image: radial-gradient(
-              farthest-corner at 20% 20%,
-              var(--colors-orange50) 50%,
-              var(--colors-blueGray200) 100%
+              farthest-corner at 30% 30%,
+              var(--colors-warmGray50) 20%,
+              var(--colors-blueGray100) 80%
             );
           }
           body * {

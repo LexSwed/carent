@@ -1,4 +1,4 @@
-import { Grid, Heading, StyleRecord, TextField } from '@fxtrot/ui'
+import { Grid, StyleRecord, TextField } from '@fxtrot/ui'
 import React, { useEffect, useState } from 'react'
 import { useClassId } from '../../utils'
 import { useClassInfo, useUpdateClassName } from './gql'
