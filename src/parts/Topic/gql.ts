@@ -66,12 +66,17 @@ const updateTopicTitle = gql`
 `
 export function useOnBlurUpdateTopicTitle() {
   const topicId = useTopicId()
+  const { data } = useTopicDetails()
 
   const [update] = useMutation<UpdateTopicTitleMutation, UpdateTopicTitleMutationVariables>(updateTopicTitle)
 
   const handleBlur = useCallback(
     (e: React.FocusEvent<HTMLInputElement>) => {
       const title = e.target.value
+
+      if (data?.topic.title === title) {
+        return null
+      }
 
       update({
         variables: {
@@ -80,7 +85,7 @@ export function useOnBlurUpdateTopicTitle() {
         },
       })
     },
-    [topicId, update]
+    [data?.topic.title, topicId, update]
   )
 
   return handleBlur

@@ -12,7 +12,6 @@ import { Card } from '../../Card'
 
 const Topics = () => {
   const router = useRouter()
-
   const selectedTopicId = useTopicId()
   const classId = useClassId()
   const { data } = useClassTopics()

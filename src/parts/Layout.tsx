@@ -3,7 +3,7 @@ import React from 'react'
 
 const Grid = styled('div', {
   display: 'grid',
-  gridTemplateColumns: '320px 1fr',
+  gridTemplateColumns: '320px [sidebar] 1fr [main]',
   gap: '$4',
   height: '100vh',
   width: '100vw',

@@ -1,9 +1,11 @@
 import React from 'react'
 import { Button, Flex, TextField, Icon, StyleRecord } from '@fxtrot/ui'
 import { HiChevronLeft } from 'react-icons/hi'
-import { useOnBlurUpdateTopicTitle, useTopicDetails } from '../gql'
 import Link from 'next/link'
+
+import { useOnBlurUpdateTopicTitle, useTopicDetails } from '../gql'
 import { useClassId } from '../../../utils'
+
 import TopicHeaderMenu from './TopicHeaderMenu'
 
 const Header: React.FC = () => {
