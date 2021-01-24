@@ -4,15 +4,39 @@ import { useScraper } from '../../../utils/link-preview'
 import type { LinkData } from '../../../utils/link-preview/scrapper/utils'
 import { useTopicAttachments } from '../gql'
 
-const List = () => {
+const AttachmentsList = () => {
   const { data } = useTopicAttachments()
-
-  return <Flex>{JSON.stringify(data, null, 2)}</Flex>
+  const list = data?.topic?.attachments?.edges || []
+  return (
+    <Flex>
+      {list.map((edge) => (
+        <LinkPreview key={edge.node.id} href={edge.node.href} />
+      ))}
+    </Flex>
+  )
 }
 
-export default List
+export default AttachmentsList
 
-function LinkPreview({ url, description, title, image }: LinkData) {
+const LinkPreview: React.FC<{ href: string }> = ({ href }) => {
+  const { data, loading, error } = useScraper({ url: href })
+
+  if (error) {
+    return (
+      <LinkPreviewBox>
+        <TextLink href={href} external="icon" ellipsis>
+          {href}
+        </TextLink>
+      </LinkPreviewBox>
+    )
+  }
+
+  if (loading || !data) {
+    return null
+  }
+
+  const { title, description, image, url } = data
+
   return (
     <LinkPreviewBox>
       <Flex flow="row" cross="center">
@@ -21,10 +45,10 @@ function LinkPreview({ url, description, title, image }: LinkData) {
           <Text as="div" size="sm" ellipsis>
             {title}
           </Text>
-          <Text as="div" size="xs" ellipsis tone="light">
+          <Text as="div" size="xs" tone="light" ellipsis>
             {description}
           </Text>
-          <TextLink href={url} size="xs" ellipsis external="icon">
+          <TextLink href={url} size="xs" external="icon" ellipsis>
             {url}
           </TextLink>
         </LinkDetails>

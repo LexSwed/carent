@@ -1,5 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import type {
   DeleteTopicMutation,
   DeleteTopicMutationVariables,
@@ -11,8 +11,12 @@ import type {
   UpdateTopicTitleMutation,
   GetTopicAttachmentsQuery,
   GetTopicAttachmentsQueryVariables,
+  MutationAddTopicAttachmentArgs,
+  AddTopicAttachmentMutation,
+  AddTopicAttachmentMutationVariables,
 } from '../../graphql/generated'
 import { useClassId, useTopicId } from '../../utils'
+import NewAttachment from './LinkedMaterials/NewAttachment'
 
 const updateTopic = gql`
   mutation updateTopic($id: ID!, $title: String) {
@@ -138,4 +142,58 @@ export function useTopicAttachments() {
       id: topicId,
     },
   })
+}
+
+const addTopicAttachment = gql`
+  mutation addTopicAttachment($topicId: ID!, $href: String!) {
+    addTopicAttachment(topicId: $topicId, href: $href) {
+      id
+      href
+    }
+  }
+`
+
+export function useAddTopicAttachment() {
+  const topicId = useTopicId()
+  const [href, setHref] = useState('')
+
+  const mutation = useMutation<AddTopicAttachmentMutation, AddTopicAttachmentMutationVariables>(addTopicAttachment, {
+    variables: {
+      topicId,
+      href,
+    },
+    update(cache, { data: { addTopicAttachment } }) {
+      cache.modify({
+        id: cache.identify({
+          __typename: 'Topic',
+          id: topicId,
+        }),
+        fields: {
+          attachments: (attachmentsConnection) => {
+            const newAttachmentNodeRef = cache.writeFragment({
+              data: addTopicAttachment,
+              fragment: gql`
+                fragment NewLink on TopicAttachment {
+                  id
+                  href
+                }
+              `,
+            })
+            return {
+              ...attachmentsConnection,
+              edges: [
+                {
+                  __typename: 'TopicAttachmentEdge',
+                  node: newAttachmentNodeRef,
+                },
+                ...attachmentsConnection.edges,
+              ],
+            }
+          },
+        },
+      })
+    },
+  })
+
+  return [{ value: href, onChange: setHref }, mutation] as const
 }

@@ -528,3 +528,22 @@ export type GetTopicAttachmentsQuery = (
     )> }
   )> }
 );
+
+export type AddTopicAttachmentMutationVariables = Exact<{
+  topicId: Scalars['ID'];
+  href: Scalars['String'];
+}>;
+
+
+export type AddTopicAttachmentMutation = (
+  { __typename?: 'Mutation' }
+  & { addTopicAttachment?: Maybe<(
+    { __typename?: 'TopicAttachment' }
+    & Pick<TopicAttachment, 'id' | 'href'>
+  )> }
+);
+
+export type NewLinkFragment = (
+  { __typename?: 'TopicAttachment' }
+  & Pick<TopicAttachment, 'id' | 'href'>
+);
