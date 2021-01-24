@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 import { Box, Button, Flex, Icon, TextField } from '@fxtrot/ui'
-import { HiDocumentAdd, HiOutlineDocumentAdd, HiViewGridAdd } from 'react-icons/hi'
+import { HiOutlineDocumentAdd } from 'react-icons/hi'
 import { isUrl } from '../../../utils/link-preview'
 import { useAddTopicAttachment } from '../gql'
 
-const NewAttachment = () => {
+const NewAttachment: React.FC<{
+  inputRef?: React.RefObject<HTMLInputElement>
+}> = ({ inputRef }) => {
   const [{ value, onChange }, [createLink]] = useAddTopicAttachment()
   const [valid, setValid] = useState(false)
 
@@ -29,6 +31,7 @@ const NewAttachment = () => {
         validity={valid ? 'valid' : undefined}
         type="url"
         variant="transparent"
+        inputRef={inputRef}
       />
       <Box pt="$1">
         <Button size="sm" aria-label="Link the resource" variant="flat" type="submit" main="center">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { Box, Button, Flex, Heading, Icon, Text, TextLink } from '@fxtrot/ui'
 import NewAttachment from './NewAttachment'
@@ -9,6 +9,7 @@ import { HiEyeOff, HiPlus } from 'react-icons/hi'
 const LinkedMaterials = () => {
   const { data, loading } = useTopicAttachments()
   const [isNewLinkShown, setNewLinkShown] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const thereAreAttachments = data?.topic?.attachments?.edges?.length > 0
 
@@ -22,22 +23,33 @@ const LinkedMaterials = () => {
         <Heading level={3} css={{ py: '$1' }}>
           Linked Materials
         </Heading>
-        {thereAreAttachments && (
-          <Button
-            aria-label={isNewLinkShown ? 'Hide new link form' : 'Show new link form'}
-            size="sm"
-            variant="flat"
-            onClick={(e) => setNewLinkShown((shown) => !shown)}
-          >
-            <Icon as={isNewLinkShown ? HiEyeOff : HiPlus} size="md" />
-          </Button>
-        )}
+        {thereAreAttachments &&
+          (isNewLinkShown ? (
+            <Button aria-label="Hide new link form" size="sm" variant="flat" onClick={(e) => setNewLinkShown(false)}>
+              <Icon as={HiEyeOff} size="md" />
+            </Button>
+          ) : (
+            <Button
+              aria-label="Show new link form"
+              size="sm"
+              variant="flat"
+              onClick={() => {
+                setNewLinkShown(true)
+                setTimeout(() => {
+                  console.log(inputRef.current)
+                  inputRef.current?.focus()
+                }, 100)
+              }}
+            >
+              <Icon as={HiPlus} size="md" />
+            </Button>
+          ))}
       </Flex>
       <Box minHeight={200}>
         <Flex space="$4">
           {!loading && (
             <>
-              {isNewLinkShown && <NewAttachment />}
+              {isNewLinkShown && <NewAttachment inputRef={inputRef} />}
 
               {thereAreAttachments && <AttachmentsList />}
             </>
