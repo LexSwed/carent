@@ -638,18 +638,18 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fxtrot/ui@^1.0.126":
-  version "1.0.126"
-  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.126.tgz#25fe8f92e935710073478a866364ef3e9ba9496f"
-  integrity sha512-8kPPMokq49EzwpAQLbe+9SgQYRly3z2PYUisqOd1zRfaG/8g+k14jqF0zln/c1LVno4jkXTdor+6lTOhqTOYHQ==
+"@fxtrot/ui@^1.0.128":
+  version "1.0.128"
+  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.128.tgz#fc8493d10eefbcd4064927c1c7a291951207758a"
+  integrity sha512-Haxk5pc9rFzpw5ruzWgx/NTUEQmN8abpZAjfObvBAUVMSoKkmWDXUS0u1aK1lxPFD7piNijKLW9ONXCxUiOtHw==
   dependencies:
     "@popperjs/core" "^2.6.0"
     "@react-aria/focus" "^3.2.3"
     "@react-aria/interactions" "^3.3.2"
     "@react-aria/visually-hidden" "^3.2.1"
     "@stitches/react" "^0.0.3-canary.4"
-    framer-motion "^3.2.1"
-    jotai "^0.12.5"
+    framer-motion "^3.2.2-rc.1"
+    jotai "^0.12.6"
     react-uid "^2.3.1"
     react-virtual "^2.3.2"
 
@@ -5565,6 +5565,19 @@ framer-motion@^3.2.1:
   optionalDependencies:
     "@emotion/is-prop-valid" "^0.8.2"
 
+framer-motion@^3.2.2-rc.1:
+  version "3.2.2-rc.1"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-3.2.2-rc.1.tgz#8fb334484505f01b6b9fc2ce6a770bd71507e53d"
+  integrity sha512-Q/b0f3mPmhZ3CZILCMaWKxZh+js3J0is4eF1IMyHrDcYvBENTlepfb0oE6VNLcw3pwxxtmvIP//N+4bWUzHI1w==
+  dependencies:
+    framesync "^5.0.0"
+    hey-listen "^1.0.8"
+    popmotion "^9.1.0"
+    style-value-types "^4.0.1"
+    tslib "^1.10.0"
+  optionalDependencies:
+    "@emotion/is-prop-valid" "^0.8.2"
+
 framesync@5.0.0, framesync@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/framesync/-/framesync-5.0.0.tgz#7de8caedf53ac441118e79680f1beb7391c328b6"
@@ -6728,12 +6741,12 @@ jose@^1.27.2, jose@^1.28.0:
   dependencies:
     "@panva/asn1.js" "^1.0.0"
 
-jotai@^0.12.5:
-  version "0.12.5"
-  resolved "https://registry.yarnpkg.com/jotai/-/jotai-0.12.5.tgz#ca556a3eb319412f68d3f1e53077effc734e3d85"
-  integrity sha512-PuN96YURjEBMRfDDbtC81BJFHg73XQ26UzFy8OkGr70giLygBX5LMy42NtGjjlPbJ40xhguTcHPhDO1+vfFXeQ==
+jotai@^0.12.6:
+  version "0.12.6"
+  resolved "https://registry.yarnpkg.com/jotai/-/jotai-0.12.6.tgz#c64c09ef407010ca92cf9e3727ee849e2fd2a079"
+  integrity sha512-nflqHYHZHRJsJ6sRb1b59uMUg/2c+jVAE/ULk+8k/mQ5/XjtjaHAjD0qG2rHJ10NwGm624oL+03GzUDN6VVFWw==
   dependencies:
-    use-context-selector "1.3.5"
+    use-context-selector "1.3.6"
 
 js-cookie@^2.2.1:
   version "2.2.1"
@@ -10769,10 +10782,10 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
-use-context-selector@1.3.5:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/use-context-selector/-/use-context-selector-1.3.5.tgz#ae1acc14fd504d93c42cbebd4636bf282480aea4"
-  integrity sha512-pYHLEuY3VzboKmHVpT2AABUbzhgKvKUVr7HpDtsRZ9BOJo0dF2U/AS2IEySl6cEKL5RFZP99Fp825dl0SBeqHA==
+use-context-selector@1.3.6:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/use-context-selector/-/use-context-selector-1.3.6.tgz#76ff0687a7cf0f6080eb583f654aaaa07590368c"
+  integrity sha512-M+2NnqVfSZ+P3UMyD+sei8dJL+ebd7ze6xlErjvM0DQal/vr6+F9q5QuvGvZ6eqb1JB18FmoLSrFYqF0FsEylg==
 
 use-isomorphic-layout-effect@^1.1.0:
   version "1.1.1"

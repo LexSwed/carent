@@ -9,8 +9,10 @@ import type {
   GetTopicDetailsQueryVariables,
   UpdateTopicTitleMutationVariables,
   UpdateTopicTitleMutation,
+  GetTopicAttachmentsQuery,
+  GetTopicAttachmentsQueryVariables,
 } from '../../graphql/generated'
-import { useTopicId } from '../../utils'
+import { useClassId, useTopicId } from '../../utils'
 
 const updateTopic = gql`
   mutation updateTopic($id: ID!, $title: String) {
@@ -51,9 +53,30 @@ const deleteTopic = gql`
 `
 
 export function useDeleteTopic() {
+  const classId = useClassId()
   const topicId = useTopicId()
 
-  return useMutation<DeleteTopicMutation, DeleteTopicMutationVariables>(deleteTopic, { variables: { id: topicId } })
+  return useMutation<DeleteTopicMutation, DeleteTopicMutationVariables>(deleteTopic, {
+    variables: { id: topicId },
+    update(cache, { data: { deleteTopic } }) {
+      cache.modify({
+        id: cache.identify({
+          __typename: 'Class',
+          id: classId,
+        }),
+        fields: {
+          topics: (topicsConnection, { readField }) => {
+            return {
+              ...topicsConnection,
+              edges: topicsConnection.edges.filter(({ node }) => deleteTopic.id !== readField('id', node)),
+            }
+          },
+        },
+      })
+      cache.evict({ id: cache.identify(deleteTopic) })
+      cache.gc()
+    },
+  })
 }
 
 const updateTopicTitle = gql`
@@ -89,4 +112,30 @@ export function useOnBlurUpdateTopicTitle() {
   )
 
   return handleBlur
+}
+
+const getTopicAttachments = gql`
+  query getTopicAttachments($id: ID!) {
+    topic(id: $id) {
+      id
+      attachments(first: 20) {
+        edges {
+          node {
+            id
+            href
+          }
+        }
+      }
+    }
+  }
+`
+
+export function useTopicAttachments() {
+  const topicId = useTopicId()
+
+  return useQuery<GetTopicAttachmentsQuery, GetTopicAttachmentsQueryVariables>(getTopicAttachments, {
+    variables: {
+      id: topicId,
+    },
+  })
 }

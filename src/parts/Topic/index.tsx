@@ -15,7 +15,7 @@ const Topic = () => {
   }
 
   return (
-    <Flex space="$4">
+    <Flex space="$4" key={topicId}>
       <Header />
       <Grid
         columns="minmax(320px, 3fr) [main] minmax(300px, 2fr) [materials]"

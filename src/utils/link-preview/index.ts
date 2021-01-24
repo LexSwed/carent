@@ -34,7 +34,7 @@ export function useScraper({ url }: UseScraperConfig): LinkPreview {
   })
 
   useEffect(() => {
-    if (!urlRegex({ exact: true }).test(url)) {
+    if (!isUrl(url)) {
       return
     }
 
@@ -91,4 +91,8 @@ const cache = {
   set: (key: string, data: LinkData) => {
     sessionStorage.setItem(key, JSON.stringify(data))
   },
+}
+
+export function isUrl(url: string) {
+  return urlRegex({ exact: true }).test(url)
 }

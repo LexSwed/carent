@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Box, Button, Flex, Icon, TextField, useKeyboardHandles } from '@fxtrot/ui'
+import { useRouter } from 'next/router'
+import { Box, Button, Flex, Icon, TextField } from '@fxtrot/ui'
 import { HiPlus } from 'react-icons/hi'
 import { useClassId } from '../../../utils'
 
@@ -7,37 +8,37 @@ import { useCreateNewTopic } from '../../Class/gql'
 
 export const NewTopic = () => {
   const classId = useClassId()
+  const router = useRouter()
   const [create] = useCreateNewTopic()
   const [title, setTitle] = useState('')
 
-  const handleKeyDown = useKeyboardHandles({
-    Enter: async () => {
-      const newTitle = title.trim()
-      if (newTitle !== '') {
-        await create({
-          variables: {
-            classId,
-            title: newTitle,
-          },
-        })
-        setTitle('')
-      }
-    },
-  })
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const newTitle = title.trim()
+    if (newTitle !== '') {
+      const { data } = await create({
+        variables: {
+          classId,
+          title: newTitle,
+        },
+      })
+      setTitle('')
+      router.push(`/${classId}/materials/${data?.createTopic?.id}`)
+    }
+  }
 
   return (
-    <Flex flow="row-reverse">
+    <Flex flow="row-reverse" space="$4" as="form" onSubmit={handleSubmit}>
       <TextField
         placeholder="New topic title..."
         hint="press Enter ↵ to create"
-        variant="inline"
+        variant="transparent"
         autoComplete="off"
         value={title}
         onChange={setTitle}
-        onKeyDown={handleKeyDown}
       />
-      <Box pt="$2" mr="-$1">
-        <Button size="xs" variant="flat" aria-label="Create new topic">
+      <Box pt="$2">
+        <Button type="submit" size="xs" variant="flat" aria-label="Create new topic">
           <Icon size="sm" as={HiPlus} />
         </Button>
       </Box>

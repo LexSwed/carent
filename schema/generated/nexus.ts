@@ -98,6 +98,18 @@ export interface NexusGenObjects {
     title: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
   }
+  TopicAttachment: { // root type
+    href: string; // String!
+    id: string; // String!
+  }
+  TopicAttachmentConnection: { // root type
+    edges?: Array<NexusGenRootTypes['TopicAttachmentEdge'] | null> | null; // [TopicAttachmentEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+  }
+  TopicAttachmentEdge: { // root type
+    cursor: string; // String!
+    node?: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
+  }
   TopicConnection: { // root type
     edges?: Array<NexusGenRootTypes['TopicEdge'] | null> | null; // [TopicEdge]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
@@ -142,6 +154,7 @@ export interface NexusGenFieldTypes {
     node: NexusGenRootTypes['Class'] | null; // Class
   }
   Mutation: { // field return type
+    addTopicAttachment: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
     createClass: NexusGenRootTypes['Class'] | null; // Class
     createTopic: NexusGenRootTypes['Topic'] | null; // Topic
     deleteTopic: NexusGenRootTypes['Topic'] | null; // Topic
@@ -176,10 +189,24 @@ export interface NexusGenFieldTypes {
     node: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
   }
   Topic: { // field return type
+    attachments: NexusGenRootTypes['TopicAttachmentConnection'] | null; // TopicAttachmentConnection
     createdAt: NexusGenScalars['DateTime']; // DateTime!
     id: string; // String!
     title: string; // String!
     updatedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
+  TopicAttachment: { // field return type
+    href: string; // String!
+    id: string; // String!
+  }
+  TopicAttachmentConnection: { // field return type
+    edges: Array<NexusGenRootTypes['TopicAttachmentEdge'] | null> | null; // [TopicAttachmentEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+    totalCount: number | null; // Int
+  }
+  TopicAttachmentEdge: { // field return type
+    cursor: string; // String!
+    node: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
   }
   TopicConnection: { // field return type
     edges: Array<NexusGenRootTypes['TopicEdge'] | null> | null; // [TopicEdge]
@@ -218,6 +245,7 @@ export interface NexusGenFieldTypeNames {
     node: 'Class'
   }
   Mutation: { // field return type name
+    addTopicAttachment: 'TopicAttachment'
     createClass: 'Class'
     createTopic: 'Topic'
     deleteTopic: 'Topic'
@@ -252,10 +280,24 @@ export interface NexusGenFieldTypeNames {
     node: 'StudentGroup'
   }
   Topic: { // field return type name
+    attachments: 'TopicAttachmentConnection'
     createdAt: 'DateTime'
     id: 'String'
     title: 'String'
     updatedAt: 'DateTime'
+  }
+  TopicAttachment: { // field return type name
+    href: 'String'
+    id: 'String'
+  }
+  TopicAttachmentConnection: { // field return type name
+    edges: 'TopicAttachmentEdge'
+    pageInfo: 'PageInfo'
+    totalCount: 'Int'
+  }
+  TopicAttachmentEdge: { // field return type name
+    cursor: 'String'
+    node: 'TopicAttachment'
   }
   TopicConnection: { // field return type name
     edges: 'TopicEdge'
@@ -288,6 +330,10 @@ export interface NexusGenArgTypes {
     }
   }
   Mutation: {
+    addTopicAttachment: { // args
+      href: string; // String!
+      topicId: string; // ID!
+    }
     createClass: { // args
       group: NexusGenInputs['CreateClassGroupInput']; // CreateClassGroupInput!
       name: string; // String!
@@ -331,6 +377,14 @@ export interface NexusGenArgTypes {
     }
     topic: { // args
       id: string; // ID!
+    }
+  }
+  Topic: {
+    attachments: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
     }
   }
 }

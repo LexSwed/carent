@@ -1,6 +1,9 @@
 import { ApolloError } from 'apollo-server-micro'
-import { idArg, mutationField, nonNull, objectType, queryField } from 'nexus'
+import { idArg, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
 import { LexoRank } from 'lexorank'
+import { relayToPrismaPagination } from '../utils'
+import type { Topic as PrismaTopic } from '@prisma/client'
+import type { Context } from 'nexus-plugin-prisma/dist/utils'
 
 export const getTopicById = queryField((t) => {
   t.field('topic', {
@@ -12,12 +15,8 @@ export const getTopicById = queryField((t) => {
       return prisma.topic.findFirst({
         where: {
           id,
+          teacherId: session?.user?.teacherId,
           AND: {
-            class: {
-              teacher: {
-                userId: session?.user?.id,
-              },
-            },
             archivedAt: {
               equals: null,
             },
@@ -39,53 +38,39 @@ export const createNewTopic = mutationField((t) => {
       ),
       title: nonNull('String'),
     },
-    /** I decided that having two consequent DB transactions is better than parallel if one fails */
     resolve: async (_root, { title, classId }, { prisma, session }) => {
-      const teacherClass = await prisma.class.findFirst({
-        where: {
-          id: classId,
-          teacher: {
-            userId: session?.user?.id,
-          },
-        },
-        select: {
-          id: true,
-        },
-      })
+      try {
+        const topic = await prisma.topic.findFirst({
+          where: { classId, AND: { teacherId: session?.user?.teacherId } },
+          orderBy: { orderKey: 'asc' },
+          select: { orderKey: true },
+        })
+        const orderKey = topic ? LexoRank.parse(topic.orderKey).genPrev().toString() : LexoRank.middle().toString()
 
-      if (!teacherClass) {
+        return prisma.topic.create({
+          data: {
+            title,
+            creator: {
+              connect: {
+                id: session?.user?.teacherId,
+              },
+            },
+            orderKey,
+            class: {
+              connect: {
+                id: classId,
+              },
+            },
+          },
+        })
+      } catch (error) {
         throw new ApolloError('Failed to create new topic for the class', '400')
       }
-
-      const topic = await prisma.topic.findFirst({
-        where: { classId },
-        orderBy: { orderKey: 'asc' },
-        select: { orderKey: true },
-      })
-      const orderKey = topic ? LexoRank.parse(topic.orderKey).genPrev().toString() : LexoRank.middle().toString()
-
-      return prisma.topic.create({
-        data: {
-          title,
-          creator: {
-            connect: {
-              userId: session?.user?.id,
-            },
-          },
-          orderKey,
-          class: {
-            connect: {
-              id: teacherClass.id,
-            },
-          },
-        },
-      })
     },
   })
 })
 
 export const reorderTopic = mutationField((t) => {
-  /** This code chunk seem slow (at least 3 DB requests), but it's not the worst */
   t.field('reorderTopic', {
     type: 'Topic',
     args: {
@@ -93,6 +78,7 @@ export const reorderTopic = mutationField((t) => {
       before: idArg({ description: 'ID of the topic to insert before' }),
       after: idArg({ description: 'ID of the topic to insert after' }),
     },
+    authorize: (_, { id }, ctx) => canUpdateTopic(id, ctx),
     resolve: async (_root, { id, before, after }, { prisma, session }) => {
       const referenceId = before || after
 
@@ -103,15 +89,9 @@ export const reorderTopic = mutationField((t) => {
       const referenceItem = await prisma.topic.findFirst({
         where: {
           id: referenceId,
+          teacherId: session?.user?.teacherId,
           archivedAt: {
             equals: null,
-          },
-          AND: {
-            class: {
-              teacher: {
-                userId: session.user.id,
-              },
-            },
           },
         },
         select: {
@@ -149,36 +129,25 @@ export const updateTopicTitleAndContent = mutationField((t) => {
       ),
       title: 'String',
     },
+    authorize: (_, { id }, ctx) => canUpdateTopic(id, ctx),
     resolve: async (_root, { id, title }, { prisma, session }) => {
-      const item = await prisma.topic.findFirst({
-        where: {
-          id,
-          archivedAt: {
-            equals: null,
-          },
-          AND: {
-            class: {
-              teacher: {
-                userId: session.user.id,
-              },
+      try {
+        return prisma.topic.update({
+          where: {
+            id,
+            id_teacherId: {
+              id,
+              teacherId: session?.user?.teacherId,
             },
           },
-        },
-      })
-
-      if (!item) {
+          data: {
+            title,
+            updatedAt: new Date(),
+          },
+        })
+      } catch (error) {
         throw new ApolloError('Topic with specified ID not found', '400')
       }
-
-      return prisma.topic.update({
-        where: {
-          id,
-        },
-        data: {
-          title,
-          updatedAt: new Date(),
-        },
-      })
     },
   })
 })
@@ -193,31 +162,37 @@ export const deleteTopic = mutationField((t) => {
         })
       ),
     },
+    authorize: (_, { id }, ctx) => canUpdateTopic(id, ctx),
     resolve: async (_root, { id }, { prisma, session }) => {
-      const item = await prisma.topic.findFirst({
-        where: {
-          id,
-          archivedAt: {
-            equals: null,
-          },
-          class: {
-            teacher: {
-              userId: session?.user?.id,
-            },
-          },
-        },
-      })
-
-      if (!item) {
-        throw new ApolloError('Topic with specified ID not found', '400')
-      }
-
       return prisma.topic.update({
         where: {
           id,
         },
         data: {
           archivedAt: new Date(),
+        },
+      })
+    },
+  })
+})
+
+export const addAttachment = mutationField((t) => {
+  t.field('addTopicAttachment', {
+    type: TopicAttachment,
+    args: {
+      topicId: nonNull(idArg()),
+      href: nonNull(stringArg()),
+    },
+    authorize: (_, { topicId }, ctx) => canUpdateTopic(topicId, ctx),
+    resolve: (_, { topicId, href }, { prisma }) => {
+      return prisma.topicAttachment.create({
+        data: {
+          href,
+          topic: {
+            connect: {
+              id: topicId,
+            },
+          },
         },
       })
     },
@@ -232,5 +207,50 @@ export const Topic = objectType({
     t.model.title()
     t.model.createdAt()
     t.model.updatedAt()
+    t.connectionField('attachments', {
+      type: TopicAttachment,
+      totalCount: (root: any, args, { prisma }) =>
+        prisma.topicAttachment.count({
+          where: {
+            topicId: root.id,
+          },
+        }),
+      nodes: (root, args, { prisma }) => {
+        return prisma.topicAttachment.findMany({
+          ...relayToPrismaPagination(args),
+          orderBy: {
+            createdAt: 'desc',
+          },
+          where: {
+            topicId: root.id,
+          },
+        })
+      },
+    })
   },
 })
+
+export const TopicAttachment = objectType({
+  name: 'TopicAttachment',
+  definition(t) {
+    t.model.id()
+    t.model.href()
+  },
+})
+
+async function canUpdateTopic(topicId: PrismaTopic['id'], { prisma, session }: Context) {
+  const topic = await prisma.topic.findFirst({
+    where: {
+      id: topicId,
+      teacherId: session?.user?.teacherId,
+      archivedAt: {
+        equals: null,
+      },
+    },
+    select: {
+      id: true,
+    },
+  })
+  console.log(topic)
+  return !!topic
+}

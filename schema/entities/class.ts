@@ -48,13 +48,11 @@ export const getClassById = queryField((t) => {
       id: nonNull(idArg()),
     },
     resolve: (_, { id }, { prisma, session }) => {
-      return prisma.class.findFirst({
+      return prisma.class.findUnique({
         where: {
-          id,
-          AND: {
-            teacher: {
-              userId: session.user.id,
-            },
+          id_teacherId: {
+            id,
+            teacherId: session?.user?.teacherId,
           },
         },
       })
@@ -78,19 +76,13 @@ export const createClass = mutationField((t) => {
       group: nonNull(studentGroup),
     },
     resolve: async (_root, { name, group }, { prisma, session }) => {
-      const teacher = await prisma.teacher.findUnique({
-        where: {
-          userId: session.user.id,
-        },
-        select: { id: true },
-      })
       try {
         const result = await prisma.class.create({
           data: {
             name,
             teacher: {
               connect: {
-                id: teacher.id,
+                id: session?.user?.teacherId,
               },
             },
             // NB!: connectOrCreate with where.id === undefined is not handled by prisma
@@ -125,31 +117,17 @@ export const updateClassName = mutationField((t) => {
     },
     resolve: async (_, { id, name }, { prisma, session }) => {
       try {
-        const classBelongsToUser = await prisma.class.findFirst({
+        return prisma.class.update({
           where: {
-            id,
-            AND: {
-              teacher: {
-                userId: session?.user?.id,
-              },
+            id_teacherId: {
+              id,
+              teacherId: session?.user?.teacherId,
             },
           },
-          select: {
-            id: true,
+          data: {
+            name,
           },
         })
-        if (classBelongsToUser) {
-          return prisma.class.update({
-            where: {
-              id,
-            },
-            data: {
-              name,
-            },
-          })
-        } else {
-          throw new ApolloError('Failed to update the name of the class', '400')
-        }
       } catch (error) {
         throw new ApolloError('Failed to update the name of the class', '400')
       }
@@ -192,7 +170,12 @@ export const Class = objectType({
           },
         }),
       },
-      totalCount: (root: any, args, { prisma }) => prisma.topic.count({ where: root.id }),
+      totalCount: (root: any, args, { prisma }) =>
+        prisma.topic.count({
+          where: {
+            classId: root.id,
+          },
+        }),
       nodes: (root, { sort, ...args }, { prisma }) => {
         return prisma.topic.findMany({
           ...relayToPrismaPagination(args),

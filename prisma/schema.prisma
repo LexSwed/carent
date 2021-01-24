@@ -47,10 +47,12 @@ model User {
   image         String?
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @default(now()) @map("updated_at")
-  student       Student?
-  teacher       Teacher?
+  studentId     String?   @map("student_ud")
+  student       Student?  @relation(fields: [studentId], references: [id])
+  teacherId     String?   @map("teacher_id")
+  teacher       Teacher?  @relation(fields: [teacherId], references: [id])
   workspace     Workspace @relation(fields: [workspaceId], references: [id])
-  workspaceId   String
+  workspaceId   String    @map("workspace_id")
 
   @@map("users")
 }
@@ -76,13 +78,12 @@ model Workspace {
 
 model Teacher {
   id                String             @id @default(cuid())
-  userId            String             @unique @map("user_id")
-  user              User               @relation(fields: [userId], references: [id])
+  user              User?
   classes           Class[]
   topics            Topic[]
   assignmentsAccess AssignmentAccess[]
+  students          Student[]
 
-  @@unique([id, userId])
   @@map("teachers")
 }
 
@@ -103,18 +104,18 @@ model Class {
 }
 
 model Topic {
-  id          String       @id @default(cuid())
+  id          String            @id @default(cuid())
   title       String
-  creator     Teacher      @relation(fields: [teacherId], references: [id])
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @default(now()) @map("updated_at")
+  creator     Teacher           @relation(fields: [teacherId], references: [id])
+  teacherId   String            @map("teacher_id")
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @default(now()) @map("updated_at")
+  orderKey    String            @map("order_key")
   classId     String
-  hidden      Boolean      @default(true)
-  orderKey    String       @map("order_key")
-  class       Class        @relation(fields: [classId], references: [id])
-  archivedAt  DateTime?    @map("archived_at")
-  teacherId   String       @map("teacher_id")
+  class       Class             @relation(fields: [classId], references: [id])
+  archivedAt  DateTime?         @map("archived_at")
   assignments Assignment[]
+  attachments TopicAttachment[]
 
   @@unique([id, teacherId])
   @@map("topics")
@@ -131,12 +132,23 @@ model StudentGroup {
 
 model Student {
   id          String             @id @default(cuid())
-  userId      String             @unique @map("user_id")
-  users       User               @relation(fields: [userId], references: [id])
+  user        User?
+  teacherId   String             @map("teacher_id")
+  addedBy     Teacher            @relation(fields: [teacherId], references: [id])
   group       StudentGroup[]
   assignments AssignmentAccess[]
 
   @@map("students")
+}
+
+model TopicAttachment {
+  id        String   @id @default(cuid())
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  href      String
+  createdAt DateTime @default(now()) @map("created_at")
+  // maybe will be used in the future to make some attachments private
+  public    Boolean  @default(true)
+  topicId   String   @map("topic_id")
 }
 
 model Assignment {

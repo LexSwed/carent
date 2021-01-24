@@ -1,3 +1,4 @@
+import { ApolloError } from 'apollo-server-micro'
 import { makeSchema, connectionPlugin, fieldAuthorizePlugin } from 'nexus'
 import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema'
 import path from 'path'
@@ -18,7 +19,15 @@ export const schema = makeSchema({
         totalCount: { type: 'Int' },
       },
     }),
-    fieldAuthorizePlugin(),
+    fieldAuthorizePlugin({
+      formatError: (config) => {
+        console.log(config)
+        return new ApolloError(
+          'Unable to perform operation. Check that you have rights to perform the operation or your arguments are not valid',
+          '400'
+        )
+      },
+    }),
   ],
   outputs: {
     schema: path.join(process.cwd(), 'schema/generated/schema.graphql'),

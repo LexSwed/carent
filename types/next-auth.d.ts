@@ -8,5 +8,7 @@ declare module 'next-auth' {
     image?: PrismaUser['image'] | null
     id?: PrismaUser['id'] | null
     workspaceId?: PrismaUser['workspaceId'] | null
+    teacherId?: PrismaUser['teacherId'] | null
+    studentId?: PrismaUser['studentId'] | null
   }
 }

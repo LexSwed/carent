@@ -10,7 +10,7 @@ const TopicHeaderMenu: React.FC = () => {
 
   return (
     <Menu>
-      <Menu.Button size="sm" space="$2" variant="flat">
+      <Menu.Button size="sm" space="$2">
         <Icon as={HiChevronDown} />
       </Menu.Button>
       <Menu.List placement="bottom-end">
@@ -28,7 +28,7 @@ const DeleteTopicButton: React.FC<{
 
   async function handleDelete() {
     await deleteTopic()
-    router.push(`/${data?.class.id}/${data?.class.topics.edges[0].node.id}`)
+    router.push(`/${data?.class.id}/materials`)
   }
 
   return (

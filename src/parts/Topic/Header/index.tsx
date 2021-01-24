@@ -21,7 +21,9 @@ const Header: React.FC = () => {
             <Icon as={HiChevronLeft} size="xl" />
           </Button>
         </Link>
-        {data && <TextField defaultValue={data.topic.title} onBlur={handleBlur} variant="inline" css={style.title} />}
+        {data && (
+          <TextField defaultValue={data.topic.title} onBlur={handleBlur} variant="transparent" css={style.title} />
+        )}
       </Flex>
       <TopicHeaderMenu />
     </Flex>

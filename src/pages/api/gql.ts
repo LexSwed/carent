@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server-micro'
-import { NextApiHandler } from 'next'
+import type { NextApiHandler } from 'next'
 import { getSession } from 'next-auth/client'
 import { schema } from '../../../schema'
 import { createContext } from '../../../schema/context'

@@ -40,7 +40,9 @@ CREATE TABLE "users" (
     "image" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "workspaceId" TEXT NOT NULL,
+    "student_ud" TEXT,
+    "teacher_id" TEXT,
+    "workspace_id" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -68,7 +70,6 @@ CREATE TABLE "workspaces" (
 -- CreateTable
 CREATE TABLE "teachers" (
     "id" TEXT NOT NULL,
-    "user_id" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -89,13 +90,12 @@ CREATE TABLE "classes" (
 CREATE TABLE "topics" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
+    "teacher_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "classId" TEXT NOT NULL,
-    "hidden" BOOLEAN NOT NULL DEFAULT true,
     "order_key" TEXT NOT NULL,
+    "classId" TEXT NOT NULL,
     "archived_at" TIMESTAMP(3),
-    "teacher_id" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -111,7 +111,18 @@ CREATE TABLE "student_groups" (
 -- CreateTable
 CREATE TABLE "students" (
     "id" TEXT NOT NULL,
-    "user_id" TEXT NOT NULL,
+    "teacher_id" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TopicAttachment" (
+    "id" TEXT NOT NULL,
+    "href" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "public" BOOLEAN NOT NULL DEFAULT true,
+    "topic_id" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -265,22 +276,19 @@ CREATE UNIQUE INDEX "sessions.access_token_unique" ON "sessions"("access_token")
 CREATE UNIQUE INDEX "users.email_unique" ON "users"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "users_student_ud_unique" ON "users"("student_ud");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_teacher_id_unique" ON "users"("teacher_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "verification_requests.token_unique" ON "verification_requests"("token");
-
--- CreateIndex
-CREATE UNIQUE INDEX "teachers.user_id_unique" ON "teachers"("user_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "teachers.id_user_id_unique" ON "teachers"("id", "user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "classes.id_teacher_id_unique" ON "classes"("id", "teacher_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "topics.id_teacher_id_unique" ON "topics"("id", "teacher_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "students.user_id_unique" ON "students"("user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "assignment_states_assignmentId_unique" ON "assignment_states"("assignmentId");
@@ -295,10 +303,13 @@ CREATE UNIQUE INDEX "_StudentToStudentGroup_AB_unique" ON "_StudentToStudentGrou
 CREATE INDEX "_StudentToStudentGroup_B_index" ON "_StudentToStudentGroup"("B");
 
 -- AddForeignKey
-ALTER TABLE "users" ADD FOREIGN KEY ("workspaceId") REFERENCES "workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "users" ADD FOREIGN KEY ("student_ud") REFERENCES "students"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "teachers" ADD FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "users" ADD FOREIGN KEY ("teacher_id") REFERENCES "teachers"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "users" ADD FOREIGN KEY ("workspace_id") REFERENCES "workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "classes" ADD FOREIGN KEY ("student_group_id") REFERENCES "student_groups"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -313,7 +324,10 @@ ALTER TABLE "topics" ADD FOREIGN KEY ("teacher_id") REFERENCES "teachers"("id") 
 ALTER TABLE "topics" ADD FOREIGN KEY ("classId") REFERENCES "classes"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "students" ADD FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "students" ADD FOREIGN KEY ("teacher_id") REFERENCES "teachers"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TopicAttachment" ADD FOREIGN KEY ("topic_id") REFERENCES "topics"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "assignments" ADD FOREIGN KEY ("topic_id") REFERENCES "topics"("id") ON DELETE CASCADE ON UPDATE CASCADE;

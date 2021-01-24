@@ -63,6 +63,21 @@ export type Topic = Node & {
   title: Scalars['String'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
+  attachments?: Maybe<TopicAttachmentConnection>;
+};
+
+
+export type TopicAttachmentsArgs = {
+  first?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+};
+
+export type TopicAttachment = {
+  __typename?: 'TopicAttachment';
+  id: Scalars['String'];
+  href: Scalars['String'];
 };
 
 export type User = Node & {
@@ -142,6 +157,23 @@ export type StudentGroupEdge = {
   node?: Maybe<StudentGroup>;
 };
 
+export type TopicAttachmentConnection = {
+  __typename?: 'TopicAttachmentConnection';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
+  edges?: Maybe<Array<Maybe<TopicAttachmentEdge>>>;
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
+  pageInfo: PageInfo;
+  totalCount?: Maybe<Scalars['Int']>;
+};
+
+export type TopicAttachmentEdge = {
+  __typename?: 'TopicAttachmentEdge';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
+  cursor: Scalars['String'];
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
+  node?: Maybe<TopicAttachment>;
+};
+
 export enum TopicSortKey {
   Order = 'ORDER',
   Updated = 'UPDATED'
@@ -196,6 +228,7 @@ export type Mutation = {
   reorderTopic?: Maybe<Topic>;
   updateTopic?: Maybe<Topic>;
   deleteTopic?: Maybe<Topic>;
+  addTopicAttachment?: Maybe<TopicAttachment>;
 };
 
 
@@ -232,6 +265,12 @@ export type MutationUpdateTopicArgs = {
 
 export type MutationDeleteTopicArgs = {
   id: Scalars['ID'];
+};
+
+
+export type MutationAddTopicAttachmentArgs = {
+  topicId: Scalars['ID'];
+  href: Scalars['String'];
 };
 
 export type GetLastUpdatedTopicQueryVariables = Exact<{
@@ -408,6 +447,11 @@ export type UpdateClassNameMutation = (
   )> }
 );
 
+export type NewTopicFragment = (
+  { __typename?: 'Topic' }
+  & Pick<Topic, 'id' | 'title'>
+);
+
 export type UpdateTopicMutationVariables = Exact<{
   id: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
@@ -459,5 +503,28 @@ export type UpdateTopicTitleMutation = (
   & { updateTopic?: Maybe<(
     { __typename?: 'Topic' }
     & Pick<Topic, 'id' | 'title'>
+  )> }
+);
+
+export type GetTopicAttachmentsQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetTopicAttachmentsQuery = (
+  { __typename?: 'Query' }
+  & { topic?: Maybe<(
+    { __typename?: 'Topic' }
+    & Pick<Topic, 'id'>
+    & { attachments?: Maybe<(
+      { __typename?: 'TopicAttachmentConnection' }
+      & { edges?: Maybe<Array<Maybe<(
+        { __typename?: 'TopicAttachmentEdge' }
+        & { node?: Maybe<(
+          { __typename?: 'TopicAttachment' }
+          & Pick<TopicAttachment, 'id' | 'href'>
+        )> }
+      )>>> }
+    )> }
   )> }
 );

@@ -90,12 +90,21 @@ export function useCreateNewTopic() {
         }),
         fields: {
           topics(existingTopics = {}) {
+            const newTopicNodeRef = cache.writeFragment({
+              data: item,
+              fragment: gql`
+                fragment NewTopic on Topic {
+                  id
+                  title
+                }
+              `,
+            })
             return {
               ...existingTopics,
               edges: [
                 {
                   __typename: 'TopicEdge',
-                  node: item,
+                  node: newTopicNodeRef,
                 },
                 ...existingTopics.edges,
               ],

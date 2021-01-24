@@ -67,7 +67,7 @@ function NewGroupModal({ close }: { close: () => void }) {
   const [groupId, setGroupId] = React.useState<string | null>(null)
   const [newGroupCode, setNewGroupCode] = React.useState('')
 
-  const inputProps = {
+  const inputProps: React.ComponentProps<typeof TextField> = {
     'aria-describedby': 'students-code-hint',
     'label': 'Student group code',
     'secondaryLabel': '(Required)',
@@ -77,6 +77,8 @@ function NewGroupModal({ close }: { close: () => void }) {
     'maxLength': 10,
     'autoComplete': 'off',
     'required': true,
+    'value': newGroupCode,
+    'onChange': setNewGroupCode,
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
