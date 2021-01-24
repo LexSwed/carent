@@ -11,12 +11,10 @@ import type {
   UpdateTopicTitleMutation,
   GetTopicAttachmentsQuery,
   GetTopicAttachmentsQueryVariables,
-  MutationAddTopicAttachmentArgs,
   AddTopicAttachmentMutation,
   AddTopicAttachmentMutationVariables,
 } from '../../graphql/generated'
 import { useClassId, useTopicId } from '../../utils'
-import NewAttachment from './LinkedMaterials/NewAttachment'
 
 const updateTopic = gql`
   mutation updateTopic($id: ID!, $title: String) {

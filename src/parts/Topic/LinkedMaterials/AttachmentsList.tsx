@@ -1,14 +1,13 @@
 import React from 'react'
 import { Flex, TextLink, Text, styled } from '@fxtrot/ui'
 import { useScraper } from '../../../utils/link-preview'
-import type { LinkData } from '../../../utils/link-preview/scrapper/utils'
 import { useTopicAttachments } from '../gql'
 
 const AttachmentsList = () => {
   const { data } = useTopicAttachments()
   const list = data?.topic?.attachments?.edges || []
   return (
-    <Flex>
+    <Flex space="$2">
       {list.map((edge) => (
         <LinkPreview key={edge.node.id} href={edge.node.href} />
       ))}

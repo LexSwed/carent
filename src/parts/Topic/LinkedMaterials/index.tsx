@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
-import { Flex, Heading, Text, TextLink } from '@fxtrot/ui'
+import { Box, Button, Flex, Heading, Icon, Text, TextLink } from '@fxtrot/ui'
 import NewAttachment from './NewAttachment'
 import AttachmentsList from './AttachmentsList'
 import { useTopicAttachments } from '../gql'
+import { HiEyeOff, HiPlus } from 'react-icons/hi'
 
 const LinkedMaterials = () => {
   const { data, loading } = useTopicAttachments()
@@ -14,36 +15,61 @@ const LinkedMaterials = () => {
   useEffect(() => {
     setNewLinkShown(!thereAreAttachments)
   }, [thereAreAttachments])
-  console.log(data?.topic?.attachments?.edges)
+
   return (
-    <Flex space="$8">
-      <Heading level={3}>Linked Materials</Heading>
-      {!loading && (
-        <>
-          {isNewLinkShown && <NewAttachment />}
-          {thereAreAttachments && <AttachmentsList />}
-          <Text tone="light" size="xs" align="justify" as="p">
-            Link any materials relevant to the topic, for example books to download or your personal files from{' '}
-            <TextLink size="xs" display="inline" href="https://www.youtube.com/" external>
-              YouTube
-            </TextLink>
-            ,{' '}
-            <TextLink size="xs" display="inline" href="https://www.notion.so/" external>
-              Notion
-            </TextLink>
-            ,{' '}
-            <TextLink size="xs" display="inline" href="https://docs.google.com/" external>
-              Google Docs
-            </TextLink>
-            , or{' '}
-            <TextLink size="xs" display="inline" href="https://drive.google.com/" external>
-              Google Drive
-            </TextLink>
-          </Text>
-        </>
-      )}
+    <Flex space="$4">
+      <Flex flow="row" main="spread" cross="center">
+        <Heading level={3} css={{ py: '$1' }}>
+          Linked Materials
+        </Heading>
+        {thereAreAttachments && (
+          <Button
+            aria-label={isNewLinkShown ? 'Hide new link form' : 'Show new link form'}
+            size="sm"
+            variant="flat"
+            onClick={(e) => setNewLinkShown((shown) => !shown)}
+          >
+            <Icon as={isNewLinkShown ? HiEyeOff : HiPlus} size="md" />
+          </Button>
+        )}
+      </Flex>
+      <Box minHeight={200}>
+        <Flex space="$4">
+          {!loading && (
+            <>
+              {isNewLinkShown && <NewAttachment />}
+
+              {thereAreAttachments && <AttachmentsList />}
+            </>
+          )}
+        </Flex>
+      </Box>
+      <SectionDescription />
     </Flex>
   )
 }
 
 export default LinkedMaterials
+
+const SectionDescription = () => {
+  return (
+    <Text tone="light" size="xs" align="justify" as="p">
+      Link any materials relevant to the topic, for example books to download or your personal files from{' '}
+      <TextLink size="xs" display="inline" href="https://www.youtube.com/" external>
+        YouTube
+      </TextLink>
+      ,{' '}
+      <TextLink size="xs" display="inline" href="https://www.notion.so/" external>
+        Notion
+      </TextLink>
+      ,{' '}
+      <TextLink size="xs" display="inline" href="https://docs.google.com/" external>
+        Google Docs
+      </TextLink>
+      , or{' '}
+      <TextLink size="xs" display="inline" href="https://drive.google.com/" external>
+        Google Drive
+      </TextLink>
+    </Text>
+  )
+}
