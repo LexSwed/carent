@@ -15,8 +15,10 @@ import type {
   AddTopicAttachmentMutationVariables,
   RenameTopicAttachmentMutation,
   RenameTopicAttachmentMutationVariables,
+  DeleteTopicAttachmentMutation,
+  DeleteTopicAttachmentMutationVariables,
 } from '../../graphql/generated'
-import { useClassId, useTopicId } from '../../utils'
+import { useTopicId } from '../../utils'
 import { scrapData } from '../../utils/link-preview'
 
 const updateTopic = gql`
@@ -58,26 +60,11 @@ const deleteTopic = gql`
 `
 
 export function useDeleteTopic() {
-  const classId = useClassId()
   const topicId = useTopicId()
 
   return useMutation<DeleteTopicMutation, DeleteTopicMutationVariables>(deleteTopic, {
     variables: { id: topicId },
     update(cache, { data: { deleteTopic } }) {
-      cache.modify({
-        id: cache.identify({
-          __typename: 'Class',
-          id: classId,
-        }),
-        fields: {
-          topics: (topicsConnection, { readField }) => {
-            return {
-              ...topicsConnection,
-              edges: topicsConnection.edges.filter(({ node }) => deleteTopic.id !== readField('id', node)),
-            }
-          },
-        },
-      })
       cache.evict({ id: cache.identify(deleteTopic) })
       cache.gc()
     },
@@ -210,7 +197,7 @@ export function useAddTopicAttachment() {
         topicId,
         data: {
           href,
-          name: data.title,
+          name: data.title.trim(),
         },
       },
     })
@@ -231,4 +218,24 @@ const renameTopicAttachment = gql`
 
 export function useRenameTopicAttachment() {
   return useMutation<RenameTopicAttachmentMutation, RenameTopicAttachmentMutationVariables>(renameTopicAttachment)
+}
+
+export const deleteTopicAttachment = gql`
+  mutation deleteTopicAttachment($id: ID!) {
+    deleteTopicAttachment(id: $id) {
+      id
+    }
+  }
+`
+
+export function useDeleteTopicAttachment(id: string) {
+  return useMutation<DeleteTopicAttachmentMutation, DeleteTopicAttachmentMutationVariables>(deleteTopicAttachment, {
+    variables: {
+      id,
+    },
+    update(cache, { data: { deleteTopicAttachment } }) {
+      cache.evict({ id: cache.identify(deleteTopicAttachment) })
+      cache.gc()
+    },
+  })
 }

@@ -582,3 +582,16 @@ export type RenameTopicAttachmentMutation = (
     & Pick<TopicAttachment, 'id' | 'name'>
   )> }
 );
+
+export type DeleteTopicAttachmentMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteTopicAttachmentMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteTopicAttachment?: Maybe<(
+    { __typename?: 'TopicAttachment' }
+    & Pick<TopicAttachment, 'id'>
+  )> }
+);

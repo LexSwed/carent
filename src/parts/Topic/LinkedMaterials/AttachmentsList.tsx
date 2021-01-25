@@ -1,8 +1,9 @@
 import React from 'react'
-import { Flex, TextLink, styled, TextField } from '@fxtrot/ui'
+import { Flex, TextLink, styled, TextField, Icon } from '@fxtrot/ui'
 import { useScraper } from '../../../utils/link-preview'
-import { useTopicAttachments, useRenameTopicAttachment } from '../gql'
+import { useTopicAttachments, useRenameTopicAttachment, useDeleteTopicAttachment } from '../gql'
 import type { GetTopicAttachmentsQuery } from '../../../graphql/generated'
+import { HiOutlineTrash } from 'react-icons/hi'
 
 const AttachmentsList = () => {
   const { data } = useTopicAttachments()
@@ -25,6 +26,7 @@ const LinkPreview: React.FC<GetTopicAttachmentsQuery['topic']['attachments']['ed
 }) => {
   const { data } = useScraper({ url: href })
   const [rename] = useRenameTopicAttachment()
+  const [remove] = useDeleteTopicAttachment(id)
 
   async function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
     const newName = e.currentTarget.value?.trim()
@@ -41,7 +43,13 @@ const LinkPreview: React.FC<GetTopicAttachmentsQuery['topic']['attachments']['ed
   return (
     <LinkPreviewBox>
       <Flex flow="row" cross="center">
-        {data?.image && <PreviewImage src={data.image.src} rel={data.image.rel} />}
+        <PreviewImageBox>
+          {data?.image && <PreviewImage src={data.image.src} rel={data.image.rel} />}
+
+          <LinkPreviewDelete onClick={() => remove()}>
+            <Icon as={HiOutlineTrash} color="white" size="xl" />
+          </LinkPreviewDelete>
+        </PreviewImageBox>
         <LinkDetails>
           <TextField variant="transparent" defaultValue={name} onBlur={handleBlur} />
           {data?.url && (
@@ -72,10 +80,9 @@ const LinkDetails = styled('div', {
 })
 
 const PreviewImage = styled('img', {
-  height: 80,
-  width: 80,
+  size: '80px',
   objectFit: 'cover',
-  bc: '$surfaceHover',
+  gridArea: '1 / 1',
 
   variants: {
     rel: {
@@ -88,5 +95,32 @@ const PreviewImage = styled('img', {
 
   [`& + ${LinkDetails}`]: {
     borderLeft: '1px solid $borderLight',
+  },
+})
+
+const PreviewImageBox = styled('div', {
+  position: 'relative',
+  size: '80px',
+  bc: '$surfaceHover',
+  display: 'grid',
+  placeItems: 'center',
+})
+
+const LinkPreviewDelete = styled('button', {
+  'p': 0,
+  'border': 'none',
+  'size': '100%',
+  'cursor': 'pointer',
+  'display': 'grid',
+  'placeItems': 'center',
+  'bc': 'rgba(30, 20, 50, 0.6)',
+  'opacity': 0,
+  'transition': 'opacity 0.24s ease-in-out',
+  'gridArea': '1 / 1',
+  'zIndex': 10,
+  'outline': 'none',
+
+  '&:hover, &:focus': {
+    opacity: 1,
   },
 })
