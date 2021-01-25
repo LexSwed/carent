@@ -1,12 +1,12 @@
 import React from 'react'
-import { Flex } from '@fxtrot/ui'
+import { Flex, Heading, Text } from '@fxtrot/ui'
 import { useRouter } from 'next/router'
 import { useClassId, useTopicId } from '../../../utils'
 
 import { NewTopic } from './NewTopic'
 import { TopicsList } from './TopicList'
 import { TopicLink } from './TopicLink'
-import { useClassTopics } from '../../Class/gql'
+import { useClassTopics } from '../gql'
 import UserPanel from '../../UserPanel'
 import { Card } from '../../Card'
 
@@ -27,6 +27,12 @@ const Topics = () => {
       <UserPanel />
       <Card>
         <Flex space="$4">
+          <div>
+            <Heading level={3} css={{ display: 'inline' }}>
+              {data?.class?.name}
+            </Heading>
+            <Text size="lg"> topics</Text>
+          </div>
           <NewTopic />
           <TopicsList>
             {topics.map(({ node }, index) => (

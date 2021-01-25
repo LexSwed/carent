@@ -1,17 +1,17 @@
 import React from 'react'
 import { Button, Box, Dialog, Flex, Text, Icon, Menu } from '@fxtrot/ui'
-import { HiChevronDown, HiOutlineTrash } from 'react-icons/hi'
+import { HiDotsVertical, HiOutlineTrash } from 'react-icons/hi'
 import { useDeleteTopic } from '../gql'
 import { useRouter } from 'next/router'
-import { useClassTopics } from '../../Class/gql'
+import { useClassId } from '../../../utils'
 
 const TopicHeaderMenu: React.FC = () => {
   const [deleteTopic] = useDeleteTopic()
 
   return (
     <Menu>
-      <Menu.Button size="sm" space="$2">
-        <Icon as={HiChevronDown} />
+      <Menu.Button space="$2" variant="flat">
+        <Icon as={HiDotsVertical} />
       </Menu.Button>
       <Menu.List placement="bottom-end">
         <DeleteTopicButton deleteTopic={deleteTopic} />
@@ -24,11 +24,11 @@ const DeleteTopicButton: React.FC<{
   deleteTopic: () => Promise<any>
 }> = ({ deleteTopic }) => {
   const router = useRouter()
-  const { data } = useClassTopics()
+  const id = useClassId()
 
   async function handleDelete() {
     await deleteTopic()
-    router.push(`/${data?.class.id}/materials`)
+    router.push(`/${id}/materials`)
   }
 
   return (

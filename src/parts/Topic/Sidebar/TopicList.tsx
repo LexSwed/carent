@@ -4,7 +4,7 @@ import { Flex, styled } from '@fxtrot/ui'
 import { useClassId } from '../../../utils'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import type { GetClassTopicsQuery, GetClassTopicsQueryVariables } from '../../../graphql/generated'
-import { getTopics, updateOrder } from '../../Class/gql'
+import { updateOrderMutation, getTopics } from '../gql'
 
 export const TopicsList = ({ children }) => {
   const handleDrop = useOnDrop()
@@ -63,7 +63,7 @@ function useOnDrop() {
       })
 
       mutate({
-        mutation: updateOrder,
+        mutation: updateOrderMutation,
         variables: {
           id: result.draggableId,
           ...(result.source.index > result.destination.index ? { before: reference.id } : { after: reference.id }),

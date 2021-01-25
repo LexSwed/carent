@@ -17,17 +17,45 @@ import type {
   RenameTopicAttachmentMutationVariables,
   DeleteTopicAttachmentMutation,
   DeleteTopicAttachmentMutationVariables,
+  GetClassTopicsQuery,
+  GetClassTopicsQueryVariables,
 } from '../../graphql/generated'
-import { useTopicId } from '../../utils'
+import { useClassId, useTopicId } from '../../utils'
 import { scrapData } from '../../utils/link-preview'
 
-const updateTopic = gql`
-  mutation updateTopic($id: ID!, $title: String) {
-    updateTopic(id: $id, title: $title) {
+export const updateOrderMutation = gql`
+  mutation updateTopicOrder($id: ID!, $before: ID, $after: ID) {
+    reorderTopic(id: $id, before: $before, after: $after) {
       id
+      title
     }
   }
 `
+
+export const getTopics = gql`
+  query getClassTopics($classId: ID!) {
+    class(id: $classId) {
+      id
+      name
+      topics(first: 30) {
+        edges {
+          node {
+            id
+            title
+          }
+        }
+      }
+    }
+  }
+`
+export function useClassTopics() {
+  const classId = useClassId()
+  return useQuery<GetClassTopicsQuery, GetClassTopicsQueryVariables>(getTopics, {
+    variables: {
+      classId,
+    },
+  })
+}
 
 const getTopicDetails = gql`
   query getTopicDetails($id: ID!) {
@@ -47,6 +75,13 @@ export function useTopicDetails() {
   })
 }
 
+const updateTopic = gql`
+  mutation updateTopic($id: ID!, $title: String) {
+    updateTopic(id: $id, title: $title) {
+      id
+    }
+  }
+`
 export function useUpdateTopic() {
   return useMutation<UpdateTopicMutation, UpdateTopicMutationVariables>(updateTopic)
 }
