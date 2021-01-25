@@ -34,29 +34,14 @@ export function useScraper({ url }: UseScraperConfig): LinkPreview {
   })
 
   useEffect(() => {
-    if (!isUrl(url)) {
-      return
-    }
-
     const controller = new AbortController()
 
-    const makeRequest = async (): Promise<LinkData> => {
+    const makeRequest = async (): Promise<void> => {
       const state: Partial<LinkPreview> = { loading: false, error: undefined }
       try {
-        let data: LinkData
-        if (cache.has(url)) {
-          data = cache.get(url)
-        } else {
-          data = await scrapper(url, () => fetch(proxyUrl(url), { headers, signal: controller.signal }))
-          cache.set(url, data)
-        }
-        state.data = data
-
-        return data
+        state.data = await scrapData(url, controller.signal)
       } catch (err) {
         state.error = err
-
-        return err
       } finally {
         setState((old) => ({ ...old, ...state }))
       }
@@ -70,6 +55,19 @@ export function useScraper({ url }: UseScraperConfig): LinkPreview {
   }, [url])
 
   return state
+}
+
+export async function scrapData(url: string, signal?: AbortSignal): Promise<LinkData | null> {
+  if (!isUrl(url)) {
+    return null
+  }
+  if (cache.has(url)) {
+    return cache.get(url)
+  }
+  const data = await scrapper(url, () => fetch(proxyUrl(url), { headers, signal }))
+  cache.set(url, data)
+
+  return data
 }
 
 /** headers passed to the fetch request */

@@ -13,8 +13,11 @@ import type {
   GetTopicAttachmentsQueryVariables,
   AddTopicAttachmentMutation,
   AddTopicAttachmentMutationVariables,
+  RenameTopicAttachmentMutation,
+  RenameTopicAttachmentMutationVariables,
 } from '../../graphql/generated'
 import { useClassId, useTopicId } from '../../utils'
+import { scrapData } from '../../utils/link-preview'
 
 const updateTopic = gql`
   mutation updateTopic($id: ID!, $title: String) {
@@ -125,6 +128,7 @@ const getTopicAttachments = gql`
           node {
             id
             href
+            name
           }
         }
       }
@@ -143,10 +147,11 @@ export function useTopicAttachments() {
 }
 
 const addTopicAttachment = gql`
-  mutation addTopicAttachment($topicId: ID!, $href: String!) {
-    addTopicAttachment(topicId: $topicId, href: $href) {
+  mutation addTopicAttachment($topicId: ID!, $data: TopicAttachmentInput!) {
+    addTopicAttachment(topicId: $topicId, data: $data) {
       id
       href
+      name
     }
   }
 `
@@ -155,43 +160,75 @@ export function useAddTopicAttachment() {
   const topicId = useTopicId()
   const [href, setHref] = useState('')
 
-  const mutation = useMutation<AddTopicAttachmentMutation, AddTopicAttachmentMutationVariables>(addTopicAttachment, {
-    variables: {
-      topicId,
-      href,
-    },
-    update(cache, { data: { addTopicAttachment } }) {
-      cache.modify({
-        id: cache.identify({
-          __typename: 'Topic',
-          id: topicId,
-        }),
-        fields: {
-          attachments: (attachmentsConnection) => {
-            const newAttachmentNodeRef = cache.writeFragment({
-              data: addTopicAttachment,
-              fragment: gql`
-                fragment NewLink on TopicAttachment {
-                  id
-                  href
-                }
-              `,
-            })
-            return {
-              ...attachmentsConnection,
-              edges: [
-                {
-                  __typename: 'TopicAttachmentEdge',
-                  node: newAttachmentNodeRef,
-                },
-                ...attachmentsConnection.edges,
-              ],
-            }
+  const [mutation, info] = useMutation<AddTopicAttachmentMutation, AddTopicAttachmentMutationVariables>(
+    addTopicAttachment,
+    {
+      update(cache, { data: { addTopicAttachment } }) {
+        cache.modify({
+          id: cache.identify({
+            __typename: 'Topic',
+            id: topicId,
+          }),
+          fields: {
+            attachments: (attachmentsConnection) => {
+              const newAttachmentNodeRef = cache.writeFragment({
+                data: addTopicAttachment,
+                fragment: gql`
+                  fragment NewLink on TopicAttachment {
+                    id
+                    href
+                    name
+                  }
+                `,
+              })
+              return {
+                ...attachmentsConnection,
+                edges: [
+                  {
+                    __typename: 'TopicAttachmentEdge',
+                    node: newAttachmentNodeRef,
+                  },
+                  ...attachmentsConnection.edges,
+                ],
+              }
+            },
           },
-        },
-      })
-    },
-  })
+        })
+      },
+    }
+  )
 
-  return [{ value: href, onChange: setHref }, mutation] as const
+  const createLink = async () => {
+    const data = await scrapData(href)
+
+    if (!data?.title) {
+      data.title = href
+    }
+
+    await mutation({
+      variables: {
+        topicId,
+        data: {
+          href,
+          name: data.title,
+        },
+      },
+    })
+    setHref('')
+  }
+
+  return [{ value: href, onChange: setHref }, [createLink, info]] as const
+}
+
+const renameTopicAttachment = gql`
+  mutation renameTopicAttachment($id: ID!, $name: String!) {
+    renameTopicAttachment(id: $id, name: $name) {
+      id
+      name
+    }
+  }
+`
+
+export function useRenameTopicAttachment() {
+  return useMutation<RenameTopicAttachmentMutation, RenameTopicAttachmentMutationVariables>(renameTopicAttachment)
 }

@@ -41,6 +41,10 @@ export interface NexusGenInputs {
     code?: string | null; // String
     id?: string | null; // String
   }
+  TopicAttachmentInput: { // input type
+    href: string; // String!
+    name: string; // String!
+  }
 }
 
 export interface NexusGenEnums {
@@ -101,6 +105,7 @@ export interface NexusGenObjects {
   TopicAttachment: { // root type
     href: string; // String!
     id: string; // String!
+    name: string; // String!
   }
   TopicAttachmentConnection: { // root type
     edges?: Array<NexusGenRootTypes['TopicAttachmentEdge'] | null> | null; // [TopicAttachmentEdge]
@@ -158,6 +163,8 @@ export interface NexusGenFieldTypes {
     createClass: NexusGenRootTypes['Class'] | null; // Class
     createTopic: NexusGenRootTypes['Topic'] | null; // Topic
     deleteTopic: NexusGenRootTypes['Topic'] | null; // Topic
+    deleteTopicAttachment: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
+    renameTopicAttachment: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
     reorderTopic: NexusGenRootTypes['Topic'] | null; // Topic
     updateClassName: NexusGenRootTypes['Class'] | null; // Class
     updateTopic: NexusGenRootTypes['Topic'] | null; // Topic
@@ -198,6 +205,7 @@ export interface NexusGenFieldTypes {
   TopicAttachment: { // field return type
     href: string; // String!
     id: string; // String!
+    name: string; // String!
   }
   TopicAttachmentConnection: { // field return type
     edges: Array<NexusGenRootTypes['TopicAttachmentEdge'] | null> | null; // [TopicAttachmentEdge]
@@ -249,6 +257,8 @@ export interface NexusGenFieldTypeNames {
     createClass: 'Class'
     createTopic: 'Topic'
     deleteTopic: 'Topic'
+    deleteTopicAttachment: 'TopicAttachment'
+    renameTopicAttachment: 'TopicAttachment'
     reorderTopic: 'Topic'
     updateClassName: 'Class'
     updateTopic: 'Topic'
@@ -289,6 +299,7 @@ export interface NexusGenFieldTypeNames {
   TopicAttachment: { // field return type name
     href: 'String'
     id: 'String'
+    name: 'String'
   }
   TopicAttachmentConnection: { // field return type name
     edges: 'TopicAttachmentEdge'
@@ -331,7 +342,7 @@ export interface NexusGenArgTypes {
   }
   Mutation: {
     addTopicAttachment: { // args
-      href: string; // String!
+      data: NexusGenInputs['TopicAttachmentInput']; // TopicAttachmentInput!
       topicId: string; // ID!
     }
     createClass: { // args
@@ -344,6 +355,13 @@ export interface NexusGenArgTypes {
     }
     deleteTopic: { // args
       id: string; // ID!
+    }
+    deleteTopicAttachment: { // args
+      id: string; // ID!
+    }
+    renameTopicAttachment: { // args
+      id: string; // ID!
+      name: string; // String!
     }
     reorderTopic: { // args
       after?: string | null; // ID

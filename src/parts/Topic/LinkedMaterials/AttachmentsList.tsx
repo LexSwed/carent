@@ -1,7 +1,8 @@
 import React from 'react'
-import { Flex, TextLink, Text, styled } from '@fxtrot/ui'
+import { Flex, TextLink, styled, TextField } from '@fxtrot/ui'
 import { useScraper } from '../../../utils/link-preview'
-import { useTopicAttachments } from '../gql'
+import { useTopicAttachments, useRenameTopicAttachment } from '../gql'
+import type { GetTopicAttachmentsQuery } from '../../../graphql/generated'
 
 const AttachmentsList = () => {
   const { data } = useTopicAttachments()
@@ -9,7 +10,7 @@ const AttachmentsList = () => {
   return (
     <Flex space="$2">
       {list.map((edge) => (
-        <LinkPreview key={edge.node.id} href={edge.node.href} />
+        <LinkPreview key={edge.node.id} {...edge.node} />
       ))}
     </Flex>
   )
@@ -17,39 +18,37 @@ const AttachmentsList = () => {
 
 export default AttachmentsList
 
-const LinkPreview: React.FC<{ href: string }> = ({ href }) => {
-  const { data, loading, error } = useScraper({ url: href })
+const LinkPreview: React.FC<GetTopicAttachmentsQuery['topic']['attachments']['edges'][number]['node']> = ({
+  id,
+  href,
+  name,
+}) => {
+  const { data } = useScraper({ url: href })
+  const [rename] = useRenameTopicAttachment()
 
-  if (error) {
-    return (
-      <LinkPreviewBox>
-        <TextLink href={href} external="icon" ellipsis>
-          {href}
-        </TextLink>
-      </LinkPreviewBox>
-    )
+  async function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+    const newName = e.currentTarget.value?.trim()
+    if (newName !== name) {
+      await rename({
+        variables: {
+          id,
+          name: newName,
+        },
+      })
+    }
   }
-
-  if (loading || !data) {
-    return null
-  }
-
-  const { title, description, image, url } = data
 
   return (
     <LinkPreviewBox>
       <Flex flow="row" cross="center">
-        {image && <PreviewImage src={image.src} rel={image.rel} />}
+        {data?.image && <PreviewImage src={data.image.src} rel={data.image.rel} />}
         <LinkDetails>
-          <Text as="div" size="sm" ellipsis>
-            {title}
-          </Text>
-          <Text as="div" size="xs" tone="light" ellipsis>
-            {description}
-          </Text>
-          <TextLink href={url} size="xs" external="icon" ellipsis>
-            {url}
-          </TextLink>
+          <TextField variant="transparent" defaultValue={name} onBlur={handleBlur} />
+          {data?.url && (
+            <TextLink href={data.url} size="xs" external="icon" ellipsis>
+              {data.url}
+            </TextLink>
+          )}
         </LinkDetails>
       </Flex>
     </LinkPreviewBox>
@@ -68,24 +67,22 @@ const LinkPreviewBox = styled('div', {
 const LinkDetails = styled('div', {
   overflow: 'hidden',
   p: '$2',
+  pl: '$4',
   minWidth: 0,
 })
 
 const PreviewImage = styled('img', {
   height: 80,
-  minWidth: 80,
+  width: 80,
   objectFit: 'cover',
+  bc: '$surfaceHover',
 
   variants: {
     rel: {
       icon: {
         p: '$3',
-        width: 80,
       },
-      preview: {
-        minWidth: 'auto',
-        maxWidth: 100,
-      },
+      preview: {},
     },
   },
 

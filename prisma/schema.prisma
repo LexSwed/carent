@@ -145,6 +145,7 @@ model TopicAttachment {
   id        String   @id @default(cuid())
   topic     Topic    @relation(fields: [topicId], references: [id])
   href      String
+  name      String
   createdAt DateTime @default(now()) @map("created_at")
   // maybe will be used in the future to make some attachments private
   public    Boolean  @default(true)

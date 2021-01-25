@@ -1,8 +1,8 @@
 import { ApolloError } from 'apollo-server-micro'
-import { idArg, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
+import { idArg, inputObjectType, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
 import { LexoRank } from 'lexorank'
 import { relayToPrismaPagination } from '../utils'
-import type { Topic as PrismaTopic } from '@prisma/client'
+import type { Topic as PrismaTopic, TopicAttachment as PrismaTopicAttachment } from '@prisma/client'
 import type { Context } from 'nexus-plugin-prisma/dist/utils'
 
 export const getTopicById = queryField((t) => {
@@ -181,18 +181,77 @@ export const addAttachment = mutationField((t) => {
     type: TopicAttachment,
     args: {
       topicId: nonNull(idArg()),
-      href: nonNull(stringArg()),
+      data: nonNull(
+        inputObjectType({
+          name: 'TopicAttachmentInput',
+          definition(t) {
+            t.nonNull.string('href', { description: 'Reference to the attachment' })
+            t.nonNull.string('name', { description: 'Name of the attachment' })
+          },
+        })
+      ),
     },
     authorize: (_, { topicId }, ctx) => canUpdateTopic(topicId, ctx),
-    resolve: (_, { topicId, href }, { prisma }) => {
+    resolve: (_, { topicId, data }, { prisma }) => {
       return prisma.topicAttachment.create({
         data: {
-          href,
+          href: data.href,
+          name: data.name,
           topic: {
             connect: {
               id: topicId,
             },
           },
+        },
+      })
+    },
+  })
+})
+
+export const renameAttachment = mutationField((t) => {
+  t.field('renameTopicAttachment', {
+    type: TopicAttachment,
+    args: {
+      id: nonNull(
+        idArg({
+          description: 'Attachment ID',
+        })
+      ),
+      name: nonNull(
+        stringArg({
+          description: 'New name for the attachment',
+        })
+      ),
+    },
+    authorize: (_, { id }, ctx) => canUpdateAttachment(id, ctx),
+    resolve: (_, { id, name }, { prisma }) => {
+      return prisma.topicAttachment.update({
+        where: {
+          id,
+        },
+        data: {
+          name,
+        },
+      })
+    },
+  })
+})
+
+export const deleteAttachment = mutationField((t) => {
+  t.field('deleteTopicAttachment', {
+    type: TopicAttachment,
+    args: {
+      id: nonNull(
+        idArg({
+          description: 'Attachment ID',
+        })
+      ),
+    },
+    authorize: (_, { id }, ctx) => canUpdateAttachment(id, ctx),
+    resolve: (_, { id }, { prisma }) => {
+      return prisma.topicAttachment.delete({
+        where: {
+          id,
         },
       })
     },
@@ -235,6 +294,7 @@ export const TopicAttachment = objectType({
   definition(t) {
     t.model.id()
     t.model.href()
+    t.model.name()
   },
 })
 
@@ -251,6 +311,23 @@ async function canUpdateTopic(topicId: PrismaTopic['id'], { prisma, session }: C
       id: true,
     },
   })
-  console.log(topic)
+  return !!topic
+}
+
+async function canUpdateAttachment(id: PrismaTopicAttachment['id'], { prisma, session }: Context) {
+  const topic = await prisma.topicAttachment.findFirst({
+    where: {
+      id,
+      topic: {
+        teacherId: session?.user?.teacherId,
+        archivedAt: {
+          equals: null,
+        },
+      },
+    },
+    select: {
+      id: true,
+    },
+  })
   return !!topic
 }

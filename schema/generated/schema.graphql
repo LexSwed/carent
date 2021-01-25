@@ -71,7 +71,7 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 type Mutation {
-  addTopicAttachment(href: String!, topicId: ID!): TopicAttachment
+  addTopicAttachment(data: TopicAttachmentInput!, topicId: ID!): TopicAttachment
   createClass(group: CreateClassGroupInput!, name: String!): Class
   createTopic(
     """ID of the class create topic into"""
@@ -82,6 +82,17 @@ type Mutation {
     """ID of the topic to delete"""
     id: ID!
   ): Topic
+  deleteTopicAttachment(
+    """Attachment ID"""
+    id: ID!
+  ): TopicAttachment
+  renameTopicAttachment(
+    """Attachment ID"""
+    id: ID!
+
+    """New name for the attachment"""
+    name: String!
+  ): TopicAttachment
   reorderTopic(
     """ID of the topic to insert after"""
     after: ID
@@ -211,6 +222,7 @@ type Topic implements Node {
 type TopicAttachment {
   href: String!
   id: String!
+  name: String!
 }
 
 type TopicAttachmentConnection {
@@ -232,6 +244,14 @@ type TopicAttachmentEdge {
 
   """https://facebook.github.io/relay/graphql/connections.htm#sec-Node"""
   node: TopicAttachment
+}
+
+input TopicAttachmentInput {
+  """Reference to the attachment"""
+  href: String!
+
+  """Name of the attachment"""
+  name: String!
 }
 
 type TopicConnection {

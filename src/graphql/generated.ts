@@ -78,6 +78,7 @@ export type TopicAttachment = {
   __typename?: 'TopicAttachment';
   id: Scalars['String'];
   href: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export type User = Node & {
@@ -157,6 +158,13 @@ export type StudentGroupEdge = {
   node?: Maybe<StudentGroup>;
 };
 
+export type TopicAttachmentInput = {
+  /** Reference to the attachment */
+  href: Scalars['String'];
+  /** Name of the attachment */
+  name: Scalars['String'];
+};
+
 export type TopicAttachmentConnection = {
   __typename?: 'TopicAttachmentConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
@@ -229,6 +237,8 @@ export type Mutation = {
   updateTopic?: Maybe<Topic>;
   deleteTopic?: Maybe<Topic>;
   addTopicAttachment?: Maybe<TopicAttachment>;
+  renameTopicAttachment?: Maybe<TopicAttachment>;
+  deleteTopicAttachment?: Maybe<TopicAttachment>;
 };
 
 
@@ -270,7 +280,18 @@ export type MutationDeleteTopicArgs = {
 
 export type MutationAddTopicAttachmentArgs = {
   topicId: Scalars['ID'];
-  href: Scalars['String'];
+  data: TopicAttachmentInput;
+};
+
+
+export type MutationRenameTopicAttachmentArgs = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+export type MutationDeleteTopicAttachmentArgs = {
+  id: Scalars['ID'];
 };
 
 export type GetLastUpdatedTopicQueryVariables = Exact<{
@@ -522,7 +543,7 @@ export type GetTopicAttachmentsQuery = (
         { __typename?: 'TopicAttachmentEdge' }
         & { node?: Maybe<(
           { __typename?: 'TopicAttachment' }
-          & Pick<TopicAttachment, 'id' | 'href'>
+          & Pick<TopicAttachment, 'id' | 'href' | 'name'>
         )> }
       )>>> }
     )> }
@@ -531,7 +552,7 @@ export type GetTopicAttachmentsQuery = (
 
 export type AddTopicAttachmentMutationVariables = Exact<{
   topicId: Scalars['ID'];
-  href: Scalars['String'];
+  data: TopicAttachmentInput;
 }>;
 
 
@@ -539,11 +560,25 @@ export type AddTopicAttachmentMutation = (
   { __typename?: 'Mutation' }
   & { addTopicAttachment?: Maybe<(
     { __typename?: 'TopicAttachment' }
-    & Pick<TopicAttachment, 'id' | 'href'>
+    & Pick<TopicAttachment, 'id' | 'href' | 'name'>
   )> }
 );
 
 export type NewLinkFragment = (
   { __typename?: 'TopicAttachment' }
-  & Pick<TopicAttachment, 'id' | 'href'>
+  & Pick<TopicAttachment, 'id' | 'href' | 'name'>
+);
+
+export type RenameTopicAttachmentMutationVariables = Exact<{
+  id: Scalars['ID'];
+  name: Scalars['String'];
+}>;
+
+
+export type RenameTopicAttachmentMutation = (
+  { __typename?: 'Mutation' }
+  & { renameTopicAttachment?: Maybe<(
+    { __typename?: 'TopicAttachment' }
+    & Pick<TopicAttachment, 'id' | 'name'>
+  )> }
 );

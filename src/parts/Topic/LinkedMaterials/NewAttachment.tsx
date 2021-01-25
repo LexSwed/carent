@@ -26,7 +26,7 @@ const NewAttachment: React.FC<{
         aria-label="Insert link to the resource"
         hint="Insert a URL of the resource to attach to this topic"
         value={value}
-        placeholder="Links like https://google.com"
+        placeholder="For example, https://google.com"
         onChange={onChange}
         validity={valid ? 'valid' : undefined}
         type="url"
