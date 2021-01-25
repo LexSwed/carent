@@ -20,7 +20,7 @@
     "experimentalDecorators": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "schema/generated"],
+  "exclude": ["node_modules"],
   // prisma:seed
   "ts-node": {
     "compilerOptions": {
