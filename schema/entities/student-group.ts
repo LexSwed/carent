@@ -4,21 +4,6 @@ import { relayToPrismaPagination } from '../utils'
 export const getStudentGroups = queryField((t) => {
   t.connectionField('groups', {
     type: 'StudentGroup',
-    totalCount: (root, args, { session, prisma }) => {
-      return prisma.studentGroup.count({
-        where: {
-          classes: {
-            some: {
-              teacher: {
-                user: {
-                  workspaceId: session.user.workspaceId,
-                },
-              },
-            },
-          },
-        },
-      })
-    },
     nodes: (root, args, { session, prisma }) => {
       return prisma.studentGroup.findMany({
         ...relayToPrismaPagination(args),

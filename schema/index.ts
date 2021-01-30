@@ -14,11 +14,7 @@ export const schema = makeSchema({
         DateTime: scalars.DateTime,
       },
     }),
-    connectionPlugin({
-      extendConnection: {
-        totalCount: { type: 'Int' },
-      },
-    }),
+    connectionPlugin({}),
     fieldAuthorizePlugin({
       formatError: (config) => {
         console.log(config)

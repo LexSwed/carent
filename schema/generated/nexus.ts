@@ -17,7 +17,7 @@ declare global {
      */
     connectionField<FieldName extends string>(
       fieldName: FieldName,
-      config: connectionPluginCore.ConnectionFieldConfig<TypeName, FieldName> & { totalCount: core.FieldResolver<core.FieldTypeName<TypeName, FieldName>, "totalCount"> }
+      config: connectionPluginCore.ConnectionFieldConfig<TypeName, FieldName>
     ): void
   }
 }
@@ -64,6 +64,24 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Assignment: { // root type
+    id: string; // String!
+    name: string; // String!
+  }
+  AssignmentConnection: { // root type
+    edges?: Array<NexusGenRootTypes['AssignmentEdge'] | null> | null; // [AssignmentEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+  }
+  AssignmentEdge: { // root type
+    cursor: string; // String!
+    node?: NexusGenRootTypes['Assignment'] | null; // Assignment
+  }
+  AssignmentState: { // root type
+    closedAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // String!
+    open: boolean; // Boolean!
+    openedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Class: { // root type
     id: string; // String!
     name: string; // String!
@@ -132,7 +150,7 @@ export interface NexusGenObjects {
 }
 
 export interface NexusGenInterfaces {
-  Node: NexusGenRootTypes['Class'] | NexusGenRootTypes['StudentGroup'] | NexusGenRootTypes['Topic'] | NexusGenRootTypes['User'];
+  Node: NexusGenRootTypes['Assignment'] | NexusGenRootTypes['AssignmentState'] | NexusGenRootTypes['Class'] | NexusGenRootTypes['StudentGroup'] | NexusGenRootTypes['Topic'] | NexusGenRootTypes['TopicAttachment'] | NexusGenRootTypes['User'];
 }
 
 export interface NexusGenUnions {
@@ -143,6 +161,26 @@ export type NexusGenRootTypes = NexusGenInterfaces & NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  Assignment: { // field return type
+    id: string; // String!
+    name: string; // String!
+    state: NexusGenRootTypes['AssignmentState'] | null; // AssignmentState
+    topic: NexusGenRootTypes['Topic']; // Topic!
+  }
+  AssignmentConnection: { // field return type
+    edges: Array<NexusGenRootTypes['AssignmentEdge'] | null> | null; // [AssignmentEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+  }
+  AssignmentEdge: { // field return type
+    cursor: string; // String!
+    node: NexusGenRootTypes['Assignment'] | null; // Assignment
+  }
+  AssignmentState: { // field return type
+    closedAt: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // String!
+    open: boolean; // Boolean!
+    openedAt: NexusGenScalars['DateTime']; // DateTime!
+  }
   Class: { // field return type
     group: NexusGenRootTypes['StudentGroup']; // StudentGroup!
     id: string; // String!
@@ -152,7 +190,6 @@ export interface NexusGenFieldTypes {
   ClassConnection: { // field return type
     edges: Array<NexusGenRootTypes['ClassEdge'] | null> | null; // [ClassEdge]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
-    totalCount: number | null; // Int
   }
   ClassEdge: { // field return type
     cursor: string; // String!
@@ -176,6 +213,7 @@ export interface NexusGenFieldTypes {
     startCursor: string | null; // String
   }
   Query: { // field return type
+    assignments: NexusGenRootTypes['AssignmentConnection'] | null; // AssignmentConnection
     class: NexusGenRootTypes['Class'] | null; // Class
     classes: NexusGenRootTypes['ClassConnection'] | null; // ClassConnection
     groups: NexusGenRootTypes['StudentGroupConnection'] | null; // StudentGroupConnection
@@ -189,7 +227,6 @@ export interface NexusGenFieldTypes {
   StudentGroupConnection: { // field return type
     edges: Array<NexusGenRootTypes['StudentGroupEdge'] | null> | null; // [StudentGroupEdge]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
-    totalCount: number | null; // Int
   }
   StudentGroupEdge: { // field return type
     cursor: string; // String!
@@ -210,7 +247,6 @@ export interface NexusGenFieldTypes {
   TopicAttachmentConnection: { // field return type
     edges: Array<NexusGenRootTypes['TopicAttachmentEdge'] | null> | null; // [TopicAttachmentEdge]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
-    totalCount: number | null; // Int
   }
   TopicAttachmentEdge: { // field return type
     cursor: string; // String!
@@ -219,7 +255,6 @@ export interface NexusGenFieldTypes {
   TopicConnection: { // field return type
     edges: Array<NexusGenRootTypes['TopicEdge'] | null> | null; // [TopicEdge]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
-    totalCount: number | null; // Int
   }
   TopicEdge: { // field return type
     cursor: string; // String!
@@ -237,6 +272,26 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Assignment: { // field return type name
+    id: 'String'
+    name: 'String'
+    state: 'AssignmentState'
+    topic: 'Topic'
+  }
+  AssignmentConnection: { // field return type name
+    edges: 'AssignmentEdge'
+    pageInfo: 'PageInfo'
+  }
+  AssignmentEdge: { // field return type name
+    cursor: 'String'
+    node: 'Assignment'
+  }
+  AssignmentState: { // field return type name
+    closedAt: 'DateTime'
+    id: 'String'
+    open: 'Boolean'
+    openedAt: 'DateTime'
+  }
   Class: { // field return type name
     group: 'StudentGroup'
     id: 'String'
@@ -246,7 +301,6 @@ export interface NexusGenFieldTypeNames {
   ClassConnection: { // field return type name
     edges: 'ClassEdge'
     pageInfo: 'PageInfo'
-    totalCount: 'Int'
   }
   ClassEdge: { // field return type name
     cursor: 'String'
@@ -270,6 +324,7 @@ export interface NexusGenFieldTypeNames {
     startCursor: 'String'
   }
   Query: { // field return type name
+    assignments: 'AssignmentConnection'
     class: 'Class'
     classes: 'ClassConnection'
     groups: 'StudentGroupConnection'
@@ -283,7 +338,6 @@ export interface NexusGenFieldTypeNames {
   StudentGroupConnection: { // field return type name
     edges: 'StudentGroupEdge'
     pageInfo: 'PageInfo'
-    totalCount: 'Int'
   }
   StudentGroupEdge: { // field return type name
     cursor: 'String'
@@ -304,7 +358,6 @@ export interface NexusGenFieldTypeNames {
   TopicAttachmentConnection: { // field return type name
     edges: 'TopicAttachmentEdge'
     pageInfo: 'PageInfo'
-    totalCount: 'Int'
   }
   TopicAttachmentEdge: { // field return type name
     cursor: 'String'
@@ -313,7 +366,6 @@ export interface NexusGenFieldTypeNames {
   TopicConnection: { // field return type name
     edges: 'TopicEdge'
     pageInfo: 'PageInfo'
-    totalCount: 'Int'
   }
   TopicEdge: { // field return type name
     cursor: 'String'
@@ -378,6 +430,14 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    assignments: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      classId: string; // ID!
+      first?: number | null; // Int
+      last?: number | null; // Int
+      topicId?: string | null; // ID
+    }
     class: { // args
       id: string; // ID!
     }
@@ -408,13 +468,16 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractTypeMembers {
-  Node: "Class" | "StudentGroup" | "Topic" | "User"
+  Node: "Assignment" | "AssignmentState" | "Class" | "StudentGroup" | "Topic" | "TopicAttachment" | "User"
 }
 
 export interface NexusGenTypeInterfaces {
+  Assignment: "Node"
+  AssignmentState: "Node"
   Class: "Node"
   StudentGroup: "Node"
   Topic: "Node"
+  TopicAttachment: "Node"
   User: "Node"
 }
 

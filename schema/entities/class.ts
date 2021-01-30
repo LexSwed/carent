@@ -1,5 +1,5 @@
 import { ApolloError } from 'apollo-server-micro'
-import { arg, enumType, idArg, inputObjectType, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
+import { enumType, idArg, inputObjectType, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
 import { relayToPrismaPagination } from '../utils'
 
 export const sortTopicsInput = enumType({
@@ -15,17 +15,6 @@ export const sortTopicsInput = enumType({
 export const getTechingClasses = queryField((t) => {
   t.connectionField('classes', {
     type: 'Class',
-    totalCount: (root, args, { session, prisma }) => {
-      return prisma.class.count({
-        where: {
-          teacher: {
-            user: {
-              email: session?.user?.email,
-            },
-          },
-        },
-      })
-    },
     nodes: (root, args, { session, prisma }) => {
       return prisma.class.findMany({
         ...relayToPrismaPagination(args),
@@ -143,53 +132,6 @@ export const Class = objectType({
     t.model.name()
     t.model.studentGroup({
       alias: 'group',
-    })
-    t.connectionField('topics', {
-      type: 'Topic',
-      additionalArgs: {
-        sort: arg({
-          type: inputObjectType({
-            name: 'ClassTopicsSortOrder',
-            definition(t) {
-              t.field('key', {
-                type: enumType({ name: 'TopicSortKey', members: { ORDER: 'orderKey', UPDATED: 'updatedAt' } }),
-              })
-              t.field('order', {
-                type: enumType({
-                  name: 'TopicSortOrder',
-                  description:
-                    'Sort direction, ASC = ascending (normal - latest on top), DESC = descending (reverse - oldest on top)',
-                  members: { ASC: 'asc', DESC: 'desc' },
-                }),
-              })
-            },
-          }),
-          default: {
-            key: 'orderKey',
-            order: 'asc',
-          },
-        }),
-      },
-      totalCount: (root: any, args, { prisma }) =>
-        prisma.topic.count({
-          where: {
-            classId: root.id,
-          },
-        }),
-      nodes: (root, { sort, ...args }, { prisma }) => {
-        return prisma.topic.findMany({
-          ...relayToPrismaPagination(args),
-          orderBy: {
-            [sort.key]: sort.order,
-          },
-          where: {
-            classId: root.id,
-            archivedAt: {
-              equals: null,
-            },
-          },
-        })
-      },
     })
   },
 })

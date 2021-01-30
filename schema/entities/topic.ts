@@ -1,5 +1,16 @@
 import { ApolloError } from 'apollo-server-micro'
-import { idArg, inputObjectType, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
+import {
+  arg,
+  enumType,
+  extendType,
+  idArg,
+  inputObjectType,
+  mutationField,
+  nonNull,
+  objectType,
+  queryField,
+  stringArg,
+} from 'nexus'
 import { LexoRank } from 'lexorank'
 import { relayToPrismaPagination } from '../utils'
 import type { Topic as PrismaTopic, TopicAttachment as PrismaTopicAttachment } from '@prisma/client'
@@ -268,12 +279,6 @@ export const Topic = objectType({
     t.model.updatedAt()
     t.connectionField('attachments', {
       type: TopicAttachment,
-      totalCount: (root: any, args, { prisma }) =>
-        prisma.topicAttachment.count({
-          where: {
-            topicId: root.id,
-          },
-        }),
       nodes: (root, args, { prisma }) => {
         return prisma.topicAttachment.findMany({
           ...relayToPrismaPagination(args),
@@ -289,9 +294,57 @@ export const Topic = objectType({
   },
 })
 
+export const classTopics = extendType({
+  type: 'Class',
+  definition(t) {
+    t.connectionField('topics', {
+      type: 'Topic',
+      additionalArgs: {
+        sort: arg({
+          type: inputObjectType({
+            name: 'ClassTopicsSortOrder',
+            definition(t) {
+              t.field('key', {
+                type: enumType({ name: 'TopicSortKey', members: { ORDER: 'orderKey', UPDATED: 'updatedAt' } }),
+              })
+              t.field('order', {
+                type: enumType({
+                  name: 'TopicSortOrder',
+                  description:
+                    'Sort direction, ASC = ascending (normal - latest on top), DESC = descending (reverse - oldest on top)',
+                  members: { ASC: 'asc', DESC: 'desc' },
+                }),
+              })
+            },
+          }),
+          default: {
+            key: 'orderKey',
+            order: 'asc',
+          },
+        }),
+      },
+      nodes: (root, { sort, ...args }, { prisma }) => {
+        return prisma.topic.findMany({
+          ...relayToPrismaPagination(args),
+          orderBy: {
+            [sort.key]: sort.order,
+          },
+          where: {
+            classId: root.id,
+            archivedAt: {
+              equals: null,
+            },
+          },
+        })
+      },
+    })
+  },
+})
+
 export const TopicAttachment = objectType({
   name: 'TopicAttachment',
   definition(t) {
+    t.implements('Node')
     t.model.id()
     t.model.href()
     t.model.name()

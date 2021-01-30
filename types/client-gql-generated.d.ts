@@ -22,6 +22,22 @@ type Node = {
   id: Scalars['String'];
 };
 
+type Assignment = Node & {
+  __typename?: 'Assignment';
+  id: Scalars['String'];
+  name: Scalars['String'];
+  topic: Topic;
+  state?: Maybe<AssignmentState>;
+};
+
+type AssignmentState = Node & {
+  __typename?: 'AssignmentState';
+  id: Scalars['String'];
+  open: Scalars['Boolean'];
+  openedAt: Scalars['DateTime'];
+  closedAt: Scalars['DateTime'];
+};
+
 enum ClassTopicsOrder {
   OrderAsc = 'ORDER_ASC',
   OrderDesc = 'ORDER_DESC',
@@ -74,7 +90,7 @@ type TopicAttachmentsArgs = {
   before?: Maybe<Scalars['String']>;
 };
 
-type TopicAttachment = {
+type TopicAttachment = Node & {
   __typename?: 'TopicAttachment';
   id: Scalars['String'];
   href: Scalars['String'];
@@ -89,21 +105,20 @@ type User = Node & {
   image?: Maybe<Scalars['String']>;
 };
 
-type ClassConnection = {
-  __typename?: 'ClassConnection';
+type AssignmentConnection = {
+  __typename?: 'AssignmentConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
-  edges?: Maybe<Array<Maybe<ClassEdge>>>;
+  edges?: Maybe<Array<Maybe<AssignmentEdge>>>;
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
   pageInfo: PageInfo;
-  totalCount?: Maybe<Scalars['Int']>;
 };
 
-type ClassEdge = {
-  __typename?: 'ClassEdge';
+type AssignmentEdge = {
+  __typename?: 'AssignmentEdge';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
   cursor: Scalars['String'];
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
-  node?: Maybe<Class>;
+  node?: Maybe<Assignment>;
 };
 
 /** PageInfo cursor, as defined in https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
@@ -119,26 +134,20 @@ type PageInfo = {
   endCursor?: Maybe<Scalars['String']>;
 };
 
-type TopicConnection = {
-  __typename?: 'TopicConnection';
+type ClassConnection = {
+  __typename?: 'ClassConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
-  edges?: Maybe<Array<Maybe<TopicEdge>>>;
+  edges?: Maybe<Array<Maybe<ClassEdge>>>;
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
   pageInfo: PageInfo;
-  totalCount?: Maybe<Scalars['Int']>;
 };
 
-type TopicEdge = {
-  __typename?: 'TopicEdge';
+type ClassEdge = {
+  __typename?: 'ClassEdge';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
   cursor: Scalars['String'];
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
-  node?: Maybe<Topic>;
-};
-
-type ClassTopicsSortOrder = {
-  key?: Maybe<TopicSortKey>;
-  order?: Maybe<TopicSortOrder>;
+  node?: Maybe<Class>;
 };
 
 type StudentGroupConnection = {
@@ -147,7 +156,6 @@ type StudentGroupConnection = {
   edges?: Maybe<Array<Maybe<StudentGroupEdge>>>;
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
   pageInfo: PageInfo;
-  totalCount?: Maybe<Scalars['Int']>;
 };
 
 type StudentGroupEdge = {
@@ -171,7 +179,6 @@ type TopicAttachmentConnection = {
   edges?: Maybe<Array<Maybe<TopicAttachmentEdge>>>;
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
   pageInfo: PageInfo;
-  totalCount?: Maybe<Scalars['Int']>;
 };
 
 type TopicAttachmentEdge = {
@@ -180,6 +187,27 @@ type TopicAttachmentEdge = {
   cursor: Scalars['String'];
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
   node?: Maybe<TopicAttachment>;
+};
+
+type TopicConnection = {
+  __typename?: 'TopicConnection';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
+  edges?: Maybe<Array<Maybe<TopicEdge>>>;
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
+  pageInfo: PageInfo;
+};
+
+type TopicEdge = {
+  __typename?: 'TopicEdge';
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
+  cursor: Scalars['String'];
+  /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
+  node?: Maybe<Topic>;
+};
+
+type ClassTopicsSortOrder = {
+  key?: Maybe<TopicSortKey>;
+  order?: Maybe<TopicSortOrder>;
 };
 
 enum TopicSortKey {
@@ -195,11 +223,22 @@ enum TopicSortOrder {
 
 type Query = {
   __typename?: 'Query';
+  assignments?: Maybe<AssignmentConnection>;
   classes?: Maybe<ClassConnection>;
   class?: Maybe<Class>;
   groups?: Maybe<StudentGroupConnection>;
   topic?: Maybe<Topic>;
   me?: Maybe<User>;
+};
+
+
+type QueryAssignmentsArgs = {
+  classId: Scalars['ID'];
+  topicId?: Maybe<Scalars['ID']>;
+  first?: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  last?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
 };
 
 
@@ -325,7 +364,6 @@ type GetClassesQuery = (
   { __typename?: 'Query' }
   & { classes?: Maybe<(
     { __typename?: 'ClassConnection' }
-    & Pick<ClassConnection, 'totalCount'>
     & { edges?: Maybe<Array<Maybe<(
       { __typename?: 'ClassEdge' }
       & { node?: Maybe<(
@@ -433,6 +471,33 @@ type CreateNewTopicMutation = (
 type NewTopicFragment = (
   { __typename?: 'Topic' }
   & Pick<Topic, 'id' | 'title'>
+);
+
+type GetAssignmentsQueryVariables = Exact<{
+  classId: Scalars['ID'];
+  topicId?: Maybe<Scalars['ID']>;
+}>;
+
+
+type GetAssignmentsQuery = (
+  { __typename?: 'Query' }
+  & { assignments?: Maybe<(
+    { __typename?: 'AssignmentConnection' }
+    & { edges?: Maybe<Array<Maybe<(
+      { __typename?: 'AssignmentEdge' }
+      & { node?: Maybe<(
+        { __typename?: 'Assignment' }
+        & Pick<Assignment, 'id' | 'name'>
+        & { topic: (
+          { __typename?: 'Topic' }
+          & Pick<Topic, 'id' | 'title'>
+        ), state?: Maybe<(
+          { __typename?: 'AssignmentState' }
+          & Pick<AssignmentState, 'id' | 'open'>
+        )> }
+      )> }
+    )>>> }
+  )> }
 );
 
 type UpdateTopicOrderMutationVariables = Exact<{

@@ -13,7 +13,6 @@ import { Card } from '../../Card'
 const getClassesQuery = gql`
   query getClasses {
     classes(first: 10) {
-      totalCount
       edges {
         node {
           id

@@ -1,5 +1,6 @@
 import { interfaceType } from 'nexus'
 
+export * from './assignments'
 export * from './class'
 export * from './student-group'
 export * from './topic'
