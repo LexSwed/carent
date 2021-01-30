@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { Box, Button, Flex, Icon, TextField } from '@fxtrot/ui'
 import { HiPlus } from 'react-icons/hi'
-import { useClassId } from '../../../utils'
 
-import { useCreateNewTopic } from '../../Class/gql'
+import { useCreateNewTopic } from '../Class/gql'
+import { useClassId } from '../../utils'
 
 export const NewTopic = () => {
   const classId = useClassId()

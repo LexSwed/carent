@@ -1,12 +1,11 @@
 import React, { useCallback } from 'react'
 import { useApolloClient } from '@apollo/client'
 import { Flex, styled } from '@fxtrot/ui'
-import { useClassId } from '../../../utils'
 import { DragDropContext, Droppable } from 'react-beautiful-dnd'
-import type { GetClassTopicsQuery, GetClassTopicsQueryVariables } from '../../../graphql/generated'
-import { updateOrderMutation, getTopics } from '../gql'
+import { updateOrderMutation, getTopics } from './gql'
+import { useClassId } from '../../utils'
 
-export const TopicsList = ({ children }) => {
+export const Topics = ({ children }) => {
   const handleDrop = useOnDrop()
   return (
     <DragDropContext onDragEnd={handleDrop}>

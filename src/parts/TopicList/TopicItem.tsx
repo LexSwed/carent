@@ -1,7 +1,6 @@
 import React from 'react'
 import { Button, Flex, Icon, styled, Text } from '@fxtrot/ui'
 import { HiMenuAlt4 } from 'react-icons/hi'
-import type { GetClassTopicsQuery } from '../../../graphql/generated'
 import { Draggable } from 'react-beautiful-dnd'
 
 type FetchedTopic = GetClassTopicsQuery['class']['topics']['edges'][number]['node']
@@ -11,7 +10,7 @@ interface TopicCardProps extends FetchedTopic {
   index: number
 }
 
-export const TopicLink = React.memo<TopicCardProps>(({ id, title, selected, index, onClick }) => {
+export const TopicItem = React.memo<TopicCardProps>(({ id, title, selected, index, onClick }) => {
   return (
     <Draggable draggableId={id} index={index}>
       {(provided, snapshot) => (

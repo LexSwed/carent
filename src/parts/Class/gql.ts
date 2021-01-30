@@ -1,14 +1,4 @@
 import { gql, useQuery, useMutation } from '@apollo/client'
-import type {
-  GetClassTopicsQuery,
-  GetClassTopicsQueryVariables,
-  CreateNewTopicMutation,
-  CreateNewTopicMutationVariables,
-  GetClassInfoQuery,
-  GetClassInfoQueryVariables,
-  UpdateClassNameMutation,
-  UpdateClassNameMutationVariables,
-} from '../../graphql/generated'
 import { useClassId } from '../../utils'
 
 const getClassInfo = gql`

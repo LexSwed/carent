@@ -1,9 +1,9 @@
-export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+type Maybe<T> = T | null;
+type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
-export type Scalars = {
+type Scalars = {
   ID: string;
   String: string;
   Boolean: boolean;
@@ -17,24 +17,24 @@ export type Scalars = {
 
 
 
-export type Node = {
+type Node = {
   /** Resource ID */
   id: Scalars['String'];
 };
 
-export enum ClassTopicsOrder {
+enum ClassTopicsOrder {
   OrderAsc = 'ORDER_ASC',
   OrderDesc = 'ORDER_DESC',
   UpdatedAsc = 'UPDATED_ASC',
   UpdatedDesc = 'UPDATED_DESC'
 }
 
-export type CreateClassGroupInput = {
+type CreateClassGroupInput = {
   id?: Maybe<Scalars['String']>;
   code?: Maybe<Scalars['String']>;
 };
 
-export type Class = Node & {
+type Class = Node & {
   __typename?: 'Class';
   id: Scalars['String'];
   name: Scalars['String'];
@@ -43,7 +43,7 @@ export type Class = Node & {
 };
 
 
-export type ClassTopicsArgs = {
+type ClassTopicsArgs = {
   sort?: Maybe<ClassTopicsSortOrder>;
   first?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
@@ -51,13 +51,13 @@ export type ClassTopicsArgs = {
   before?: Maybe<Scalars['String']>;
 };
 
-export type StudentGroup = Node & {
+type StudentGroup = Node & {
   __typename?: 'StudentGroup';
   id: Scalars['String'];
   code: Scalars['String'];
 };
 
-export type Topic = Node & {
+type Topic = Node & {
   __typename?: 'Topic';
   id: Scalars['String'];
   title: Scalars['String'];
@@ -67,21 +67,21 @@ export type Topic = Node & {
 };
 
 
-export type TopicAttachmentsArgs = {
+type TopicAttachmentsArgs = {
   first?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
   last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
 };
 
-export type TopicAttachment = {
+type TopicAttachment = {
   __typename?: 'TopicAttachment';
   id: Scalars['String'];
   href: Scalars['String'];
   name: Scalars['String'];
 };
 
-export type User = Node & {
+type User = Node & {
   __typename?: 'User';
   id: Scalars['String'];
   name?: Maybe<Scalars['String']>;
@@ -89,7 +89,7 @@ export type User = Node & {
   image?: Maybe<Scalars['String']>;
 };
 
-export type ClassConnection = {
+type ClassConnection = {
   __typename?: 'ClassConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
   edges?: Maybe<Array<Maybe<ClassEdge>>>;
@@ -98,7 +98,7 @@ export type ClassConnection = {
   totalCount?: Maybe<Scalars['Int']>;
 };
 
-export type ClassEdge = {
+type ClassEdge = {
   __typename?: 'ClassEdge';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
   cursor: Scalars['String'];
@@ -107,7 +107,7 @@ export type ClassEdge = {
 };
 
 /** PageInfo cursor, as defined in https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
-export type PageInfo = {
+type PageInfo = {
   __typename?: 'PageInfo';
   /** Used to indicate whether more edges exist following the set defined by the clients arguments. */
   hasNextPage: Scalars['Boolean'];
@@ -119,7 +119,7 @@ export type PageInfo = {
   endCursor?: Maybe<Scalars['String']>;
 };
 
-export type TopicConnection = {
+type TopicConnection = {
   __typename?: 'TopicConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
   edges?: Maybe<Array<Maybe<TopicEdge>>>;
@@ -128,7 +128,7 @@ export type TopicConnection = {
   totalCount?: Maybe<Scalars['Int']>;
 };
 
-export type TopicEdge = {
+type TopicEdge = {
   __typename?: 'TopicEdge';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
   cursor: Scalars['String'];
@@ -136,12 +136,12 @@ export type TopicEdge = {
   node?: Maybe<Topic>;
 };
 
-export type ClassTopicsSortOrder = {
+type ClassTopicsSortOrder = {
   key?: Maybe<TopicSortKey>;
   order?: Maybe<TopicSortOrder>;
 };
 
-export type StudentGroupConnection = {
+type StudentGroupConnection = {
   __typename?: 'StudentGroupConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
   edges?: Maybe<Array<Maybe<StudentGroupEdge>>>;
@@ -150,7 +150,7 @@ export type StudentGroupConnection = {
   totalCount?: Maybe<Scalars['Int']>;
 };
 
-export type StudentGroupEdge = {
+type StudentGroupEdge = {
   __typename?: 'StudentGroupEdge';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
   cursor: Scalars['String'];
@@ -158,14 +158,14 @@ export type StudentGroupEdge = {
   node?: Maybe<StudentGroup>;
 };
 
-export type TopicAttachmentInput = {
+type TopicAttachmentInput = {
   /** Reference to the attachment */
   href: Scalars['String'];
   /** Name of the attachment */
   name: Scalars['String'];
 };
 
-export type TopicAttachmentConnection = {
+type TopicAttachmentConnection = {
   __typename?: 'TopicAttachmentConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
   edges?: Maybe<Array<Maybe<TopicAttachmentEdge>>>;
@@ -174,7 +174,7 @@ export type TopicAttachmentConnection = {
   totalCount?: Maybe<Scalars['Int']>;
 };
 
-export type TopicAttachmentEdge = {
+type TopicAttachmentEdge = {
   __typename?: 'TopicAttachmentEdge';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor */
   cursor: Scalars['String'];
@@ -182,18 +182,18 @@ export type TopicAttachmentEdge = {
   node?: Maybe<TopicAttachment>;
 };
 
-export enum TopicSortKey {
+enum TopicSortKey {
   Order = 'ORDER',
   Updated = 'UPDATED'
 }
 
 /** Sort direction, ASC = ascending (normal - latest on top), DESC = descending (reverse - oldest on top) */
-export enum TopicSortOrder {
+enum TopicSortOrder {
   Asc = 'ASC',
   Desc = 'DESC'
 }
 
-export type Query = {
+type Query = {
   __typename?: 'Query';
   classes?: Maybe<ClassConnection>;
   class?: Maybe<Class>;
@@ -203,7 +203,7 @@ export type Query = {
 };
 
 
-export type QueryClassesArgs = {
+type QueryClassesArgs = {
   first?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
   last?: Maybe<Scalars['Int']>;
@@ -211,12 +211,12 @@ export type QueryClassesArgs = {
 };
 
 
-export type QueryClassArgs = {
+type QueryClassArgs = {
   id: Scalars['ID'];
 };
 
 
-export type QueryGroupsArgs = {
+type QueryGroupsArgs = {
   first?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
   last?: Maybe<Scalars['Int']>;
@@ -224,11 +224,11 @@ export type QueryGroupsArgs = {
 };
 
 
-export type QueryTopicArgs = {
+type QueryTopicArgs = {
   id: Scalars['ID'];
 };
 
-export type Mutation = {
+type Mutation = {
   __typename?: 'Mutation';
   createClass?: Maybe<Class>;
   updateClassName?: Maybe<Class>;
@@ -242,65 +242,65 @@ export type Mutation = {
 };
 
 
-export type MutationCreateClassArgs = {
+type MutationCreateClassArgs = {
   name: Scalars['String'];
   group: CreateClassGroupInput;
 };
 
 
-export type MutationUpdateClassNameArgs = {
+type MutationUpdateClassNameArgs = {
   id: Scalars['ID'];
   name: Scalars['String'];
 };
 
 
-export type MutationCreateTopicArgs = {
+type MutationCreateTopicArgs = {
   classId: Scalars['ID'];
   title: Scalars['String'];
 };
 
 
-export type MutationReorderTopicArgs = {
+type MutationReorderTopicArgs = {
   id: Scalars['ID'];
   before?: Maybe<Scalars['ID']>;
   after?: Maybe<Scalars['ID']>;
 };
 
 
-export type MutationUpdateTopicArgs = {
+type MutationUpdateTopicArgs = {
   id: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
 };
 
 
-export type MutationDeleteTopicArgs = {
+type MutationDeleteTopicArgs = {
   id: Scalars['ID'];
 };
 
 
-export type MutationAddTopicAttachmentArgs = {
+type MutationAddTopicAttachmentArgs = {
   topicId: Scalars['ID'];
   data: TopicAttachmentInput;
 };
 
 
-export type MutationRenameTopicAttachmentArgs = {
+type MutationRenameTopicAttachmentArgs = {
   id: Scalars['ID'];
   name: Scalars['String'];
 };
 
 
-export type MutationDeleteTopicAttachmentArgs = {
+type MutationDeleteTopicAttachmentArgs = {
   id: Scalars['ID'];
 };
 
-export type GetLastUpdatedTopicQueryVariables = Exact<{
+type GetLastUpdatedTopicQueryVariables = Exact<{
   classId: Scalars['ID'];
   sortOrder: ClassTopicsSortOrder;
 }>;
 
 
-export type GetLastUpdatedTopicQuery = (
+type GetLastUpdatedTopicQuery = (
   { __typename?: 'Query' }
   & { class?: Maybe<(
     { __typename?: 'Class' }
@@ -318,10 +318,10 @@ export type GetLastUpdatedTopicQuery = (
   )> }
 );
 
-export type GetClassesQueryVariables = Exact<{ [key: string]: never; }>;
+type GetClassesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetClassesQuery = (
+type GetClassesQuery = (
   { __typename?: 'Query' }
   & { classes?: Maybe<(
     { __typename?: 'ClassConnection' }
@@ -340,7 +340,7 @@ export type GetClassesQuery = (
   )> }
 );
 
-export type ClassFragmentFragment = (
+type ClassFragmentFragment = (
   { __typename?: 'Class' }
   & Pick<Class, 'id' | 'name'>
   & { group: (
@@ -349,18 +349,18 @@ export type ClassFragmentFragment = (
   ) }
 );
 
-export type GroupFragmentFragment = (
+type GroupFragmentFragment = (
   { __typename?: 'StudentGroup' }
   & Pick<StudentGroup, 'id' | 'code'>
 );
 
-export type CreateClassMutationVariables = Exact<{
+type CreateClassMutationVariables = Exact<{
   name: Scalars['String'];
   group: CreateClassGroupInput;
 }>;
 
 
-export type CreateClassMutation = (
+type CreateClassMutation = (
   { __typename?: 'Mutation' }
   & { createClass?: Maybe<(
     { __typename?: 'Class' }
@@ -368,10 +368,10 @@ export type CreateClassMutation = (
   )> }
 );
 
-export type GetGroupsQueryVariables = Exact<{ [key: string]: never; }>;
+type GetGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetGroupsQuery = (
+type GetGroupsQuery = (
   { __typename?: 'Query' }
   & { groups?: Maybe<(
     { __typename?: 'StudentGroupConnection' }
@@ -385,12 +385,12 @@ export type GetGroupsQuery = (
   )> }
 );
 
-export type GetClassInfoQueryVariables = Exact<{
+type GetClassInfoQueryVariables = Exact<{
   classId: Scalars['ID'];
 }>;
 
 
-export type GetClassInfoQuery = (
+type GetClassInfoQuery = (
   { __typename?: 'Query' }
   & { class?: Maybe<(
     { __typename?: 'Class' }
@@ -402,13 +402,13 @@ export type GetClassInfoQuery = (
   )> }
 );
 
-export type UpdateClassNameMutationVariables = Exact<{
+type UpdateClassNameMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
 }>;
 
 
-export type UpdateClassNameMutation = (
+type UpdateClassNameMutation = (
   { __typename?: 'Mutation' }
   & { updateClassName?: Maybe<(
     { __typename?: 'Class' }
@@ -416,13 +416,13 @@ export type UpdateClassNameMutation = (
   )> }
 );
 
-export type CreateNewTopicMutationVariables = Exact<{
+type CreateNewTopicMutationVariables = Exact<{
   classId: Scalars['ID'];
   title: Scalars['String'];
 }>;
 
 
-export type CreateNewTopicMutation = (
+type CreateNewTopicMutation = (
   { __typename?: 'Mutation' }
   & { createTopic?: Maybe<(
     { __typename?: 'Topic' }
@@ -430,19 +430,19 @@ export type CreateNewTopicMutation = (
   )> }
 );
 
-export type NewTopicFragment = (
+type NewTopicFragment = (
   { __typename?: 'Topic' }
   & Pick<Topic, 'id' | 'title'>
 );
 
-export type UpdateTopicOrderMutationVariables = Exact<{
+type UpdateTopicOrderMutationVariables = Exact<{
   id: Scalars['ID'];
   before?: Maybe<Scalars['ID']>;
   after?: Maybe<Scalars['ID']>;
 }>;
 
 
-export type UpdateTopicOrderMutation = (
+type UpdateTopicOrderMutation = (
   { __typename?: 'Mutation' }
   & { reorderTopic?: Maybe<(
     { __typename?: 'Topic' }
@@ -450,12 +450,12 @@ export type UpdateTopicOrderMutation = (
   )> }
 );
 
-export type GetClassTopicsQueryVariables = Exact<{
+type GetClassTopicsQueryVariables = Exact<{
   classId: Scalars['ID'];
 }>;
 
 
-export type GetClassTopicsQuery = (
+type GetClassTopicsQuery = (
   { __typename?: 'Query' }
   & { class?: Maybe<(
     { __typename?: 'Class' }
@@ -473,12 +473,12 @@ export type GetClassTopicsQuery = (
   )> }
 );
 
-export type GetTopicDetailsQueryVariables = Exact<{
+type GetTopicDetailsQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetTopicDetailsQuery = (
+type GetTopicDetailsQuery = (
   { __typename?: 'Query' }
   & { topic?: Maybe<(
     { __typename?: 'Topic' }
@@ -486,13 +486,13 @@ export type GetTopicDetailsQuery = (
   )> }
 );
 
-export type UpdateTopicMutationVariables = Exact<{
+type UpdateTopicMutationVariables = Exact<{
   id: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
 }>;
 
 
-export type UpdateTopicMutation = (
+type UpdateTopicMutation = (
   { __typename?: 'Mutation' }
   & { updateTopic?: Maybe<(
     { __typename?: 'Topic' }
@@ -500,12 +500,12 @@ export type UpdateTopicMutation = (
   )> }
 );
 
-export type DeleteTopicMutationVariables = Exact<{
+type DeleteTopicMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteTopicMutation = (
+type DeleteTopicMutation = (
   { __typename?: 'Mutation' }
   & { deleteTopic?: Maybe<(
     { __typename?: 'Topic' }
@@ -513,13 +513,13 @@ export type DeleteTopicMutation = (
   )> }
 );
 
-export type UpdateTopicTitleMutationVariables = Exact<{
+type UpdateTopicTitleMutationVariables = Exact<{
   id: Scalars['ID'];
   title: Scalars['String'];
 }>;
 
 
-export type UpdateTopicTitleMutation = (
+type UpdateTopicTitleMutation = (
   { __typename?: 'Mutation' }
   & { updateTopic?: Maybe<(
     { __typename?: 'Topic' }
@@ -527,12 +527,12 @@ export type UpdateTopicTitleMutation = (
   )> }
 );
 
-export type GetTopicAttachmentsQueryVariables = Exact<{
+type GetTopicAttachmentsQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetTopicAttachmentsQuery = (
+type GetTopicAttachmentsQuery = (
   { __typename?: 'Query' }
   & { topic?: Maybe<(
     { __typename?: 'Topic' }
@@ -550,13 +550,13 @@ export type GetTopicAttachmentsQuery = (
   )> }
 );
 
-export type AddTopicAttachmentMutationVariables = Exact<{
+type AddTopicAttachmentMutationVariables = Exact<{
   topicId: Scalars['ID'];
   data: TopicAttachmentInput;
 }>;
 
 
-export type AddTopicAttachmentMutation = (
+type AddTopicAttachmentMutation = (
   { __typename?: 'Mutation' }
   & { addTopicAttachment?: Maybe<(
     { __typename?: 'TopicAttachment' }
@@ -564,18 +564,18 @@ export type AddTopicAttachmentMutation = (
   )> }
 );
 
-export type NewLinkFragment = (
+type NewLinkFragment = (
   { __typename?: 'TopicAttachment' }
   & Pick<TopicAttachment, 'id' | 'href' | 'name'>
 );
 
-export type RenameTopicAttachmentMutationVariables = Exact<{
+type RenameTopicAttachmentMutationVariables = Exact<{
   id: Scalars['ID'];
   name: Scalars['String'];
 }>;
 
 
-export type RenameTopicAttachmentMutation = (
+type RenameTopicAttachmentMutation = (
   { __typename?: 'Mutation' }
   & { renameTopicAttachment?: Maybe<(
     { __typename?: 'TopicAttachment' }
@@ -583,12 +583,12 @@ export type RenameTopicAttachmentMutation = (
   )> }
 );
 
-export type DeleteTopicAttachmentMutationVariables = Exact<{
+type DeleteTopicAttachmentMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type DeleteTopicAttachmentMutation = (
+type DeleteTopicAttachmentMutation = (
   { __typename?: 'Mutation' }
   & { deleteTopicAttachment?: Maybe<(
     { __typename?: 'TopicAttachment' }

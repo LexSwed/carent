@@ -3,8 +3,8 @@ import { Flex, Box } from '@fxtrot/ui'
 import Image from 'next/image'
 
 import ClassHeader from './Header'
-import MaterialsSection from './MaterialsSection'
 import { useClassId } from '../../utils'
+import Assignments from './Assignments'
 
 const ClassPage = () => {
   const classId = useClassId()
@@ -20,11 +20,11 @@ const ClassPage = () => {
   }
 
   return (
-    <Box maxWidth={600}>
-      <Flex space="$12">
+    <Box maxWidth={900}>
+      <Flex space="$8">
         <ClassHeader />
         <Flex space="$8">
-          <MaterialsSection />
+          <Assignments />
         </Flex>
       </Flex>
     </Box>
