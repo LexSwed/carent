@@ -2,12 +2,7 @@ import React from 'react'
 import { gql, useQuery } from '@apollo/client'
 import Link from 'next/link'
 import { Box, Button, Flex, Heading, Icon, Text, TextField, TextLink } from '@fxtrot/ui'
-import {
-  GetLastUpdatedTopicQuery,
-  GetLastUpdatedTopicQueryVariables,
-  TopicSortKey,
-  TopicSortOrder,
-} from '../../graphql/generated'
+
 import { useClassId } from '../../utils'
 import { HiChevronRight, HiArrowRight } from 'react-icons/hi'
 import { useRouter } from 'next/router'

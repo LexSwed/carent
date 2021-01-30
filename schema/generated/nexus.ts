@@ -197,6 +197,7 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     addTopicAttachment: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
+    createAssignment: NexusGenRootTypes['Assignment'] | null; // Assignment
     createClass: NexusGenRootTypes['Class'] | null; // Class
     createTopic: NexusGenRootTypes['Topic'] | null; // Topic
     deleteTopic: NexusGenRootTypes['Topic'] | null; // Topic
@@ -308,6 +309,7 @@ export interface NexusGenFieldTypeNames {
   }
   Mutation: { // field return type name
     addTopicAttachment: 'TopicAttachment'
+    createAssignment: 'Assignment'
     createClass: 'Class'
     createTopic: 'Topic'
     deleteTopic: 'Topic'
@@ -395,6 +397,10 @@ export interface NexusGenArgTypes {
   Mutation: {
     addTopicAttachment: { // args
       data: NexusGenInputs['TopicAttachmentInput']; // TopicAttachmentInput!
+      topicId: string; // ID!
+    }
+    createAssignment: { // args
+      name: string; // String!
       topicId: string; // ID!
     }
     createClass: { // args

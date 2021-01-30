@@ -170,10 +170,10 @@ model Assignment {
 
 model AssignmentState {
   id           String     @id @default(cuid())
-  assignment   Assignment @relation(fields: [assignmentId], references: [id])
-  open         Boolean
+  open         Boolean    @default(false)
   openedAt     DateTime   @default(now()) @map("opened_at")
   closedAt     DateTime   @default(now()) @map("closed_at")
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
   assignmentId String
 
   @@map("assignment_states")
@@ -183,10 +183,8 @@ model AssignmentSection {
   id           String                    @id @default(cuid())
   name         String
   questions    AssignmentQuestionBlock[]
-  assignment   Assignment?               @relation(fields: [assignmentId], references: [id])
-  assignmentId String?                   @map("assignment_id")
-  createdAt    DateTime                  @default(now()) @map("created_at")
-  updatedAt    DateTime                  @default(now()) @map("updated_at")
+  assignment   Assignment                @relation(fields: [assignmentId], references: [id])
+  assignmentId String                    @map("assignment_id")
 
   @@map("assignment_sections")
 }

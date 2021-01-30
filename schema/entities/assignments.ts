@@ -1,4 +1,4 @@
-import { idArg, nonNull, objectType, queryField } from 'nexus'
+import { idArg, inputObjectType, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
 import { relayToPrismaPagination } from '../utils'
 
 export const getClassAssignments = queryField((t) => {
@@ -24,6 +24,43 @@ export const getClassAssignments = queryField((t) => {
             classId,
             archivedAt: {
               equals: null,
+            },
+          },
+        },
+      })
+    },
+  })
+})
+
+export const createAssignment = mutationField((t) => {
+  t.field('createAssignment', {
+    type: 'Assignment',
+    args: {
+      name: nonNull(
+        stringArg({
+          description: 'Name of the assignment, e.g. "Home test" or "Control assignment"',
+        })
+      ),
+      topicId: nonNull(
+        idArg({
+          description: 'ID of the topic the assignment belongs to',
+        })
+      ),
+    },
+    resolve: (_, { name, topicId }, { prisma, session }) => {
+      return prisma.assignment.create({
+        data: {
+          name,
+          state: {
+            create: {},
+          },
+          creatorId: session?.user.teacherId,
+          topic: {
+            connect: {
+              id_teacherId: {
+                id: topicId,
+                teacherId: session?.user.teacherId,
+              },
             },
           },
         },

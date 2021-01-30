@@ -638,10 +638,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fxtrot/ui@^1.0.129":
-  version "1.0.129"
-  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.129.tgz#823ed1f493c80697345bb67ec2d7a7e71154d5ae"
-  integrity sha512-iXxNTv1LtGY34N8QHzOGdpYGlvNKZ2vDCRP2ZGE8mQzGhh+VS2mkht8Ff3N9MdwEo/nlA+q3qBlfS7z2OX+8AQ==
+"@fxtrot/ui@^1.0.130":
+  version "1.0.130"
+  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.130.tgz#66c039eea519cbb15c5b93a44f18a95451d425ad"
+  integrity sha512-fIZViNYKPl01SN/7arOjMlaDq3OORkV2Rcgkl+vl4G9g4OyvR7yzeBrTZ7tPD575GAYFsrN+wn3Y7N/8r1iNPg==
   dependencies:
     "@popperjs/core" "^2.6.0"
     "@react-aria/focus" "^3.2.3"
@@ -649,7 +649,7 @@
     "@react-aria/visually-hidden" "^3.2.1"
     "@stitches/react" "^0.0.3-canary.4"
     framer-motion "^3.2.2-rc.1"
-    jotai "^0.12.6"
+    jotai "^0.12.7"
     react-uid "^2.3.1"
     react-virtual "^2.3.2"
 
@@ -6641,12 +6641,12 @@ jose@^1.27.2, jose@^1.28.0:
   dependencies:
     "@panva/asn1.js" "^1.0.0"
 
-jotai@^0.12.6:
-  version "0.12.6"
-  resolved "https://registry.yarnpkg.com/jotai/-/jotai-0.12.6.tgz#c64c09ef407010ca92cf9e3727ee849e2fd2a079"
-  integrity sha512-nflqHYHZHRJsJ6sRb1b59uMUg/2c+jVAE/ULk+8k/mQ5/XjtjaHAjD0qG2rHJ10NwGm624oL+03GzUDN6VVFWw==
+jotai@^0.12.7:
+  version "0.12.7"
+  resolved "https://registry.yarnpkg.com/jotai/-/jotai-0.12.7.tgz#c664b6b140645cbed5a6e30a5f5b8f9d0c47dcdf"
+  integrity sha512-6VfjBkzECglPa5beCd78dy18bnB6g5yoSm9JUaTc9ww2XRQnYf3HPQvBBPD8YQwEhxOvG7EDq9bPC0aISTW43g==
   dependencies:
-    use-context-selector "1.3.6"
+    use-context-selector "1.3.7"
 
 js-cookie@^2.2.1:
   version "2.2.1"
@@ -10583,10 +10583,10 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
-use-context-selector@1.3.6:
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/use-context-selector/-/use-context-selector-1.3.6.tgz#76ff0687a7cf0f6080eb583f654aaaa07590368c"
-  integrity sha512-M+2NnqVfSZ+P3UMyD+sei8dJL+ebd7ze6xlErjvM0DQal/vr6+F9q5QuvGvZ6eqb1JB18FmoLSrFYqF0FsEylg==
+use-context-selector@1.3.7:
+  version "1.3.7"
+  resolved "https://registry.yarnpkg.com/use-context-selector/-/use-context-selector-1.3.7.tgz#4e59270baa73417dcb0c5c6c124359fd0e8b3aaf"
+  integrity sha512-O94hcN9UDAPTC4Fsm3p6Og5PVlhTEeKqxJX3HuBbVSuevOSPLDZxowFUmx49/fnu9jpgY83Nd3TALJVDRtYzdQ==
 
 use-isomorphic-layout-effect@^1.1.0:
   version "1.1.1"

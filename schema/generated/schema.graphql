@@ -105,6 +105,15 @@ scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/fi
 
 type Mutation {
   addTopicAttachment(data: TopicAttachmentInput!, topicId: ID!): TopicAttachment
+  createAssignment(
+    """
+    Name of the assignment, e.g. "Home test" or "Control assignment"
+    """
+    name: String!
+
+    """ID of the topic the assignment belongs to"""
+    topicId: ID!
+  ): Assignment
   createClass(group: CreateClassGroupInput!, name: String!): Class
   createTopic(
     """ID of the class create topic into"""

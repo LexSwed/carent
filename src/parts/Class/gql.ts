@@ -111,3 +111,36 @@ export function useClassAssignments(classId: string, topicId?: string) {
     },
   })
 }
+
+const getTopicTitle = gql`
+  query getTopicTitle($id: ID!) {
+    topic(id: $id) {
+      id
+      title
+    }
+  }
+`
+
+export function useTopicTitle(id: string) {
+  return useQuery<GetTopicTitleQuery, GetTopicTitleQueryVariables>(getTopicTitle, {
+    variables: {
+      id,
+    },
+  })
+}
+
+const createAssignment = gql`
+  mutation createAssignment($name: String!, $topicId: ID!) {
+    createAssignment(name: $name, topicId: $topicId) {
+      id
+      name
+      state {
+        open
+      }
+    }
+  }
+`
+
+export function useCreateAssignment() {
+  return useMutation<CreateAssignmentMutation, CreateAssignmentMutationVariables>(createAssignment)
+}

@@ -15,94 +15,12 @@ type Scalars = {
   JSON: any;
 };
 
-
-
-type Node = {
-  /** Resource ID */
-  id: Scalars['String'];
-};
-
 type Assignment = Node & {
   __typename?: 'Assignment';
   id: Scalars['String'];
   name: Scalars['String'];
-  topic: Topic;
   state?: Maybe<AssignmentState>;
-};
-
-type AssignmentState = Node & {
-  __typename?: 'AssignmentState';
-  id: Scalars['String'];
-  open: Scalars['Boolean'];
-  openedAt: Scalars['DateTime'];
-  closedAt: Scalars['DateTime'];
-};
-
-enum ClassTopicsOrder {
-  OrderAsc = 'ORDER_ASC',
-  OrderDesc = 'ORDER_DESC',
-  UpdatedAsc = 'UPDATED_ASC',
-  UpdatedDesc = 'UPDATED_DESC'
-}
-
-type CreateClassGroupInput = {
-  id?: Maybe<Scalars['String']>;
-  code?: Maybe<Scalars['String']>;
-};
-
-type Class = Node & {
-  __typename?: 'Class';
-  id: Scalars['String'];
-  name: Scalars['String'];
-  group: StudentGroup;
-  topics?: Maybe<TopicConnection>;
-};
-
-
-type ClassTopicsArgs = {
-  sort?: Maybe<ClassTopicsSortOrder>;
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-};
-
-type StudentGroup = Node & {
-  __typename?: 'StudentGroup';
-  id: Scalars['String'];
-  code: Scalars['String'];
-};
-
-type Topic = Node & {
-  __typename?: 'Topic';
-  id: Scalars['String'];
-  title: Scalars['String'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
-  attachments?: Maybe<TopicAttachmentConnection>;
-};
-
-
-type TopicAttachmentsArgs = {
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-};
-
-type TopicAttachment = Node & {
-  __typename?: 'TopicAttachment';
-  id: Scalars['String'];
-  href: Scalars['String'];
-  name: Scalars['String'];
-};
-
-type User = Node & {
-  __typename?: 'User';
-  id: Scalars['String'];
-  name?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
+  topic: Topic;
 };
 
 type AssignmentConnection = {
@@ -121,17 +39,29 @@ type AssignmentEdge = {
   node?: Maybe<Assignment>;
 };
 
-/** PageInfo cursor, as defined in https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
-type PageInfo = {
-  __typename?: 'PageInfo';
-  /** Used to indicate whether more edges exist following the set defined by the clients arguments. */
-  hasNextPage: Scalars['Boolean'];
-  /** Used to indicate whether more edges exist prior to the set defined by the clients arguments. */
-  hasPreviousPage: Scalars['Boolean'];
-  /** The cursor corresponding to the first nodes in edges. Null if the connection is empty. */
-  startCursor?: Maybe<Scalars['String']>;
-  /** The cursor corresponding to the last nodes in edges. Null if the connection is empty. */
-  endCursor?: Maybe<Scalars['String']>;
+type AssignmentState = Node & {
+  __typename?: 'AssignmentState';
+  closedAt: Scalars['DateTime'];
+  id: Scalars['String'];
+  open: Scalars['Boolean'];
+  openedAt: Scalars['DateTime'];
+};
+
+type Class = Node & {
+  __typename?: 'Class';
+  group: StudentGroup;
+  id: Scalars['String'];
+  name: Scalars['String'];
+  topics?: Maybe<TopicConnection>;
+};
+
+
+type ClassTopicsArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  sort?: Maybe<ClassTopicsSortOrder>;
 };
 
 type ClassConnection = {
@@ -150,6 +80,168 @@ type ClassEdge = {
   node?: Maybe<Class>;
 };
 
+enum ClassTopicsOrder {
+  OrderAsc = 'ORDER_ASC',
+  OrderDesc = 'ORDER_DESC',
+  UpdatedAsc = 'UPDATED_ASC',
+  UpdatedDesc = 'UPDATED_DESC'
+}
+
+type ClassTopicsSortOrder = {
+  key?: Maybe<TopicSortKey>;
+  order?: Maybe<TopicSortOrder>;
+};
+
+type CreateClassGroupInput = {
+  code?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+};
+
+
+
+type Mutation = {
+  __typename?: 'Mutation';
+  addTopicAttachment?: Maybe<TopicAttachment>;
+  createAssignment?: Maybe<Assignment>;
+  createClass?: Maybe<Class>;
+  createTopic?: Maybe<Topic>;
+  deleteTopic?: Maybe<Topic>;
+  deleteTopicAttachment?: Maybe<TopicAttachment>;
+  renameTopicAttachment?: Maybe<TopicAttachment>;
+  reorderTopic?: Maybe<Topic>;
+  updateClassName?: Maybe<Class>;
+  updateTopic?: Maybe<Topic>;
+};
+
+
+type MutationAddTopicAttachmentArgs = {
+  data: TopicAttachmentInput;
+  topicId: Scalars['ID'];
+};
+
+
+type MutationCreateAssignmentArgs = {
+  name: Scalars['String'];
+  topicId: Scalars['ID'];
+};
+
+
+type MutationCreateClassArgs = {
+  group: CreateClassGroupInput;
+  name: Scalars['String'];
+};
+
+
+type MutationCreateTopicArgs = {
+  classId: Scalars['ID'];
+  title: Scalars['String'];
+};
+
+
+type MutationDeleteTopicArgs = {
+  id: Scalars['ID'];
+};
+
+
+type MutationDeleteTopicAttachmentArgs = {
+  id: Scalars['ID'];
+};
+
+
+type MutationRenameTopicAttachmentArgs = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+type MutationReorderTopicArgs = {
+  after?: Maybe<Scalars['ID']>;
+  before?: Maybe<Scalars['ID']>;
+  id: Scalars['ID'];
+};
+
+
+type MutationUpdateClassNameArgs = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+};
+
+
+type MutationUpdateTopicArgs = {
+  id: Scalars['ID'];
+  title?: Maybe<Scalars['String']>;
+};
+
+type Node = {
+  /** Resource ID */
+  id: Scalars['String'];
+};
+
+/** PageInfo cursor, as defined in https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
+type PageInfo = {
+  __typename?: 'PageInfo';
+  /** The cursor corresponding to the last nodes in edges. Null if the connection is empty. */
+  endCursor?: Maybe<Scalars['String']>;
+  /** Used to indicate whether more edges exist following the set defined by the clients arguments. */
+  hasNextPage: Scalars['Boolean'];
+  /** Used to indicate whether more edges exist prior to the set defined by the clients arguments. */
+  hasPreviousPage: Scalars['Boolean'];
+  /** The cursor corresponding to the first nodes in edges. Null if the connection is empty. */
+  startCursor?: Maybe<Scalars['String']>;
+};
+
+type Query = {
+  __typename?: 'Query';
+  assignments?: Maybe<AssignmentConnection>;
+  class?: Maybe<Class>;
+  classes?: Maybe<ClassConnection>;
+  groups?: Maybe<StudentGroupConnection>;
+  me?: Maybe<User>;
+  topic?: Maybe<Topic>;
+};
+
+
+type QueryAssignmentsArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  classId: Scalars['ID'];
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  topicId?: Maybe<Scalars['ID']>;
+};
+
+
+type QueryClassArgs = {
+  id: Scalars['ID'];
+};
+
+
+type QueryClassesArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+type QueryGroupsArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+type QueryTopicArgs = {
+  id: Scalars['ID'];
+};
+
+type StudentGroup = Node & {
+  __typename?: 'StudentGroup';
+  code: Scalars['String'];
+  id: Scalars['String'];
+};
+
 type StudentGroupConnection = {
   __typename?: 'StudentGroupConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
@@ -166,10 +258,27 @@ type StudentGroupEdge = {
   node?: Maybe<StudentGroup>;
 };
 
-type TopicAttachmentInput = {
-  /** Reference to the attachment */
+type Topic = Node & {
+  __typename?: 'Topic';
+  attachments?: Maybe<TopicAttachmentConnection>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['String'];
+  title: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+};
+
+
+type TopicAttachmentsArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+type TopicAttachment = Node & {
+  __typename?: 'TopicAttachment';
   href: Scalars['String'];
-  /** Name of the attachment */
+  id: Scalars['String'];
   name: Scalars['String'];
 };
 
@@ -189,6 +298,13 @@ type TopicAttachmentEdge = {
   node?: Maybe<TopicAttachment>;
 };
 
+type TopicAttachmentInput = {
+  /** Reference to the attachment */
+  href: Scalars['String'];
+  /** Name of the attachment */
+  name: Scalars['String'];
+};
+
 type TopicConnection = {
   __typename?: 'TopicConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
@@ -205,11 +321,6 @@ type TopicEdge = {
   node?: Maybe<Topic>;
 };
 
-type ClassTopicsSortOrder = {
-  key?: Maybe<TopicSortKey>;
-  order?: Maybe<TopicSortOrder>;
-};
-
 enum TopicSortKey {
   Order = 'ORDER',
   Updated = 'UPDATED'
@@ -221,116 +332,12 @@ enum TopicSortOrder {
   Desc = 'DESC'
 }
 
-type Query = {
-  __typename?: 'Query';
-  assignments?: Maybe<AssignmentConnection>;
-  classes?: Maybe<ClassConnection>;
-  class?: Maybe<Class>;
-  groups?: Maybe<StudentGroupConnection>;
-  topic?: Maybe<Topic>;
-  me?: Maybe<User>;
-};
-
-
-type QueryAssignmentsArgs = {
-  classId: Scalars['ID'];
-  topicId?: Maybe<Scalars['ID']>;
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-};
-
-
-type QueryClassesArgs = {
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-};
-
-
-type QueryClassArgs = {
-  id: Scalars['ID'];
-};
-
-
-type QueryGroupsArgs = {
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-};
-
-
-type QueryTopicArgs = {
-  id: Scalars['ID'];
-};
-
-type Mutation = {
-  __typename?: 'Mutation';
-  createClass?: Maybe<Class>;
-  updateClassName?: Maybe<Class>;
-  createTopic?: Maybe<Topic>;
-  reorderTopic?: Maybe<Topic>;
-  updateTopic?: Maybe<Topic>;
-  deleteTopic?: Maybe<Topic>;
-  addTopicAttachment?: Maybe<TopicAttachment>;
-  renameTopicAttachment?: Maybe<TopicAttachment>;
-  deleteTopicAttachment?: Maybe<TopicAttachment>;
-};
-
-
-type MutationCreateClassArgs = {
-  name: Scalars['String'];
-  group: CreateClassGroupInput;
-};
-
-
-type MutationUpdateClassNameArgs = {
-  id: Scalars['ID'];
-  name: Scalars['String'];
-};
-
-
-type MutationCreateTopicArgs = {
-  classId: Scalars['ID'];
-  title: Scalars['String'];
-};
-
-
-type MutationReorderTopicArgs = {
-  id: Scalars['ID'];
-  before?: Maybe<Scalars['ID']>;
-  after?: Maybe<Scalars['ID']>;
-};
-
-
-type MutationUpdateTopicArgs = {
-  id: Scalars['ID'];
-  title?: Maybe<Scalars['String']>;
-};
-
-
-type MutationDeleteTopicArgs = {
-  id: Scalars['ID'];
-};
-
-
-type MutationAddTopicAttachmentArgs = {
-  topicId: Scalars['ID'];
-  data: TopicAttachmentInput;
-};
-
-
-type MutationRenameTopicAttachmentArgs = {
-  id: Scalars['ID'];
-  name: Scalars['String'];
-};
-
-
-type MutationDeleteTopicAttachmentArgs = {
-  id: Scalars['ID'];
+type User = Node & {
+  __typename?: 'User';
+  email?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  image?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 type GetLastUpdatedTopicQueryVariables = Exact<{
@@ -497,6 +504,37 @@ type GetAssignmentsQuery = (
         )> }
       )> }
     )>>> }
+  )> }
+);
+
+type GetTopicTitleQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+type GetTopicTitleQuery = (
+  { __typename?: 'Query' }
+  & { topic?: Maybe<(
+    { __typename?: 'Topic' }
+    & Pick<Topic, 'id' | 'title'>
+  )> }
+);
+
+type CreateAssignmentMutationVariables = Exact<{
+  name: Scalars['String'];
+  topicId: Scalars['ID'];
+}>;
+
+
+type CreateAssignmentMutation = (
+  { __typename?: 'Mutation' }
+  & { createAssignment?: Maybe<(
+    { __typename?: 'Assignment' }
+    & Pick<Assignment, 'id' | 'name'>
+    & { state?: Maybe<(
+      { __typename?: 'AssignmentState' }
+      & Pick<AssignmentState, 'open'>
+    )> }
   )> }
 );
 

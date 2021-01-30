@@ -1,25 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client'
 import { useCallback, useState } from 'react'
-import type {
-  DeleteTopicMutation,
-  DeleteTopicMutationVariables,
-  UpdateTopicMutation,
-  UpdateTopicMutationVariables,
-  GetTopicDetailsQuery,
-  GetTopicDetailsQueryVariables,
-  UpdateTopicTitleMutationVariables,
-  UpdateTopicTitleMutation,
-  GetTopicAttachmentsQuery,
-  GetTopicAttachmentsQueryVariables,
-  AddTopicAttachmentMutation,
-  AddTopicAttachmentMutationVariables,
-  RenameTopicAttachmentMutation,
-  RenameTopicAttachmentMutationVariables,
-  DeleteTopicAttachmentMutation,
-  DeleteTopicAttachmentMutationVariables,
-  GetClassTopicsQuery,
-  GetClassTopicsQueryVariables,
-} from '../../graphql/generated'
 import { useClassId, useTopicId } from '../../utils'
 import { scrapData } from '../../utils/link-preview'
 

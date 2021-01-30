@@ -1,4 +1,4 @@
-schema: 'http://localhost:3000/api/gql'
+schema: 'schema/generated/schema.graphql'
 
 generates:
   types/client-gql-generated.d.ts:
