@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Flex, Heading, Picker, styled, TextField } from '@fxtrot/ui'
+import { Box, Button, Flex, Grid, Heading, Picker, Text, TextField } from '@fxtrot/ui'
 import Image from 'next/image'
 import { useClassTopics } from '../../Topic/gql'
 import { useCreateAssignment } from '../gql'
@@ -27,37 +27,28 @@ export const CreateNewAssignment: React.FC<{ selectedTopic?: string }> = ({ sele
   }
 
   return (
-    <>
-      <Heading level={3}>New assignment</Heading>
-      <Flex main="center" cross="center">
-        <Box pt="$10" width={260} zIndex={10}>
-          <Flex space="$4">
-            <TextField label="Assignment name" placeholder="Control test" value={name} onChange={setName} required />
-            <Picker
-              name="topic"
-              value={topicId}
-              onChange={setTopicId}
-              label="The topic it covers"
-              placeholder="Select the topic"
-            >
-              {data?.class?.topics?.edges.map((edge) => (
-                <Picker.Item key={edge.node.id} label={edge.node.title} value={edge.node.id} />
-              ))}
-            </Picker>
-            <Button disabled={loading} variant="primary" main="center" onClick={handleSubmit} css={{ width: '100%' }}>
-              <span>Create assignment</span>
-            </Button>
-          </Flex>
-        </Box>
-        <ImageWrapper>
-          <Image src="/draw/post.svg" height={300} width="auto" />
-        </ImageWrapper>
+    <Grid columns="10fr 9fr" gap="$8">
+      <Flex space="$4">
+        <Text size="sm" tone="light">
+          You don't have any assignments for this class yet, so... Let's create a new one!
+        </Text>
+        <TextField label="Assignment name" placeholder="Control test" value={name} onChange={setName} required />
+        <Picker
+          name="topic"
+          value={topicId}
+          onChange={setTopicId}
+          label="The topic it covers"
+          placeholder="Select the topic"
+        >
+          {data?.class?.topics?.edges.map((edge) => (
+            <Picker.Item key={edge.node.id} label={edge.node.title} value={edge.node.id} />
+          ))}
+        </Picker>
+        <Button disabled={loading} variant="primary" main="center" onClick={handleSubmit} css={{ width: '100%' }}>
+          <span>Create assignment</span>
+        </Button>
       </Flex>
-    </>
+      <Image src="/draw/post.svg" height="auto" width={200} />
+    </Grid>
   )
 }
-
-const ImageWrapper = styled('div', {
-  opacity: 0.4,
-  mt: '-50px',
-})

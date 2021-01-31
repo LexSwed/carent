@@ -34,7 +34,10 @@ const Assignments = () => {
               </Flex>
             </>
           ) : (
-            <CreateNewAssignment selectedTopic={selectedTopicId} />
+            <>
+              <Heading level={3}>Class assignments</Heading>
+              <CreateNewAssignment selectedTopic={selectedTopicId} />
+            </>
           )}
         </Box>
       </Grid>
