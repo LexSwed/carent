@@ -520,6 +520,15 @@ type GetTopicTitleQuery = (
   )> }
 );
 
+type CreatedAssignmentFragment = (
+  { __typename?: 'Assignment' }
+  & Pick<Assignment, 'id' | 'name'>
+  & { state?: Maybe<(
+    { __typename?: 'AssignmentState' }
+    & Pick<AssignmentState, 'open'>
+  )> }
+);
+
 type CreateAssignmentMutationVariables = Exact<{
   name: Scalars['String'];
   topicId: Scalars['ID'];
@@ -530,11 +539,7 @@ type CreateAssignmentMutation = (
   { __typename?: 'Mutation' }
   & { createAssignment?: Maybe<(
     { __typename?: 'Assignment' }
-    & Pick<Assignment, 'id' | 'name'>
-    & { state?: Maybe<(
-      { __typename?: 'AssignmentState' }
-      & Pick<AssignmentState, 'open'>
-    )> }
+    & CreatedAssignmentFragment
   )> }
 );
 

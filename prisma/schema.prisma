@@ -261,6 +261,7 @@ model AssignmentAnswerOption {
 
 model AssignmentVariant {
   id            String               @id @default(cuid())
+  name          String
   assignment    Assignment           @relation(fields: [assignmentId], references: [id])
   questions     AssignmentQuestion[]
   assignedUsers AssignmentAccess[]

@@ -54,6 +54,16 @@ export const createAssignment = mutationField((t) => {
           state: {
             create: {},
           },
+          sections: {
+            create: {
+              name: 'main',
+            },
+          },
+          variants: {
+            create: {
+              name: 'main',
+            },
+          },
           creatorId: session?.user.teacherId,
           topic: {
             connect: {

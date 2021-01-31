@@ -129,18 +129,47 @@ export function useTopicTitle(id: string) {
   })
 }
 
-const createAssignment = gql`
-  mutation createAssignment($name: String!, $topicId: ID!) {
-    createAssignment(name: $name, topicId: $topicId) {
-      id
-      name
-      state {
-        open
-      }
+const assignmentFragment = gql`
+  fragment CreatedAssignment on Assignment {
+    id
+    name
+    state {
+      open
     }
   }
 `
+const createAssignment = gql`
+  mutation createAssignment($name: String!, $topicId: ID!) {
+    createAssignment(name: $name, topicId: $topicId) {
+      ...CreatedAssignment
+    }
+  }
+  ${assignmentFragment}
+`
 
 export function useCreateAssignment() {
-  return useMutation<CreateAssignmentMutation, CreateAssignmentMutationVariables>(createAssignment)
+  return useMutation<CreateAssignmentMutation, CreateAssignmentMutationVariables>(createAssignment, {
+    update(cache, { data: { createAssignment: item } }) {
+      cache.modify({
+        fields: {
+          assignments(existingItems = {}) {
+            const newAssignmentRef = cache.writeFragment({
+              data: item,
+              fragment: assignmentFragment,
+            })
+            return {
+              ...existingItems,
+              edges: [
+                {
+                  __typename: 'AssignmentEdge',
+                  node: newAssignmentRef,
+                },
+                ...existingItems.edges,
+              ],
+            }
+          },
+        },
+      })
+    },
+  })
 }
