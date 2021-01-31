@@ -65,6 +65,7 @@ export interface NexusGenScalars {
 
 export interface NexusGenObjects {
   Assignment: { // root type
+    description?: string | null; // String
     id: string; // String!
     name: string; // String!
   }
@@ -162,6 +163,7 @@ export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnu
 
 export interface NexusGenFieldTypes {
   Assignment: { // field return type
+    description: string | null; // String
     id: string; // String!
     name: string; // String!
     state: NexusGenRootTypes['AssignmentState'] | null; // AssignmentState
@@ -274,6 +276,7 @@ export interface NexusGenFieldTypes {
 
 export interface NexusGenFieldTypeNames {
   Assignment: { // field return type name
+    description: 'String'
     id: 'String'
     name: 'String'
     state: 'AssignmentState'

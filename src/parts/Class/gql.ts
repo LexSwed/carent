@@ -89,6 +89,7 @@ const getAssignments = gql`
         node {
           id
           name
+          description
           topic {
             id
             title
@@ -126,6 +127,7 @@ export function useTopicTitle(id: string) {
     variables: {
       id,
     },
+    skip: !id,
   })
 }
 
@@ -133,6 +135,7 @@ const assignmentFragment = gql`
   fragment CreatedAssignment on Assignment {
     id
     name
+    description
     state {
       open
     }

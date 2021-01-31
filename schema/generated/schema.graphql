@@ -3,6 +3,8 @@
 
 
 type Assignment implements Node {
+  """Assignment goals, things to cover, etc"""
+  description: String
   id: String!
   name: String!
   state: AssignmentState

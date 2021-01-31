@@ -1,4 +1,4 @@
-import { idArg, inputObjectType, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
+import { idArg, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
 import { relayToPrismaPagination } from '../utils'
 
 export const getClassAssignments = queryField((t) => {
@@ -85,6 +85,9 @@ export const topicAssignment = objectType({
     t.implements('Node')
     t.model.id()
     t.model.name()
+    t.model.description({
+      description: 'Assignment goals, things to cover, etc',
+    })
     t.model.topic()
     t.model.state({
       type: 'AssignmentState',

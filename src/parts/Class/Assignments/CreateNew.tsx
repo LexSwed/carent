@@ -30,7 +30,7 @@ export const CreateNewAssignment: React.FC<{ selectedTopic?: string }> = ({ sele
     <Grid columns="10fr 9fr" gap="$8">
       <Flex space="$4">
         <Text size="sm" tone="light">
-          You don't have any assignments for this class yet, so... Let's create a new one!
+          You don't have any assignments in here yet, so... Let's create a new one!
         </Text>
         <TextField label="Assignment name" placeholder="Control test" value={name} onChange={setName} required />
         <Picker

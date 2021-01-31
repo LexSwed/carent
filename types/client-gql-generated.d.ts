@@ -17,6 +17,8 @@ type Scalars = {
 
 type Assignment = Node & {
   __typename?: 'Assignment';
+  /** Assignment goals, things to cover, etc */
+  description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   name: Scalars['String'];
   state?: Maybe<AssignmentState>;
@@ -494,7 +496,7 @@ type GetAssignmentsQuery = (
       { __typename?: 'AssignmentEdge' }
       & { node?: Maybe<(
         { __typename?: 'Assignment' }
-        & Pick<Assignment, 'id' | 'name'>
+        & Pick<Assignment, 'id' | 'name' | 'description'>
         & { topic: (
           { __typename?: 'Topic' }
           & Pick<Topic, 'id' | 'title'>
@@ -522,7 +524,7 @@ type GetTopicTitleQuery = (
 
 type CreatedAssignmentFragment = (
   { __typename?: 'Assignment' }
-  & Pick<Assignment, 'id' | 'name'>
+  & Pick<Assignment, 'id' | 'name' | 'description'>
   & { state?: Maybe<(
     { __typename?: 'AssignmentState' }
     & Pick<AssignmentState, 'open'>

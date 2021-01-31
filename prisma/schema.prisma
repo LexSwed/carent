@@ -153,17 +153,18 @@ model TopicAttachment {
 }
 
 model Assignment {
-  id         String              @id @default(cuid())
-  name       String
-  createdAt  DateTime            @default(now()) @map("created_at")
-  updatedAt  DateTime            @default(now()) @map("updated_at")
-  archivedAt DateTime?           @default(now()) @map("archived_at")
-  creatorId  String              @map("creator_id")
-  topic      Topic               @relation(fields: [topicId], references: [id])
-  topicId    String              @map("topic_id")
-  sections   AssignmentSection[]
-  variants   AssignmentVariant[]
-  state      AssignmentState?
+  id          String              @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @default(now()) @map("updated_at")
+  archivedAt  DateTime?           @default(now()) @map("archived_at")
+  creatorId   String              @map("creator_id")
+  topic       Topic               @relation(fields: [topicId], references: [id])
+  topicId     String              @map("topic_id")
+  sections    AssignmentSection[]
+  variants    AssignmentVariant[]
+  state       AssignmentState?
 
   @@map("assignments")
 }
