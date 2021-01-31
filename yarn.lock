@@ -638,10 +638,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fxtrot/ui@^1.0.130":
-  version "1.0.130"
-  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.130.tgz#66c039eea519cbb15c5b93a44f18a95451d425ad"
-  integrity sha512-fIZViNYKPl01SN/7arOjMlaDq3OORkV2Rcgkl+vl4G9g4OyvR7yzeBrTZ7tPD575GAYFsrN+wn3Y7N/8r1iNPg==
+"@fxtrot/ui@^1.0.131":
+  version "1.0.131"
+  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.131.tgz#690ae8bd2858a412e95ba89abad14670fee6ccbb"
+  integrity sha512-Oh8BaYrITUJR7KToy2FbdKAV8GEo6X9w3Ug4BmRBqNEfw7l4hd33c7+uIVEpPeUN4TG77Y0H1c3ZlLsyHifY3A==
   dependencies:
     "@popperjs/core" "^2.6.0"
     "@react-aria/focus" "^3.2.3"

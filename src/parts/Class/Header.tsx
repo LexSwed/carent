@@ -1,20 +1,7 @@
-import { Grid, StyleRecord, TextField } from '@fxtrot/ui'
+import { TextField } from '@fxtrot/ui'
 import React, { useEffect, useState } from 'react'
 import { useClassId } from '../../utils'
 import { useClassInfo, useUpdateClassName } from './gql'
-
-const styles: StyleRecord = {
-  input: {
-    '& input': {
-      fontSize: '$2xl',
-      fontWeight: 600,
-      p: 0,
-    },
-  },
-  group: {
-    m: 0,
-  },
-}
 
 const ClassHeader = () => {
   const { data } = useClassInfo()
@@ -38,14 +25,7 @@ const ClassHeader = () => {
     }
   }
 
-  return (
-    <Grid columns="1fr auto" space="$4">
-      <TextField css={styles.input} value={newName} onChange={setNewName} variant="transparent" onBlur={handleBlur} />
-      {/* <Heading css={styles.group} level={4} variant="light">
-        {data?.class.group.code}
-      </Heading> */}
-    </Grid>
-  )
+  return <TextField size="xl" value={newName} onChange={setNewName} variant="transparent" onBlur={handleBlur} />
 }
 
 export default ClassHeader
