@@ -27,29 +27,37 @@ export const CreateNewAssignment: React.FC<{ selectedTopic?: string }> = ({ sele
   }
 
   return (
-    <Flex flow="row-reverse" main="spread" cross="center">
-      <ImageWrapper>
-        <Image src="/draw/post.svg" height={300} width="auto" />
-      </ImageWrapper>
-      <Box width={280}>
-        <Flex space="$4">
-          <Heading level={3}>New assignment</Heading>
-          <TextField label="Assignment name" placeholder="Control test" value={name} onChange={setName} required />
-          <Picker name="topic" value={topicId} onChange={setTopicId} label="The topic it covers">
-            {data?.class?.topics?.edges.map((edge) => (
-              <Picker.Item key={edge.node.id} label={edge.node.title} value={edge.node.id} />
-            ))}
-          </Picker>
-          <Button disabled={loading} variant="primary" main="center" onClick={handleSubmit} css={{ width: '100%' }}>
-            <span>Create assignment</span>
-          </Button>
-        </Flex>
-      </Box>
-    </Flex>
+    <>
+      <Heading level={3}>New assignment</Heading>
+      <Flex main="center" cross="center">
+        <Box pt="$10" width={260} zIndex={10}>
+          <Flex space="$4">
+            <TextField label="Assignment name" placeholder="Control test" value={name} onChange={setName} required />
+            <Picker
+              name="topic"
+              value={topicId}
+              onChange={setTopicId}
+              label="The topic it covers"
+              placeholder="Select the topic"
+            >
+              {data?.class?.topics?.edges.map((edge) => (
+                <Picker.Item key={edge.node.id} label={edge.node.title} value={edge.node.id} />
+              ))}
+            </Picker>
+            <Button disabled={loading} variant="primary" main="center" onClick={handleSubmit} css={{ width: '100%' }}>
+              <span>Create assignment</span>
+            </Button>
+          </Flex>
+        </Box>
+        <ImageWrapper>
+          <Image src="/draw/post.svg" height={300} width="auto" />
+        </ImageWrapper>
+      </Flex>
+    </>
   )
 }
 
 const ImageWrapper = styled('div', {
-  ml: '-$8',
-  opacity: 0.7,
+  opacity: 0.4,
+  mt: '-50px',
 })
