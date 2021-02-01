@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
-import { Box, Button, Flex, Icon, TextField } from '@fxtrot/ui'
-import { HiPlus } from 'react-icons/hi'
+import { Box, Flex, TextField, VisuallyHidden } from '@fxtrot/ui'
 
 import { useCreateNewTopic } from '../Class/gql'
 import { useClassId } from '../../utils'
 
-export const NewTopic = () => {
+export const NewTopic: React.FC = () => {
   const classId = useClassId()
   const router = useRouter()
   const [create] = useCreateNewTopic()
@@ -28,20 +27,18 @@ export const NewTopic = () => {
   }
 
   return (
-    <Flex flow="row-reverse" space="$4" as="form" onSubmit={handleSubmit}>
+    <Box pl="$4" as="form" onSubmit={handleSubmit}>
       <TextField
-        placeholder="New topic title..."
-        hint="press Enter ↵ to create"
+        placeholder="1.2 Exploration of Magic"
+        hint="press Enter ↵ to create new topic"
         variant="transparent"
         autoComplete="off"
         value={title}
         onChange={setTitle}
       />
-      <Box pt="$2">
-        <Button type="submit" size="xs" variant="flat" aria-label="Create new topic">
-          <Icon size="sm" as={HiPlus} />
-        </Button>
-      </Box>
-    </Flex>
+      <VisuallyHidden>
+        <button type="submit">Submit new topic</button>
+      </VisuallyHidden>
+    </Box>
   )
 }

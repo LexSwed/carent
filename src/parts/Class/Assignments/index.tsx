@@ -17,8 +17,8 @@ const Assignments = () => {
     <Card>
       <Grid gap="$4" columns="minmax(200px, 1fr) 2fr">
         <Box>
-          <Heading level={3}>Topics</Heading>
           <TopicList
+            label={<Heading level={3}>Topics</Heading>}
             selectedId={selectedTopicId}
             onSelect={(id) => selectTopicId((selected) => (selected === id ? undefined : id))}
           />
