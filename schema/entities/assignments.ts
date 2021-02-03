@@ -36,9 +36,9 @@ export const createAssignment = mutationField((t) => {
   t.field('createAssignment', {
     type: 'Assignment',
     args: {
-      name: nonNull(
+      title: nonNull(
         stringArg({
-          description: 'Name of the assignment, e.g. "Home test" or "Control assignment"',
+          description: 'Title of the assignment, e.g. "Home test" or "Control assignment"',
         })
       ),
       topicId: nonNull(
@@ -47,10 +47,10 @@ export const createAssignment = mutationField((t) => {
         })
       ),
     },
-    resolve: (_, { name, topicId }, { prisma, session }) => {
+    resolve: (_, { title, topicId }, { prisma, session }) => {
       return prisma.assignment.create({
         data: {
-          name,
+          title,
           state: {
             create: {},
           },
@@ -84,7 +84,7 @@ export const topicAssignment = objectType({
   definition(t) {
     t.implements('Node')
     t.model.id()
-    t.model.name()
+    t.model.title()
     t.model.description({
       description: 'Assignment goals, things to cover, etc',
     })

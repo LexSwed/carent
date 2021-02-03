@@ -31,7 +31,7 @@ const Tile = styled('div', {
 
 const Assignment: React.FC<GetAssignmentsQuery['assignments']['edges'][number]['node'] & { href: string }> = ({
   id,
-  name,
+  title,
   description,
   state,
   topic,
@@ -42,7 +42,7 @@ const Assignment: React.FC<GetAssignmentsQuery['assignments']['edges'][number]['
       <Flex flow="row" space="$4" main="spread">
         <Link href={href}>
           <TextLink size="lg" css={{ color: '$text' }} href={href} as="a">
-            {name}
+            {title}
           </TextLink>
         </Link>
         {state.open ? <Tag label="OPEN" variant="outline" /> : null}

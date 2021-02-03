@@ -67,7 +67,7 @@ export interface NexusGenObjects {
   Assignment: { // root type
     description?: string | null; // String
     id: string; // String!
-    name: string; // String!
+    title: string; // String!
   }
   AssignmentConnection: { // root type
     edges?: Array<NexusGenRootTypes['AssignmentEdge'] | null> | null; // [AssignmentEdge]
@@ -165,8 +165,8 @@ export interface NexusGenFieldTypes {
   Assignment: { // field return type
     description: string | null; // String
     id: string; // String!
-    name: string; // String!
     state: NexusGenRootTypes['AssignmentState'] | null; // AssignmentState
+    title: string; // String!
     topic: NexusGenRootTypes['Topic']; // Topic!
   }
   AssignmentConnection: { // field return type
@@ -278,8 +278,8 @@ export interface NexusGenFieldTypeNames {
   Assignment: { // field return type name
     description: 'String'
     id: 'String'
-    name: 'String'
     state: 'AssignmentState'
+    title: 'String'
     topic: 'Topic'
   }
   AssignmentConnection: { // field return type name
@@ -403,7 +403,7 @@ export interface NexusGenArgTypes {
       topicId: string; // ID!
     }
     createAssignment: { // args
-      name: string; // String!
+      title: string; // String!
       topicId: string; // ID!
     }
     createClass: { // args

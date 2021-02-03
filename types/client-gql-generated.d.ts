@@ -20,8 +20,8 @@ type Assignment = Node & {
   /** Assignment goals, things to cover, etc */
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
-  name: Scalars['String'];
   state?: Maybe<AssignmentState>;
+  title: Scalars['String'];
   topic: Topic;
 };
 
@@ -123,7 +123,7 @@ type MutationAddTopicAttachmentArgs = {
 
 
 type MutationCreateAssignmentArgs = {
-  name: Scalars['String'];
+  title: Scalars['String'];
   topicId: Scalars['ID'];
 };
 
@@ -496,7 +496,7 @@ type GetAssignmentsQuery = (
       { __typename?: 'AssignmentEdge' }
       & { node?: Maybe<(
         { __typename?: 'Assignment' }
-        & Pick<Assignment, 'id' | 'name' | 'description'>
+        & Pick<Assignment, 'id' | 'title' | 'description'>
         & { topic: (
           { __typename?: 'Topic' }
           & Pick<Topic, 'id' | 'title'>
@@ -524,7 +524,7 @@ type GetTopicTitleQuery = (
 
 type CreatedAssignmentFragment = (
   { __typename?: 'Assignment' }
-  & Pick<Assignment, 'id' | 'name' | 'description'>
+  & Pick<Assignment, 'id' | 'title' | 'description'>
   & { state?: Maybe<(
     { __typename?: 'AssignmentState' }
     & Pick<AssignmentState, 'open'>
@@ -532,7 +532,7 @@ type CreatedAssignmentFragment = (
 );
 
 type CreateAssignmentMutationVariables = Exact<{
-  name: Scalars['String'];
+  title: Scalars['String'];
   topicId: Scalars['ID'];
 }>;
 

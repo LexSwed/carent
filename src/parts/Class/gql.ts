@@ -88,7 +88,7 @@ const getAssignments = gql`
       edges {
         node {
           id
-          name
+          title
           description
           topic {
             id
@@ -134,7 +134,7 @@ export function useTopicTitle(id: string) {
 const assignmentFragment = gql`
   fragment CreatedAssignment on Assignment {
     id
-    name
+    title
     description
     state {
       open
@@ -142,8 +142,8 @@ const assignmentFragment = gql`
   }
 `
 const createAssignment = gql`
-  mutation createAssignment($name: String!, $topicId: ID!) {
-    createAssignment(name: $name, topicId: $topicId) {
+  mutation createAssignment($title: String!, $topicId: ID!) {
+    createAssignment(title: $title, topicId: $topicId) {
       ...CreatedAssignment
     }
   }

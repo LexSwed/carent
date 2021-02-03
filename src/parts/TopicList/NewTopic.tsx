@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
-import { Box, Flex, TextField, VisuallyHidden } from '@fxtrot/ui'
+import { Box, TextField, VisuallyHidden } from '@fxtrot/ui'
 
 import { useCreateNewTopic } from '../Class/gql'
 import { useClassId } from '../../utils'

@@ -6,8 +6,8 @@ type Assignment implements Node {
   """Assignment goals, things to cover, etc"""
   description: String
   id: String!
-  name: String!
   state: AssignmentState
+  title: String!
   topic: Topic!
 }
 
@@ -109,9 +109,9 @@ type Mutation {
   addTopicAttachment(data: TopicAttachmentInput!, topicId: ID!): TopicAttachment
   createAssignment(
     """
-    Name of the assignment, e.g. "Home test" or "Control assignment"
+    Title of the assignment, e.g. "Home test" or "Control assignment"
     """
-    name: String!
+    title: String!
 
     """ID of the topic the assignment belongs to"""
     topicId: ID!
