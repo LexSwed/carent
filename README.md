@@ -9,7 +9,6 @@ Home schooling project
 - GraphQL server and client handlers: [Apollo GraphQL](https://www.apollographql.com/docs/)
 - Code first GraphQL schemas: [GraphQL Nexus](https://nexusjs.org/)
 - Passwordless Auth: [NextAuth.js](https://next-auth.js.org/)
-- Accessible Design System: [React Sectrum Libraries](https://react-spectrum.adobe.com/index.html)
 - ofc `React`, `TypeScript`, etc
 
 ## Development
