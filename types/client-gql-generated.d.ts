@@ -342,6 +342,33 @@ type User = Node & {
   name?: Maybe<Scalars['String']>;
 };
 
+type GetAssignmentsQueryVariables = Exact<{
+  classId: Scalars['ID'];
+  topicId?: Maybe<Scalars['ID']>;
+}>;
+
+
+type GetAssignmentsQuery = (
+  { __typename?: 'Query' }
+  & { assignments?: Maybe<(
+    { __typename?: 'AssignmentConnection' }
+    & { edges?: Maybe<Array<Maybe<(
+      { __typename?: 'AssignmentEdge' }
+      & { node?: Maybe<(
+        { __typename?: 'Assignment' }
+        & Pick<Assignment, 'id' | 'title' | 'description'>
+        & { topic: (
+          { __typename?: 'Topic' }
+          & Pick<Topic, 'id' | 'title'>
+        ), state?: Maybe<(
+          { __typename?: 'AssignmentState' }
+          & Pick<AssignmentState, 'id' | 'open'>
+        )> }
+      )> }
+    )>>> }
+  )> }
+);
+
 type GetLastUpdatedTopicQueryVariables = Exact<{
   classId: Scalars['ID'];
   sortOrder: ClassTopicsSortOrder;
@@ -480,46 +507,6 @@ type CreateNewTopicMutation = (
 type NewTopicFragment = (
   { __typename?: 'Topic' }
   & Pick<Topic, 'id' | 'title'>
-);
-
-type GetAssignmentsQueryVariables = Exact<{
-  classId: Scalars['ID'];
-  topicId?: Maybe<Scalars['ID']>;
-}>;
-
-
-type GetAssignmentsQuery = (
-  { __typename?: 'Query' }
-  & { assignments?: Maybe<(
-    { __typename?: 'AssignmentConnection' }
-    & { edges?: Maybe<Array<Maybe<(
-      { __typename?: 'AssignmentEdge' }
-      & { node?: Maybe<(
-        { __typename?: 'Assignment' }
-        & Pick<Assignment, 'id' | 'title' | 'description'>
-        & { topic: (
-          { __typename?: 'Topic' }
-          & Pick<Topic, 'id' | 'title'>
-        ), state?: Maybe<(
-          { __typename?: 'AssignmentState' }
-          & Pick<AssignmentState, 'id' | 'open'>
-        )> }
-      )> }
-    )>>> }
-  )> }
-);
-
-type GetTopicTitleQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-type GetTopicTitleQuery = (
-  { __typename?: 'Query' }
-  & { topic?: Maybe<(
-    { __typename?: 'Topic' }
-    & Pick<Topic, 'id' | 'title'>
-  )> }
 );
 
 type CreatedAssignmentFragment = (

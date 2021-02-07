@@ -6,6 +6,7 @@ import Header from './Header'
 import Placeholder from './Placeholder'
 import { Card } from '../Card'
 import LinkedMaterials from './LinkedMaterials'
+import Assignments from '../Assignments'
 
 const Topic = () => {
   const topicId = useTopicId()
@@ -23,9 +24,7 @@ const Topic = () => {
         css={{ alignItems: 'flex-start' }}
       >
         <Card>
-          <Flex space="$8">
-            <Heading level={3}>Assignments</Heading>
-          </Flex>
+          <Assignments />
         </Card>
         <Card>
           <LinkedMaterials />

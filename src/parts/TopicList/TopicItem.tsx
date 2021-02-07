@@ -2,26 +2,30 @@ import React from 'react'
 import { Button, Flex, Icon, styled, Text } from '@fxtrot/ui'
 import { HiMenuAlt4 } from 'react-icons/hi'
 import { Draggable } from 'react-beautiful-dnd'
+import { useClassId, useTopicId } from '../../utils'
+import { useRouter } from 'next/router'
 
 type FetchedTopic = GetClassTopicsQuery['class']['topics']['edges'][number]['node']
 interface TopicCardProps extends FetchedTopic {
-  onClick: (id: string) => void
-  selected: boolean
   index: number
 }
 
-export const TopicItem = React.memo<TopicCardProps>(({ id, title, selected, index, onClick }) => {
+export const TopicItem = React.memo<TopicCardProps>(({ id, title, index }) => {
+  const classId = useClassId()
+  const router = useRouter()
+  const topicId = useTopicId()
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided, snapshot) => (
         <TopicCard
           as="li"
-          selected={selected}
+          selected={topicId === id}
           dragging={snapshot.isDragging}
           flow="row"
           cross="center"
           main="start"
-          onClick={() => onClick(id)}
+          onClick={() => router.push(`${classId}/materials/${id}`)}
           {...provided.draggableProps}
           ref={provided.innerRef}
         >

@@ -1,10 +1,13 @@
 import React from 'react'
-import { Flex, Box } from '@fxtrot/ui'
+import { Flex, Box, Heading, Grid } from '@fxtrot/ui'
 import Image from 'next/image'
 
 import ClassHeader from './Header'
+import { Card } from '../Card'
+import TopicList from '../TopicList'
+
 import { useClassId } from '../../utils'
-import Assignments from './Assignments'
+import Assignments from '../Assignments'
 
 const ClassPage = () => {
   const classId = useClassId()
@@ -24,7 +27,16 @@ const ClassPage = () => {
       <Flex space="$8">
         <ClassHeader />
         <Flex space="$8">
-          <Assignments />
+          <Card>
+            <Grid gap="$4" columns="minmax(200px, 1fr) 2fr">
+              <Box>
+                <TopicList title={<Heading level={3}>Topics</Heading>} />
+              </Box>
+              <Box>
+                <Assignments />
+              </Box>
+            </Grid>
+          </Card>
         </Flex>
       </Flex>
     </Box>

@@ -39,8 +39,8 @@ const options: InitOptions = {
           ...session.user,
           id: user.id,
           workspaceId: user.workspaceId,
-          teacherId: user.teacherId,
-          studentId: user.studentId,
+          teacherId: user.teacherId ?? undefined,
+          studentId: user.studentId ?? undefined,
         }
       }
       return Promise.resolve(session)

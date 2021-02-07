@@ -120,6 +120,7 @@ CREATE TABLE "students" (
 CREATE TABLE "TopicAttachment" (
     "id" TEXT NOT NULL,
     "href" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "public" BOOLEAN NOT NULL DEFAULT true,
     "topic_id" TEXT NOT NULL,
@@ -130,7 +131,8 @@ CREATE TABLE "TopicAttachment" (
 -- CreateTable
 CREATE TABLE "assignments" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "archived_at" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
@@ -143,7 +145,7 @@ CREATE TABLE "assignments" (
 -- CreateTable
 CREATE TABLE "assignment_states" (
     "id" TEXT NOT NULL,
-    "open" BOOLEAN NOT NULL,
+    "open" BOOLEAN NOT NULL DEFAULT false,
     "opened_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "closed_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "assignmentId" TEXT NOT NULL,
@@ -155,9 +157,7 @@ CREATE TABLE "assignment_states" (
 CREATE TABLE "assignment_sections" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "assignment_id" TEXT,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "assignment_id" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -221,6 +221,7 @@ CREATE TABLE "assignment_question_block_answer_options" (
 -- CreateTable
 CREATE TABLE "assignment_variants" (
     "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "assignment_id" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
@@ -336,7 +337,7 @@ ALTER TABLE "assignments" ADD FOREIGN KEY ("topic_id") REFERENCES "topics"("id")
 ALTER TABLE "assignment_states" ADD FOREIGN KEY ("assignmentId") REFERENCES "assignments"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "assignment_sections" ADD FOREIGN KEY ("assignment_id") REFERENCES "assignments"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "assignment_sections" ADD FOREIGN KEY ("assignment_id") REFERENCES "assignments"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "assignment_question_blocks" ADD FOREIGN KEY ("assignmentQuestionId") REFERENCES "assignment_question_block_tasks"("id") ON DELETE CASCADE ON UPDATE CASCADE;

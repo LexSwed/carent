@@ -1,22 +1,42 @@
-import React from 'react'
-import { Flex, Box, Text, Tag, styled, TextLink } from '@fxtrot/ui'
+import React, { useRef } from 'react'
+import { Box, Flex, Text, Heading, Popover, TextLink, Tag, styled } from '@fxtrot/ui'
 import Link from 'next/link'
 import Router from 'next/router'
 
-import { useClassId } from '../../../utils'
+import { CreateNewAssignment } from './CreateNew'
+import { useClassId } from '../../utils'
 
-const List: React.FC<{ edges: GetAssignmentsQuery['assignments']['edges'] }> = ({ edges }) => {
+interface ListProps {
+  topicId: string
+  edges: GetAssignmentsQuery['assignments']['edges']
+}
+const AssignmentsList: React.FC<ListProps> = ({ topicId, edges }) => {
+  const ref = useRef(null)
   const classId = useClassId()
+
   return (
     <Flex space="$4">
-      {edges.map((edge) => {
-        return <Assignment key={edge.node.id} {...edge.node} href={`/${classId}/assignments/${edge.node.id}`} />
-      })}
+      <Flex flow="row" main="spread" cross="center">
+        <Heading level={3}>Assignments</Heading>
+        <Popover ref={ref}>
+          <Popover.Trigger size="sm" variant="primary">
+            Create new
+          </Popover.Trigger>
+          <Popover.Content css={{ width: 300 }}>
+            <CreateNewAssignment selectedTopic={topicId} onCreate={() => ref.current?.close()} />
+          </Popover.Content>
+        </Popover>
+      </Flex>
+      <Flex space="$4">
+        {edges.map((edge) => {
+          return <Assignment key={edge.node.id} {...edge.node} href={`/${classId}/assignments/${edge.node.id}`} />
+        })}
+      </Flex>
     </Flex>
   )
 }
 
-export default List
+export default AssignmentsList
 
 const Tile = styled('div', {
   'p': '$4',

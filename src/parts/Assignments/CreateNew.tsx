@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Flex, Picker, TextField } from '@fxtrot/ui'
-import { useClassTopics } from '../../Topic/gql'
-import { useCreateAssignment } from '../gql'
+import { useClassTopics } from '../Topic/gql'
+import { useCreateAssignment } from '../Class/gql'
 
 interface Props {
   selectedTopic?: string
@@ -12,7 +12,7 @@ export const CreateNewAssignment: React.FC<Props> = ({ selectedTopic, onCreate }
   const [title, setTitle] = useState('')
   const [create, { loading }] = useCreateAssignment()
   const { data } = useClassTopics()
-  console.log(selectedTopic)
+
   useEffect(() => {
     setTopicId(selectedTopic)
   }, [selectedTopic])

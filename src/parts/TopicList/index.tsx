@@ -8,7 +8,7 @@ import { useClassTopics } from './gql'
 import { AnimatePresence, motion } from 'framer-motion'
 import { HiPlus } from 'react-icons/hi'
 
-const TopicList: React.FC<Props> = ({ selectedId, onSelect, label }) => {
+const TopicList: React.FC<Props> = ({ title, subtitle }) => {
   const [shown, setShown] = useState(false)
   const { data } = useClassTopics()
 
@@ -20,16 +20,17 @@ const TopicList: React.FC<Props> = ({ selectedId, onSelect, label }) => {
 
   return (
     <>
-      {label && (
-        <Box pb="$4">
+      <Box pb="$4">
+        <Flex>
           <Flex flow="row" main="spread" cross="center">
-            {label}
+            {title}
             <Button title="Create new topic" variant="flat" size="sm" onClick={() => setShown((shown) => !shown)}>
               <Icon as={HiPlus} />
             </Button>
           </Flex>
-        </Box>
-      )}
+          {subtitle}
+        </Flex>
+      </Box>
       <AnimatePresence initial={false}>
         {shown && (
           <>
@@ -52,7 +53,7 @@ const TopicList: React.FC<Props> = ({ selectedId, onSelect, label }) => {
       </AnimatePresence>
       <Topics>
         {topics.map(({ node }, index) => (
-          <TopicItem key={node.id} selected={selectedId === node.id} onClick={onSelect} {...node} index={index} />
+          <TopicItem key={node.id} {...node} index={index} />
         ))}
       </Topics>
     </>
@@ -62,7 +63,6 @@ const TopicList: React.FC<Props> = ({ selectedId, onSelect, label }) => {
 export default TopicList
 
 interface Props {
-  selectedId: string
-  onSelect: (id: string) => void
-  label?: React.ReactNode
+  title?: React.ReactNode
+  subtitle?: React.ReactNode
 }
