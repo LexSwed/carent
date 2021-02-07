@@ -10,11 +10,11 @@ const Grid = styled('div', {
   overflow: 'hidden',
   transition: '0.2s easy-in-out',
   p: '$4',
+  maxWidth: 1600,
+  mx: 'auto',
 })
 
-const Main = styled('main', {
-  maxWidth: 960,
-})
+const Main = styled('main', {})
 
 const Layout = ({ children }) => {
   return (
