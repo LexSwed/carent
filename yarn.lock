@@ -53,10 +53,10 @@
   dependencies:
     cross-fetch "3.0.6"
 
-"@apollo/client@^3.0.0-beta.23", "@apollo/client@^3.3.7":
-  version "3.3.7"
-  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.3.7.tgz#f15bf961dc0c2bee37a47bf86b8881fdc6183810"
-  integrity sha512-Cb0OqqvlehlRHtHIXRIS/Pe5WYU4hHl1FznXTRSxBAN42WmBUM3zy/Unvw183RdWMyV6Kc2pFKOEuaG1K7JTAQ==
+"@apollo/client@^3.0.0-beta.23", "@apollo/client@^3.3.8":
+  version "3.3.8"
+  resolved "https://registry.yarnpkg.com/@apollo/client/-/client-3.3.8.tgz#79e18978dbf2383e2d17eedf33bf905b89b4fb43"
+  integrity sha512-nYKoTfz2ivwzVee+uVHUSWS+xK166m4ycgxM7INq1kR1PD8o3WjBLmCmlajnqSx6KSZCFaTnH75PsfHvtUi1iA==
   dependencies:
     "@graphql-typed-document-node/core" "^3.0.0"
     "@types/zen-observable" "^0.8.0"
@@ -621,20 +621,21 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@fxtrot/ui@^1.0.134":
-  version "1.0.134"
-  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.134.tgz#e6003bc1e6863082babbfe5f677e8940d2d55ab8"
-  integrity sha512-OOTwBBdoNrC5C7qVFIgt42aLWmqJc9gAHZQfT8WpbYRM5Q37VGLZjuS2jcHmCrGrLwhgMFMVB6krGPbFogiq3Q==
+"@fxtrot/ui@^1.0.136":
+  version "1.0.136"
+  resolved "https://registry.yarnpkg.com/@fxtrot/ui/-/ui-1.0.136.tgz#e423e0c9ffc54a937c992a9caec8d73cd9a8d2ce"
+  integrity sha512-DYdWgP09+gfuCrCtF7RFcu6R6n0eloUAqGwMVPHWJigMR7JLJXOsA//5D14X/Dptm9r5yXDJSumtHfiWKmpetg==
   dependencies:
     "@popperjs/core" "^2.6.0"
     "@react-aria/focus" "^3.2.3"
     "@react-aria/interactions" "^3.3.2"
     "@react-aria/visually-hidden" "^3.2.1"
     "@stitches/react" "^0.0.3-canary.4"
-    framer-motion "^3.3.0-beta.22"
-    jotai "^0.13.2"
+    framer-motion "^3.3.0"
+    jotai "^0.14.0"
     react-uid "^2.3.1"
     react-virtual "^2.4.0"
+    scheduler "^0.20.1"
 
 "@graphql-codegen/cli@1.20.1":
   version "1.20.1"
@@ -3658,9 +3659,9 @@ ecdsa-sig-formatter@1.0.11:
     safe-buffer "^5.0.1"
 
 electron-to-chromium@^1.3.634:
-  version "1.3.654"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.654.tgz#f1b82d59bdeafa65af75794356df54f92b41c4de"
-  integrity sha512-Zy2gc/c8KYFg2GkNr7Ruzh5tPEZpFm7EyXqZTFasm1YRDJtpyBRGaOuM0H3t6SuIP53qX4kNmtO9t0WjhBjE9A==
+  version "1.3.657"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.657.tgz#a9c307f2612681245738bb8d36d997cbb568d481"
+  integrity sha512-/9ROOyvEflEbaZFUeGofD+Tqs/WynbSTbNgNF+/TJJxH1ePD/e6VjZlDJpW3FFFd3nj5l3Hd8ki2vRwy+gyRFw==
 
 elegant-spinner@^1.0.1:
   version "1.0.1"
@@ -3970,9 +3971,9 @@ esprima@^4.0.0:
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
 
 esquery@^1.2.0:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/esquery/-/esquery-1.3.1.tgz#b78b5828aa8e214e29fb74c4d5b752e1c033da57"
-  integrity sha512-olpvt9QG0vniUBZspVRN6lwB7hOZoTRtT+jzR+tS4ffYx2mzbw+z0XCOk44aaLYKApNX5nMm+E+P6o25ip/DHQ==
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/esquery/-/esquery-1.4.0.tgz#2148ffc38b82e8c7057dfed48425b3e61f0f24a5"
+  integrity sha512-cCDispWt5vHHtwMY2YrAQ4ibFkAL8RbH5YGBnZBc90MolvvfkkQcJro/aZiAQUlQ3qgrYS6D6v8Gc5G5CQsc9w==
   dependencies:
     estraverse "^5.1.0"
 
@@ -4229,7 +4230,7 @@ form-data@^3.0.0:
     combined-stream "^1.0.8"
     mime-types "^2.1.12"
 
-framer-motion@^3.3.0, framer-motion@^3.3.0-beta.22:
+framer-motion@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-3.3.0.tgz#e355824369f03c8cd07a87ef59b7a8348c33fafd"
   integrity sha512-bjUrwXfMJZ6D+HSMDiXbMGKmlWGnUux8HotWgORTZkdPTgKAndlRXjeC2ikCgNVo2ifmRvEla5ckP9JaZc7JKA==
@@ -4276,9 +4277,9 @@ fs.realpath@^1.0.0:
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
 fsevents@~2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.1.tgz#b209ab14c61012636c8863507edf7fb68cc54e9f"
-  integrity sha512-YR47Eg4hChJGAB1O3yEAOkGO+rlzutoICGqGo9EZ4lKWokzZRSyIW1QmTzqjtw8MJdj9srP869CuWw/hyzSiBw==
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
+  integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
 
 function-bind@^1.1.1:
   version "1.1.1"
@@ -4432,9 +4433,9 @@ got@^9.6.0:
     url-parse-lax "^3.0.0"
 
 graceful-fs@^4.1.2:
-  version "4.2.4"
-  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.4.tgz#2256bde14d3632958c465ebc96dc467ca07a29fb"
-  integrity sha512-WjKPNJF79dtJAVniUlGGWHYGz2jWxT6VhN/4m1NdkbZ2nOsEF+cI1Edgql5zCRhs/VsQYRvrXctxktVXZUkixw==
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.5.tgz#bc18864a6c9fc7b303f2e2abdb9155ad178fbe29"
+  integrity sha512-kBBSQbz2K0Nyn+31j/w36fUfxkBW9/gfwRWdUY1ULReH3iokVJgddZAFcD1D0xlgTmFxJCbUkUclAlc6/IDJkw==
 
 graphql-config@^3.2.0:
   version "3.2.0"
@@ -5091,10 +5092,10 @@ jose@^1.27.2, jose@^1.28.0:
   dependencies:
     "@panva/asn1.js" "^1.0.0"
 
-jotai@^0.13.2:
-  version "0.13.3"
-  resolved "https://registry.yarnpkg.com/jotai/-/jotai-0.13.3.tgz#7ae11c1587a704765990b7c79cdb58f9dc24aa67"
-  integrity sha512-Fuuwz4NXoEypWorOxY5YfnUej9bC7QlylV9KwYr/Bm9pRjl6iHteMtzt4If8Bh5n8BIjtkyti/PsTT4eskwhmw==
+jotai@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/jotai/-/jotai-0.14.0.tgz#d4b73c6acd203503a342620a050f9bed8225fc85"
+  integrity sha512-A189j1apXl+mzKSAyQW2ZrEH1AaLMfdWP9ZPHc2uLIsoeOO3siMh3cJl97db3C25DNADVPW5lHDeNbSehystSw==
   dependencies:
     use-context-selector "1.3.7"
 
@@ -6582,16 +6583,16 @@ prosemirror-tables@^1.1.0:
     prosemirror-view "^1.13.3"
 
 prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0, prosemirror-transform@^1.1.5, prosemirror-transform@^1.2.1, prosemirror-transform@^1.2.6:
-  version "1.2.9"
-  resolved "https://registry.yarnpkg.com/prosemirror-transform/-/prosemirror-transform-1.2.9.tgz#dfa048102c12a457deaf4c60ae633ac3eaacc7c9"
-  integrity sha512-oiocfgn7J7Fulvl7luBsyxdAf0CJp96+0FIcqhHSvYVr/R4KqZNxXcU9xESaI9Xw+tTvDUiiS3gedVk3AOic4w==
+  version "1.2.11"
+  resolved "https://registry.yarnpkg.com/prosemirror-transform/-/prosemirror-transform-1.2.11.tgz#87fc53b2b1344ca4c2c4cb3f3b61486794b6a0b3"
+  integrity sha512-i4N5bMZcmhZPJw1ULH2Ne6SumqrkWBQpJXo/PN6xwq8kv6q7IZVYDjF7DRe2vp3AiqZ/5KnLucJM7e82875LyQ==
   dependencies:
     prosemirror-model "^1.0.0"
 
 prosemirror-view@^1.0.0, prosemirror-view@^1.1.0, prosemirror-view@^1.12.0, prosemirror-view@^1.13.3, prosemirror-view@^1.14.4, prosemirror-view@^1.15.0:
-  version "1.17.4"
-  resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.17.4.tgz#b9264b1a7cf68f1cad5f90ce2febe8db4ee32581"
-  integrity sha512-giPj4TPq+36bmd35TOZqPTbP90lN+eTInvZUuHnGC/nSsC5HdQFbSOG+7gTeZt3syoOX+NRAo2PDFNJ3jJWVrg==
+  version "1.17.5"
+  resolved "https://registry.yarnpkg.com/prosemirror-view/-/prosemirror-view-1.17.5.tgz#6aa8e65a3f381481a7614faf541cf3636cce7279"
+  integrity sha512-3MOs1QNiUW8iaLvg9pKh5AR6L7B7lWQ4W2F67MnGsHmenhSRXq2uWs2SFcW0/lM12Bvd/qbKe0/ng3QT1DvWBw==
   dependencies:
     prosemirror-model "^1.1.0"
     prosemirror-state "^1.0.0"
@@ -6726,10 +6727,10 @@ react-dom@17.0.1:
     object-assign "^4.1.1"
     scheduler "^0.20.1"
 
-react-icons@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.1.0.tgz#9ca9bcbf2e3aee8e86e378bb9d465842947bbfc3"
-  integrity sha512-FCXBg1JbbR0vWALXIxmFAfozHdVIJmmwCD81Jk0EKOt7Ax4AdBNcaRkWhR0NaKy9ugJgoY3fFvo0PHpte55pXg==
+react-icons@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.2.0.tgz#6dda80c8a8f338ff96a1851424d63083282630d0"
+  integrity sha512-rmzEDFt+AVXRzD7zDE21gcxyBizD/3NqjbX6cmViAgdqfJ2UiLer8927/QhhrXQV7dEj/1EGuOTPp7JnLYVJKQ==
 
 react-is@16.13.1, react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"

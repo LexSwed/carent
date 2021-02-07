@@ -18,12 +18,13 @@
     "prisma:migrate": "prisma migrate dev --preview-feature",
     "prisma:seed": "prisma db seed --preview-feature",
     "lint": "eslint src schema prisma --fix",
-    "gql:codegen": "graphql-codegen --watch --config .graphqlrc.yml"
+    "gql:codegen": "graphql-codegen --watch --config .graphqlrc.yml",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.7",
+    "@apollo/client": "^3.3.8",
     "@apollo/link-batch-http": "^2.0.0-beta.3",
-    "@fxtrot/ui": "^1.0.134",
+    "@fxtrot/ui": "^1.0.136",
     "@prisma/client": "2.16.0",
     "@remirror/pm": "^1.0.0-next.1",
     "@stitches/react": "^0.0.3-canary.4",
@@ -40,7 +41,7 @@
     "react": "17.0.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "17.0.1",
-    "react-icons": "^4.1.0",
+    "react-icons": "^4.2.0",
     "remirror": "^0.13.1",
     "url-regex": "^5.0.0"
   },
