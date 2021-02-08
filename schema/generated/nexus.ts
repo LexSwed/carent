@@ -33,6 +33,9 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  AssignmentSectionWhereUniqueInput: { // input type
+    id?: string | null; // String
+  }
   ClassTopicsSortOrder: { // input type
     key?: NexusGenEnums['TopicSortKey'] | null; // TopicSortKey
     order?: NexusGenEnums['TopicSortOrder'] | null; // TopicSortOrder
@@ -76,6 +79,10 @@ export interface NexusGenObjects {
   AssignmentEdge: { // root type
     cursor: string; // String!
     node?: NexusGenRootTypes['Assignment'] | null; // Assignment
+  }
+  AssignmentSection: { // root type
+    id: string; // String!
+    name: string; // String!
   }
   AssignmentState: { // root type
     closedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -165,6 +172,7 @@ export interface NexusGenFieldTypes {
   Assignment: { // field return type
     description: string | null; // String
     id: string; // String!
+    sections: NexusGenRootTypes['AssignmentSection'][]; // [AssignmentSection!]!
     state: NexusGenRootTypes['AssignmentState'] | null; // AssignmentState
     title: string; // String!
     topic: NexusGenRootTypes['Topic']; // Topic!
@@ -176,6 +184,10 @@ export interface NexusGenFieldTypes {
   AssignmentEdge: { // field return type
     cursor: string; // String!
     node: NexusGenRootTypes['Assignment'] | null; // Assignment
+  }
+  AssignmentSection: { // field return type
+    id: string; // String!
+    name: string; // String!
   }
   AssignmentState: { // field return type
     closedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -216,6 +228,7 @@ export interface NexusGenFieldTypes {
     startCursor: string | null; // String
   }
   Query: { // field return type
+    assignment: NexusGenRootTypes['Assignment'] | null; // Assignment
     assignments: NexusGenRootTypes['AssignmentConnection'] | null; // AssignmentConnection
     class: NexusGenRootTypes['Class'] | null; // Class
     classes: NexusGenRootTypes['ClassConnection'] | null; // ClassConnection
@@ -278,6 +291,7 @@ export interface NexusGenFieldTypeNames {
   Assignment: { // field return type name
     description: 'String'
     id: 'String'
+    sections: 'AssignmentSection'
     state: 'AssignmentState'
     title: 'String'
     topic: 'Topic'
@@ -289,6 +303,10 @@ export interface NexusGenFieldTypeNames {
   AssignmentEdge: { // field return type name
     cursor: 'String'
     node: 'Assignment'
+  }
+  AssignmentSection: { // field return type name
+    id: 'String'
+    name: 'String'
   }
   AssignmentState: { // field return type name
     closedAt: 'DateTime'
@@ -329,6 +347,7 @@ export interface NexusGenFieldTypeNames {
     startCursor: 'String'
   }
   Query: { // field return type name
+    assignment: 'Assignment'
     assignments: 'AssignmentConnection'
     class: 'Class'
     classes: 'ClassConnection'
@@ -388,6 +407,14 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Assignment: {
+    sections: { // args
+      after?: NexusGenInputs['AssignmentSectionWhereUniqueInput'] | null; // AssignmentSectionWhereUniqueInput
+      before?: NexusGenInputs['AssignmentSectionWhereUniqueInput'] | null; // AssignmentSectionWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+  }
   Class: {
     topics: { // args
       after?: string | null; // String
@@ -439,6 +466,9 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    assignment: { // args
+      id: string; // ID!
+    }
     assignments: { // args
       after?: string | null; // String
       before?: string | null; // String

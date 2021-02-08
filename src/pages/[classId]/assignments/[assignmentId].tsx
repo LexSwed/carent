@@ -1,14 +1,14 @@
 import React from 'react'
+
+import AssignmentBuilder from '../../../parts/Assignment'
+import Sidebar from '../../../parts/Assignment/Sidebar'
 import Layout from '../../../shared/Layout'
-import { useAssignmentId } from '../../../utils'
 
 const AssignmentPage = () => {
-  const id = useAssignmentId()
-
   return (
     <Layout>
-      <div>Drag'n'Drop items</div>
-      <div>builder</div>
+      <Sidebar />
+      <AssignmentBuilder />
     </Layout>
   )
 }

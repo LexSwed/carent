@@ -30,6 +30,27 @@ export const getClassAssignments = queryField((t) => {
       })
     },
   })
+
+  t.field('assignment', {
+    type: 'Assignment',
+    args: {
+      id: nonNull(
+        idArg({
+          description: 'ID of the assignment',
+        })
+      ),
+    },
+    resolve: (_root, { id }, { prisma, session }) => {
+      return prisma.assignment.findUnique({
+        where: {
+          id_creatorId: {
+            id,
+            creatorId: session?.user.teacherId,
+          },
+        },
+      })
+    },
+  })
 })
 
 export const createAssignment = mutationField((t) => {
@@ -56,7 +77,7 @@ export const createAssignment = mutationField((t) => {
           },
           sections: {
             create: {
-              name: 'main',
+              title: 'main',
             },
           },
           variants: {

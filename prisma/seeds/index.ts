@@ -1,37 +1,5 @@
 import { prisma } from '..'
 
-const layouts = [
-  {
-    name: 'text',
-  },
-  {
-    name: 'imageBelow',
-  },
-  {
-    name: 'imageAbove',
-  },
-  {
-    name: 'imageLeft',
-  },
-  {
-    name: 'imageRight',
-  },
-]
-
-export function seedLayouts() {
-  return layouts.map(({ name }) => {
-    return prisma.assignmentQuestionBlockLayout.upsert({
-      where: {
-        name,
-      },
-      update: {},
-      create: {
-        name,
-      },
-    })
-  })
-}
-
 export function seedUser() {
   return prisma.user.upsert({
     where: {
@@ -47,7 +15,18 @@ export function seedUser() {
         },
       },
       teacher: {
-        create: {},
+        create: {
+          classes: {
+            create: {
+              name: 'Magical creatures',
+              studentGroup: {
+                create: {
+                  code: 'Gryffindor-1',
+                },
+              },
+            },
+          },
+        },
       },
     },
   })

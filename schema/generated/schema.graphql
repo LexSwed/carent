@@ -6,6 +6,7 @@ type Assignment implements Node {
   """Assignment goals, things to cover, etc"""
   description: String
   id: String!
+  sections(after: AssignmentSectionWhereUniqueInput, before: AssignmentSectionWhereUniqueInput, first: Int, last: Int): [AssignmentSection!]!
   state: AssignmentState
   title: String!
   topic: Topic!
@@ -29,6 +30,15 @@ type AssignmentEdge {
 
   """https://facebook.github.io/relay/graphql/connections.htm#sec-Node"""
   node: Assignment
+}
+
+type AssignmentSection {
+  id: String!
+  name: String!
+}
+
+input AssignmentSectionWhereUniqueInput {
+  id: String
 }
 
 type AssignmentState implements Node {
@@ -186,6 +196,10 @@ type PageInfo {
 }
 
 type Query {
+  assignment(
+    """ID of the assignment"""
+    id: ID!
+  ): Assignment
   assignments(
     """Returns the elements in the list that come after the specified cursor"""
     after: String

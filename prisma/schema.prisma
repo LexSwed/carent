@@ -166,6 +166,7 @@ model Assignment {
   variants    AssignmentVariant[]
   state       AssignmentState?
 
+  @@unique([id, creatorId])
   @@map("assignments")
 }
 
@@ -181,92 +182,85 @@ model AssignmentState {
 }
 
 model AssignmentSection {
-  id           String                    @id @default(cuid())
-  name         String
-  questions    AssignmentQuestionBlock[]
-  assignment   Assignment                @relation(fields: [assignmentId], references: [id])
-  assignmentId String                    @map("assignment_id")
+  id           String               @id @default(cuid())
+  title        String
+  questions    AssignmentQuestion[]
+  assignment   Assignment           @relation(fields: [assignmentId], references: [id])
+  assignmentId String               @map("assignment_id")
 
   @@map("assignment_sections")
 }
 
-model AssignmentQuestionBlock {
-  id                   String                         @id @default(cuid())
-  title                String
-  question             AssignmentQuestion             @relation(fields: [assignmentQuestionId], references: [id])
-  layout               AssignmentQuestionBlockLayout  @relation(fields: [layoutId], references: [id])
-  weight               Float
-  images               AssignmentQuestionBlockImage[]
-  orderKey             String                         @map("order_key")
-  assignmentSection    AssignmentSection              @relation(fields: [assignmentSectionId], references: [id])
-  assignmentSectionId  String                         @map("assignment_section_id")
-  createdAt            DateTime                       @default(now()) @map("created_at")
-  updatedAt            DateTime                       @default(now()) @map("updated_at")
-  layoutId             String                         @map("layout_id")
-  assignmentQuestionId String
+model AssignmentQuestion {
+  id                  String                  @id @default(cuid())
+  orderKey            String                  @map("order_key")
+  assignmentSection   AssignmentSection       @relation(fields: [assignmentSectionId], references: [id])
+  assignmentSectionId String                  @map("assignment_section_id")
+  content             Json
+  task                AssignmentQuestionTask?
+  type                AssignmentQuestionType
+  variantId           String                  @map("variant_id")
+  variant             AssignmentVariant       @relation(fields: [variantId], references: [id])
+  createdAt           DateTime                @default(now()) @map("created_at")
+  updatedAt           DateTime                @default(now()) @map("updated_at")
 
   @@map("assignment_question_blocks")
-}
-
-model AssignmentQuestionBlockImage {
-  id                        String                   @id @default(cuid())
-  url                       String
-  label                     String
-  questionBlock             AssignmentQuestionBlock? @relation(fields: [assignmentQuestionBlockId], references: [id])
-  assignmentQuestionBlockId String?                  @map("assignment_question_block_id")
-
-  @@map("assignment_question_block_images")
-}
-
-model AssignmentQuestion {
-  id                  String                            @id @default(cuid())
-  task                Json
-  type                AssignmentQuestionType
-  block               AssignmentQuestionBlock[]
-  variant             AssignmentVariant                 @relation(fields: [assignmentVariantId], references: [id])
-  assignmentVariantId String                            @map("assignment_variant_id")
-  correctAnswers      AssignmentQuestionCorrectAnswer[]
-
-  @@map("assignment_question_block_tasks")
-}
-
-model AssignmentQuestionCorrectAnswer {
-  id                   String                   @id @default(cuid())
-  questionId           AssignmentQuestion       @relation(fields: [assignmentQuestionId], references: [id])
-  correctOptions       AssignmentAnswerOption[]
-  assignmentQuestionId String                   @map("assignment_question_id")
-
-  @@map("assignment_question_block_correct_answers")
 }
 
 enum AssignmentQuestionType {
   OneOf
   Multiple
   Text
-  Image
-  Document
+  Number
+  // Image
+  // Document
+}
+
+model AssignmentQuestionTask {
+  id             String                            @id @default(cuid())
+  answers        AssignmentAnswerOption[]
+  correctAnswers AssignmentQuestionCorrectAnswer[]
+  questionId     String                            @map("question_id")
+  question       AssignmentQuestion                @relation(fields: [questionId], references: [id])
+
+  @@map("assignment_questions_tasks")
 }
 
 model AssignmentAnswerOption {
-  id                                String                           @id @default(cuid())
-  title                             String
-  descrition                        String
-  orderKey                          String
-  imageUrl                          String?
-  maxLenght                         String?
-  correctToQuestion                 AssignmentQuestionCorrectAnswer? @relation(fields: [assignmentQuestionCorrectAnswerId], references: [id])
-  assignmentQuestionCorrectAnswerId String?                          @map("assignment_question_correct_answer_id")
+  id       String  @id @default(cuid())
+  // text/number questions
+  label    String?
+  hint     String?
+  // choice question
+  content  Json?
+  orderKey String
+  // image question
+  imageUrl String?
 
-  @@map("assignment_question_block_answer_options")
+  assignmentQuestionTask          AssignmentQuestionTask?          @relation(fields: [assignmentQuestionTaskId], references: [id])
+  assignmentQuestionTaskId        String?
+  assignmentQuestionCorrectAnswer AssignmentQuestionCorrectAnswer?
+
+  @@map("assignment_question_answer_options")
+}
+
+model AssignmentQuestionCorrectAnswer {
+  id                       String                 @id @default(cuid())
+  assignmentQuestionTaskId String                 @map("assignment_question_task_id")
+  task                     AssignmentQuestionTask @relation(fields: [assignmentQuestionTaskId], references: [id])
+  answerOptionId           String                 @map("answer_id")
+  answer                   AssignmentAnswerOption @relation(fields: [answerOptionId], references: [id])
+
+  @@map("assignment_questions_correct_answers")
 }
 
 model AssignmentVariant {
-  id            String               @id @default(cuid())
-  name          String
-  assignment    Assignment           @relation(fields: [assignmentId], references: [id])
-  questions     AssignmentQuestion[]
-  assignedUsers AssignmentAccess[]
-  assignmentId  String               @map("assignment_id")
+  id                 String               @id @default(cuid())
+  name               String
+  assignmentId       String               @map("assignment_id")
+  assignment         Assignment           @relation(fields: [assignmentId], references: [id])
+  assignedUsers      AssignmentAccess[]
+  assignmentQuestion AssignmentQuestion[]
 
   @@map("assignment_variants")
 }
@@ -285,12 +279,4 @@ model AssignmentAccess {
   teacherId           String
 
   @@map("assignment_accesses")
-}
-
-model AssignmentQuestionBlockLayout {
-  id        String                    @id @default(cuid())
-  name      String                    @unique
-  questions AssignmentQuestionBlock[]
-
-  @@map("assignment_question_block_layouts")
 }

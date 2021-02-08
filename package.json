@@ -16,6 +16,7 @@
     "next:start": "next start",
     "prisma:watch": "yarn prisma generate --watch",
     "prisma:migrate": "prisma migrate dev --preview-feature",
+    "prisma:danger-migrate": "prisma migrate reset --preview-feature",
     "prisma:seed": "prisma db seed --preview-feature",
     "lint": "eslint src schema prisma --fix",
     "gql:codegen": "graphql-codegen --watch --config .graphqlrc.yml",
@@ -26,7 +27,7 @@
     "@apollo/link-batch-http": "^2.0.0-beta.3",
     "@fxtrot/ui": "^1.0.137",
     "@prisma/client": "2.16.1",
-    "@remirror/pm": "^1.0.0-next.1",
+    "@remirror/react": "^0.0.0-pr706.1",
     "@stitches/react": "^0.0.3-canary.4",
     "apollo-server-micro": "^2.19.2",
     "framer-motion": "^3.3.0",
@@ -42,8 +43,7 @@
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "17.0.1",
     "react-icons": "^4.2.0",
-    "remirror": "^0.13.1",
-    "rich-markdown-editor": "^11.2.0-0",
+    "remirror": "^0.0.0-pr706.1",
     "url-regex": "^5.0.0"
   },
   "devDependencies": {

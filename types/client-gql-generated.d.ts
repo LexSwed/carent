@@ -20,9 +20,18 @@ type Assignment = Node & {
   /** Assignment goals, things to cover, etc */
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
+  sections: Array<AssignmentSection>;
   state?: Maybe<AssignmentState>;
   title: Scalars['String'];
   topic: Topic;
+};
+
+
+type AssignmentSectionsArgs = {
+  after?: Maybe<AssignmentSectionWhereUniqueInput>;
+  before?: Maybe<AssignmentSectionWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 type AssignmentConnection = {
@@ -39,6 +48,16 @@ type AssignmentEdge = {
   cursor: Scalars['String'];
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
   node?: Maybe<Assignment>;
+};
+
+type AssignmentSection = {
+  __typename?: 'AssignmentSection';
+  id: Scalars['String'];
+  name: Scalars['String'];
+};
+
+type AssignmentSectionWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
 };
 
 type AssignmentState = Node & {
@@ -194,12 +213,18 @@ type PageInfo = {
 
 type Query = {
   __typename?: 'Query';
+  assignment?: Maybe<Assignment>;
   assignments?: Maybe<AssignmentConnection>;
   class?: Maybe<Class>;
   classes?: Maybe<ClassConnection>;
   groups?: Maybe<StudentGroupConnection>;
   me?: Maybe<User>;
   topic?: Maybe<Topic>;
+};
+
+
+type QueryAssignmentArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -341,6 +366,19 @@ type User = Node & {
   image?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
 };
+
+type GetAssignmentDetailsQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+type GetAssignmentDetailsQuery = (
+  { __typename?: 'Query' }
+  & { assignment?: Maybe<(
+    { __typename?: 'Assignment' }
+    & Pick<Assignment, 'id' | 'title' | 'description'>
+  )> }
+);
 
 type GetLastUpdatedTopicQueryVariables = Exact<{
   classId: Scalars['ID'];
