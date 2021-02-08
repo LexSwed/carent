@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "AssignmentQuestionType" AS ENUM ('OneOf', 'Multiple', 'Text', 'Image', 'Document');
+CREATE TYPE "AssignmentQuestionType" AS ENUM ('SingleChoice', 'MultipleChoice', 'Text', 'Number', 'Image', 'Document');
 
 -- CreateTable
 CREATE TABLE "accounts" (
@@ -156,7 +156,7 @@ CREATE TABLE "assignment_states" (
 -- CreateTable
 CREATE TABLE "assignment_sections" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
     "assignment_id" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
@@ -165,55 +165,43 @@ CREATE TABLE "assignment_sections" (
 -- CreateTable
 CREATE TABLE "assignment_question_blocks" (
     "id" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
-    "weight" DECIMAL(65,30) NOT NULL,
     "order_key" TEXT NOT NULL,
     "assignment_section_id" TEXT NOT NULL,
+    "content" JSONB NOT NULL,
+    "type" "AssignmentQuestionType" NOT NULL,
+    "variant_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "layout_id" TEXT NOT NULL,
-    "assignmentQuestionId" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "assignment_question_block_images" (
+CREATE TABLE "assignment_questions_tasks" (
     "id" TEXT NOT NULL,
-    "url" TEXT NOT NULL,
-    "label" TEXT NOT NULL,
-    "assignment_question_block_id" TEXT,
+    "question_id" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "assignment_question_block_tasks" (
+CREATE TABLE "assignment_question_answer_options" (
     "id" TEXT NOT NULL,
-    "task" JSONB NOT NULL,
-    "type" "AssignmentQuestionType" NOT NULL,
-    "assignment_variant_id" TEXT NOT NULL,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "assignment_question_block_correct_answers" (
-    "id" TEXT NOT NULL,
-    "assignment_question_id" TEXT NOT NULL,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "assignment_question_block_answer_options" (
-    "id" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
-    "descrition" TEXT NOT NULL,
+    "label" TEXT,
+    "hint" TEXT,
+    "content" JSONB,
     "orderKey" TEXT NOT NULL,
     "imageUrl" TEXT,
-    "maxLenght" TEXT,
-    "assignment_question_correct_answer_id" TEXT,
+    "assignmentQuestionTaskId" TEXT,
+
+    PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "assignment_questions_correct_answers" (
+    "id" TEXT NOT NULL,
+    "assignment_question_task_id" TEXT NOT NULL,
+    "answer_id" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -237,14 +225,6 @@ CREATE TABLE "assignment_accesses" (
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "given_by_user_id" TEXT NOT NULL,
     "teacherId" TEXT NOT NULL,
-
-    PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "assignment_question_block_layouts" (
-    "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
 
     PRIMARY KEY ("id")
 );
@@ -292,10 +272,16 @@ CREATE UNIQUE INDEX "classes.id_teacher_id_unique" ON "classes"("id", "teacher_i
 CREATE UNIQUE INDEX "topics.id_teacher_id_unique" ON "topics"("id", "teacher_id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "assignments.id_creator_id_unique" ON "assignments"("id", "creator_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "assignment_states_assignmentId_unique" ON "assignment_states"("assignmentId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "assignment_question_block_layouts.name_unique" ON "assignment_question_block_layouts"("name");
+CREATE UNIQUE INDEX "assignment_questions_tasks_question_id_unique" ON "assignment_questions_tasks"("question_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "assignment_questions_correct_answers_answer_id_unique" ON "assignment_questions_correct_answers"("answer_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_StudentToStudentGroup_AB_unique" ON "_StudentToStudentGroup"("A", "B");
@@ -340,25 +326,22 @@ ALTER TABLE "assignment_states" ADD FOREIGN KEY ("assignmentId") REFERENCES "ass
 ALTER TABLE "assignment_sections" ADD FOREIGN KEY ("assignment_id") REFERENCES "assignments"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "assignment_question_blocks" ADD FOREIGN KEY ("assignmentQuestionId") REFERENCES "assignment_question_block_tasks"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "assignment_question_blocks" ADD FOREIGN KEY ("layout_id") REFERENCES "assignment_question_block_layouts"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "assignment_question_blocks" ADD FOREIGN KEY ("assignment_section_id") REFERENCES "assignment_sections"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "assignment_question_block_images" ADD FOREIGN KEY ("assignment_question_block_id") REFERENCES "assignment_question_blocks"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "assignment_question_blocks" ADD FOREIGN KEY ("variant_id") REFERENCES "assignment_variants"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "assignment_question_block_tasks" ADD FOREIGN KEY ("assignment_variant_id") REFERENCES "assignment_variants"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "assignment_questions_tasks" ADD FOREIGN KEY ("question_id") REFERENCES "assignment_question_blocks"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "assignment_question_block_correct_answers" ADD FOREIGN KEY ("assignment_question_id") REFERENCES "assignment_question_block_tasks"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "assignment_question_answer_options" ADD FOREIGN KEY ("assignmentQuestionTaskId") REFERENCES "assignment_questions_tasks"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "assignment_question_block_answer_options" ADD FOREIGN KEY ("assignment_question_correct_answer_id") REFERENCES "assignment_question_block_correct_answers"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "assignment_questions_correct_answers" ADD FOREIGN KEY ("assignment_question_task_id") REFERENCES "assignment_questions_tasks"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "assignment_questions_correct_answers" ADD FOREIGN KEY ("answer_id") REFERENCES "assignment_question_answer_options"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "assignment_variants" ADD FOREIGN KEY ("assignment_id") REFERENCES "assignments"("id") ON DELETE CASCADE ON UPDATE CASCADE;

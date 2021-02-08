@@ -1,4 +1,5 @@
-import { idArg, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
+import type { AssignmentQuestion as PrismaAssignmentQuestion } from '@prisma/client'
+import { idArg, interfaceType, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
 import { relayToPrismaPagination } from '../utils'
 
 export const getClassAssignments = queryField((t) => {
@@ -113,6 +114,9 @@ export const topicAssignment = objectType({
     t.model.state({
       type: 'AssignmentState',
     })
+    t.model.sections({
+      type: 'AssignmentSection',
+    })
   },
 })
 
@@ -124,5 +128,115 @@ export const assignmentState = objectType({
     t.model.open()
     t.model.openedAt()
     t.model.closedAt()
+  },
+})
+
+export const assignmentSection = objectType({
+  name: 'AssignmentSection',
+  definition(t) {
+    t.implements('Node')
+    t.model.id()
+    t.model.title()
+    t.model.description()
+    t.nonNull.list.field('questions', {
+      type: 'AssignmentQuestion',
+    })
+  },
+})
+
+export const assignmentQuestion = objectType({
+  name: 'AssignmentQuestion',
+  definition(t) {
+    t.implements('Node')
+    t.model.id()
+    t.field('content', {
+      type: 'JSON',
+    })
+    t.nonNull.list.field('correctAswers', {
+      type: 'AssignmentQuestionCorrectAnswer',
+    })
+    t.nonNull.list.field('answer', {
+      type: 'AssignmentAnswer',
+    })
+  },
+})
+
+export const questionCorrectAnswer = objectType({
+  name: 'AssignmentQuestionCorrectAnswer',
+  definition(t) {
+    t.implements('Node')
+    t.model.id()
+    t.nonNull.field('answer', {
+      type: 'AssignmentAnswer',
+    })
+  },
+})
+
+export const questionTask = interfaceType({
+  name: 'AssignmentAnswer',
+  resolveType(question: PrismaAssignmentQuestion) {
+    switch (question.type) {
+      case 'Text':
+        return textQuestion.name
+      case 'Number':
+        return numberQuestion.name
+      case 'MultipleChoice':
+        return multipleChoiceQuestion.name
+      case 'SingleChoice':
+        return singleChoiceQuestion.name
+      default:
+        throw new Error('Question block is not defined')
+    }
+  },
+  definition(t) {
+    t.id('id')
+  },
+})
+
+export const textQuestion = objectType({
+  name: 'TextQuestion',
+  definition(t) {
+    t.implements('AssignmentAnswer')
+    t.string('label')
+    t.string('hint')
+  },
+})
+
+export const numberQuestion = objectType({
+  name: 'NumberQuestion',
+  definition(t) {
+    t.implements('AssignmentAnswer')
+    t.string('label')
+    t.string('hint')
+  },
+})
+
+export const assignmentAnswerOption = objectType({
+  name: 'AssignmentAnswerOption',
+  definition(t) {
+    t.implements('Node')
+    t.model.id()
+    t.nonNull.field('content', {
+      type: 'JSON',
+    })
+  },
+})
+export const multipleChoiceQuestion = objectType({
+  name: 'MultipleChoice',
+  definition(t) {
+    t.implements('AssignmentAnswer')
+    t.nonNull.list.field('options', {
+      type: assignmentAnswerOption,
+    })
+  },
+})
+
+export const singleChoiceQuestion = objectType({
+  name: 'SingleChoice',
+  definition(t) {
+    t.implements('AssignmentAnswer')
+    t.nonNull.list.field('options', {
+      type: assignmentAnswerOption,
+    })
   },
 })

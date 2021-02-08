@@ -33,6 +33,12 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  AssignmentQuestionCorrectAnswerWhereUniqueInput: { // input type
+    id?: string | null; // String
+  }
+  AssignmentQuestionWhereUniqueInput: { // input type
+    id?: string | null; // String
+  }
   AssignmentSectionWhereUniqueInput: { // input type
     id?: string | null; // String
   }
@@ -72,6 +78,10 @@ export interface NexusGenObjects {
     id: string; // String!
     title: string; // String!
   }
+  AssignmentAnswerOption: { // root type
+    content: NexusGenScalars['JSON']; // JSON!
+    id: string; // String!
+  }
   AssignmentConnection: { // root type
     edges?: Array<NexusGenRootTypes['AssignmentEdge'] | null> | null; // [AssignmentEdge]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
@@ -80,9 +90,19 @@ export interface NexusGenObjects {
     cursor: string; // String!
     node?: NexusGenRootTypes['Assignment'] | null; // Assignment
   }
-  AssignmentSection: { // root type
+  AssignmentQuestion: { // root type
+    answer: Array<NexusGenRootTypes['AssignmentAnswer'] | null>; // [AssignmentAnswer]!
+    content?: NexusGenScalars['JSON'] | null; // JSON
     id: string; // String!
-    name: string; // String!
+  }
+  AssignmentQuestionCorrectAnswer: { // root type
+    answer: NexusGenRootTypes['AssignmentAnswer']; // AssignmentAnswer!
+    id: string; // String!
+  }
+  AssignmentSection: { // root type
+    description?: string | null; // String
+    id: string; // String!
+    title: string; // String!
   }
   AssignmentState: { // root type
     closedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -102,7 +122,16 @@ export interface NexusGenObjects {
     cursor: string; // String!
     node?: NexusGenRootTypes['Class'] | null; // Class
   }
+  MultipleChoice: { // root type
+    id?: string | null; // ID
+    options: Array<NexusGenRootTypes['AssignmentAnswerOption'] | null>; // [AssignmentAnswerOption]!
+  }
   Mutation: {};
+  NumberQuestion: { // root type
+    hint?: string | null; // String
+    id?: string | null; // ID
+    label?: string | null; // String
+  }
   PageInfo: { // root type
     endCursor?: string | null; // String
     hasNextPage: boolean; // Boolean!
@@ -110,6 +139,10 @@ export interface NexusGenObjects {
     startCursor?: string | null; // String
   }
   Query: {};
+  SingleChoice: { // root type
+    id?: string | null; // ID
+    options: Array<NexusGenRootTypes['AssignmentAnswerOption'] | null>; // [AssignmentAnswerOption]!
+  }
   StudentGroup: { // root type
     code: string; // String!
     id: string; // String!
@@ -121,6 +154,11 @@ export interface NexusGenObjects {
   StudentGroupEdge: { // root type
     cursor: string; // String!
     node?: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
+  }
+  TextQuestion: { // root type
+    hint?: string | null; // String
+    id?: string | null; // ID
+    label?: string | null; // String
   }
   Topic: { // root type
     createdAt: NexusGenScalars['DateTime']; // DateTime!
@@ -158,7 +196,8 @@ export interface NexusGenObjects {
 }
 
 export interface NexusGenInterfaces {
-  Node: NexusGenRootTypes['Assignment'] | NexusGenRootTypes['AssignmentState'] | NexusGenRootTypes['Class'] | NexusGenRootTypes['StudentGroup'] | NexusGenRootTypes['Topic'] | NexusGenRootTypes['TopicAttachment'] | NexusGenRootTypes['User'];
+  AssignmentAnswer: NexusGenRootTypes['MultipleChoice'] | NexusGenRootTypes['NumberQuestion'] | NexusGenRootTypes['SingleChoice'] | NexusGenRootTypes['TextQuestion'];
+  Node: NexusGenRootTypes['Assignment'] | NexusGenRootTypes['AssignmentAnswerOption'] | NexusGenRootTypes['AssignmentQuestion'] | NexusGenRootTypes['AssignmentQuestionCorrectAnswer'] | NexusGenRootTypes['AssignmentSection'] | NexusGenRootTypes['AssignmentState'] | NexusGenRootTypes['Class'] | NexusGenRootTypes['StudentGroup'] | NexusGenRootTypes['Topic'] | NexusGenRootTypes['TopicAttachment'] | NexusGenRootTypes['User'];
 }
 
 export interface NexusGenUnions {
@@ -177,6 +216,10 @@ export interface NexusGenFieldTypes {
     title: string; // String!
     topic: NexusGenRootTypes['Topic']; // Topic!
   }
+  AssignmentAnswerOption: { // field return type
+    content: NexusGenScalars['JSON']; // JSON!
+    id: string; // String!
+  }
   AssignmentConnection: { // field return type
     edges: Array<NexusGenRootTypes['AssignmentEdge'] | null> | null; // [AssignmentEdge]
     pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
@@ -185,9 +228,21 @@ export interface NexusGenFieldTypes {
     cursor: string; // String!
     node: NexusGenRootTypes['Assignment'] | null; // Assignment
   }
-  AssignmentSection: { // field return type
+  AssignmentQuestion: { // field return type
+    answer: Array<NexusGenRootTypes['AssignmentAnswer'] | null>; // [AssignmentAnswer]!
+    content: NexusGenScalars['JSON'] | null; // JSON
+    correctAnswers: NexusGenRootTypes['AssignmentQuestionCorrectAnswer'][]; // [AssignmentQuestionCorrectAnswer!]!
     id: string; // String!
-    name: string; // String!
+  }
+  AssignmentQuestionCorrectAnswer: { // field return type
+    answer: NexusGenRootTypes['AssignmentAnswer']; // AssignmentAnswer!
+    id: string; // String!
+  }
+  AssignmentSection: { // field return type
+    description: string | null; // String
+    id: string; // String!
+    questions: NexusGenRootTypes['AssignmentQuestion'][]; // [AssignmentQuestion!]!
+    title: string; // String!
   }
   AssignmentState: { // field return type
     closedAt: NexusGenScalars['DateTime']; // DateTime!
@@ -209,6 +264,10 @@ export interface NexusGenFieldTypes {
     cursor: string; // String!
     node: NexusGenRootTypes['Class'] | null; // Class
   }
+  MultipleChoice: { // field return type
+    id: string | null; // ID
+    options: Array<NexusGenRootTypes['AssignmentAnswerOption'] | null>; // [AssignmentAnswerOption]!
+  }
   Mutation: { // field return type
     addTopicAttachment: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
     createAssignment: NexusGenRootTypes['Assignment'] | null; // Assignment
@@ -220,6 +279,11 @@ export interface NexusGenFieldTypes {
     reorderTopic: NexusGenRootTypes['Topic'] | null; // Topic
     updateClassName: NexusGenRootTypes['Class'] | null; // Class
     updateTopic: NexusGenRootTypes['Topic'] | null; // Topic
+  }
+  NumberQuestion: { // field return type
+    hint: string | null; // String
+    id: string | null; // ID
+    label: string | null; // String
   }
   PageInfo: { // field return type
     endCursor: string | null; // String
@@ -236,6 +300,10 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User'] | null; // User
     topic: NexusGenRootTypes['Topic'] | null; // Topic
   }
+  SingleChoice: { // field return type
+    id: string | null; // ID
+    options: Array<NexusGenRootTypes['AssignmentAnswerOption'] | null>; // [AssignmentAnswerOption]!
+  }
   StudentGroup: { // field return type
     code: string; // String!
     id: string; // String!
@@ -247,6 +315,11 @@ export interface NexusGenFieldTypes {
   StudentGroupEdge: { // field return type
     cursor: string; // String!
     node: NexusGenRootTypes['StudentGroup'] | null; // StudentGroup
+  }
+  TextQuestion: { // field return type
+    hint: string | null; // String
+    id: string | null; // ID
+    label: string | null; // String
   }
   Topic: { // field return type
     attachments: NexusGenRootTypes['TopicAttachmentConnection'] | null; // TopicAttachmentConnection
@@ -282,6 +355,9 @@ export interface NexusGenFieldTypes {
     image: string | null; // String
     name: string | null; // String
   }
+  AssignmentAnswer: { // field return type
+    id: string | null; // ID
+  }
   Node: { // field return type
     id: string; // String!
   }
@@ -296,6 +372,10 @@ export interface NexusGenFieldTypeNames {
     title: 'String'
     topic: 'Topic'
   }
+  AssignmentAnswerOption: { // field return type name
+    content: 'JSON'
+    id: 'String'
+  }
   AssignmentConnection: { // field return type name
     edges: 'AssignmentEdge'
     pageInfo: 'PageInfo'
@@ -304,9 +384,21 @@ export interface NexusGenFieldTypeNames {
     cursor: 'String'
     node: 'Assignment'
   }
-  AssignmentSection: { // field return type name
+  AssignmentQuestion: { // field return type name
+    answer: 'AssignmentAnswer'
+    content: 'JSON'
+    correctAnswers: 'AssignmentQuestionCorrectAnswer'
     id: 'String'
-    name: 'String'
+  }
+  AssignmentQuestionCorrectAnswer: { // field return type name
+    answer: 'AssignmentAnswer'
+    id: 'String'
+  }
+  AssignmentSection: { // field return type name
+    description: 'String'
+    id: 'String'
+    questions: 'AssignmentQuestion'
+    title: 'String'
   }
   AssignmentState: { // field return type name
     closedAt: 'DateTime'
@@ -328,6 +420,10 @@ export interface NexusGenFieldTypeNames {
     cursor: 'String'
     node: 'Class'
   }
+  MultipleChoice: { // field return type name
+    id: 'ID'
+    options: 'AssignmentAnswerOption'
+  }
   Mutation: { // field return type name
     addTopicAttachment: 'TopicAttachment'
     createAssignment: 'Assignment'
@@ -339,6 +435,11 @@ export interface NexusGenFieldTypeNames {
     reorderTopic: 'Topic'
     updateClassName: 'Class'
     updateTopic: 'Topic'
+  }
+  NumberQuestion: { // field return type name
+    hint: 'String'
+    id: 'ID'
+    label: 'String'
   }
   PageInfo: { // field return type name
     endCursor: 'String'
@@ -355,6 +456,10 @@ export interface NexusGenFieldTypeNames {
     me: 'User'
     topic: 'Topic'
   }
+  SingleChoice: { // field return type name
+    id: 'ID'
+    options: 'AssignmentAnswerOption'
+  }
   StudentGroup: { // field return type name
     code: 'String'
     id: 'String'
@@ -366,6 +471,11 @@ export interface NexusGenFieldTypeNames {
   StudentGroupEdge: { // field return type name
     cursor: 'String'
     node: 'StudentGroup'
+  }
+  TextQuestion: { // field return type name
+    hint: 'String'
+    id: 'ID'
+    label: 'String'
   }
   Topic: { // field return type name
     attachments: 'TopicAttachmentConnection'
@@ -401,6 +511,9 @@ export interface NexusGenFieldTypeNames {
     image: 'String'
     name: 'String'
   }
+  AssignmentAnswer: { // field return type name
+    id: 'ID'
+  }
   Node: { // field return type name
     id: 'String'
   }
@@ -411,6 +524,22 @@ export interface NexusGenArgTypes {
     sections: { // args
       after?: NexusGenInputs['AssignmentSectionWhereUniqueInput'] | null; // AssignmentSectionWhereUniqueInput
       before?: NexusGenInputs['AssignmentSectionWhereUniqueInput'] | null; // AssignmentSectionWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+  }
+  AssignmentQuestion: {
+    correctAnswers: { // args
+      after?: NexusGenInputs['AssignmentQuestionCorrectAnswerWhereUniqueInput'] | null; // AssignmentQuestionCorrectAnswerWhereUniqueInput
+      before?: NexusGenInputs['AssignmentQuestionCorrectAnswerWhereUniqueInput'] | null; // AssignmentQuestionCorrectAnswerWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+  }
+  AssignmentSection: {
+    questions: { // args
+      after?: NexusGenInputs['AssignmentQuestionWhereUniqueInput'] | null; // AssignmentQuestionWhereUniqueInput
+      before?: NexusGenInputs['AssignmentQuestionWhereUniqueInput'] | null; // AssignmentQuestionWhereUniqueInput
       first?: number | null; // Int
       last?: number | null; // Int
     }
@@ -507,14 +636,23 @@ export interface NexusGenArgTypes {
 }
 
 export interface NexusGenAbstractTypeMembers {
-  Node: "Assignment" | "AssignmentState" | "Class" | "StudentGroup" | "Topic" | "TopicAttachment" | "User"
+  AssignmentAnswer: "MultipleChoice" | "NumberQuestion" | "SingleChoice" | "TextQuestion"
+  Node: "Assignment" | "AssignmentAnswerOption" | "AssignmentQuestion" | "AssignmentQuestionCorrectAnswer" | "AssignmentSection" | "AssignmentState" | "Class" | "StudentGroup" | "Topic" | "TopicAttachment" | "User"
 }
 
 export interface NexusGenTypeInterfaces {
   Assignment: "Node"
+  AssignmentAnswerOption: "Node"
+  AssignmentQuestion: "Node"
+  AssignmentQuestionCorrectAnswer: "Node"
+  AssignmentSection: "Node"
   AssignmentState: "Node"
   Class: "Node"
+  MultipleChoice: "AssignmentAnswer"
+  NumberQuestion: "AssignmentAnswer"
+  SingleChoice: "AssignmentAnswer"
   StudentGroup: "Node"
+  TextQuestion: "AssignmentAnswer"
   Topic: "Node"
   TopicAttachment: "Node"
   User: "Node"
@@ -534,7 +672,7 @@ export type NexusGenUnionNames = never;
 
 export type NexusGenObjectsUsingAbstractStrategyIsTypeOf = never;
 
-export type NexusGenAbstractsUsingStrategyResolveType = "Node";
+export type NexusGenAbstractsUsingStrategyResolveType = "AssignmentAnswer" | "Node";
 
 export type NexusGenFeaturesConfig = {
   abstractTypeStrategies: {

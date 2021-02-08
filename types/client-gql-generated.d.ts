@@ -34,6 +34,16 @@ type AssignmentSectionsArgs = {
   last?: Maybe<Scalars['Int']>;
 };
 
+type AssignmentAnswer = {
+  id?: Maybe<Scalars['ID']>;
+};
+
+type AssignmentAnswerOption = Node & {
+  __typename?: 'AssignmentAnswerOption';
+  content: Scalars['JSON'];
+  id: Scalars['String'];
+};
+
 type AssignmentConnection = {
   __typename?: 'AssignmentConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
@@ -50,10 +60,50 @@ type AssignmentEdge = {
   node?: Maybe<Assignment>;
 };
 
-type AssignmentSection = {
-  __typename?: 'AssignmentSection';
+type AssignmentQuestion = Node & {
+  __typename?: 'AssignmentQuestion';
+  answer: Array<Maybe<AssignmentAnswer>>;
+  content?: Maybe<Scalars['JSON']>;
+  correctAnswers: Array<AssignmentQuestionCorrectAnswer>;
   id: Scalars['String'];
-  name: Scalars['String'];
+};
+
+
+type AssignmentQuestionCorrectAnswersArgs = {
+  after?: Maybe<AssignmentQuestionCorrectAnswerWhereUniqueInput>;
+  before?: Maybe<AssignmentQuestionCorrectAnswerWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+type AssignmentQuestionCorrectAnswer = Node & {
+  __typename?: 'AssignmentQuestionCorrectAnswer';
+  answer: AssignmentAnswer;
+  id: Scalars['String'];
+};
+
+type AssignmentQuestionCorrectAnswerWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
+};
+
+type AssignmentQuestionWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
+};
+
+type AssignmentSection = Node & {
+  __typename?: 'AssignmentSection';
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  questions: Array<AssignmentQuestion>;
+  title: Scalars['String'];
+};
+
+
+type AssignmentSectionQuestionsArgs = {
+  after?: Maybe<AssignmentQuestionWhereUniqueInput>;
+  before?: Maybe<AssignmentQuestionWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 type AssignmentSectionWhereUniqueInput = {
@@ -119,6 +169,12 @@ type CreateClassGroupInput = {
 };
 
 
+
+type MultipleChoice = AssignmentAnswer & {
+  __typename?: 'MultipleChoice';
+  id?: Maybe<Scalars['ID']>;
+  options: Array<Maybe<AssignmentAnswerOption>>;
+};
 
 type Mutation = {
   __typename?: 'Mutation';
@@ -198,6 +254,13 @@ type Node = {
   id: Scalars['String'];
 };
 
+type NumberQuestion = AssignmentAnswer & {
+  __typename?: 'NumberQuestion';
+  hint?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  label?: Maybe<Scalars['String']>;
+};
+
 /** PageInfo cursor, as defined in https://facebook.github.io/relay/graphql/connections.htm#sec-undefined.PageInfo */
 type PageInfo = {
   __typename?: 'PageInfo';
@@ -263,6 +326,12 @@ type QueryTopicArgs = {
   id: Scalars['ID'];
 };
 
+type SingleChoice = AssignmentAnswer & {
+  __typename?: 'SingleChoice';
+  id?: Maybe<Scalars['ID']>;
+  options: Array<Maybe<AssignmentAnswerOption>>;
+};
+
 type StudentGroup = Node & {
   __typename?: 'StudentGroup';
   code: Scalars['String'];
@@ -283,6 +352,13 @@ type StudentGroupEdge = {
   cursor: Scalars['String'];
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Node */
   node?: Maybe<StudentGroup>;
+};
+
+type TextQuestion = AssignmentAnswer & {
+  __typename?: 'TextQuestion';
+  hint?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['ID']>;
+  label?: Maybe<Scalars['String']>;
 };
 
 type Topic = Node & {

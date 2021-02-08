@@ -12,6 +12,7 @@ export const schema = makeSchema({
       experimentalCRUD: true,
       scalars: {
         DateTime: scalars.DateTime,
+        Json: scalars.JSON,
       },
     }),
     connectionPlugin({}),

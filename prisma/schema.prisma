@@ -184,6 +184,7 @@ model AssignmentState {
 model AssignmentSection {
   id           String               @id @default(cuid())
   title        String
+  description  String?
   questions    AssignmentQuestion[]
   assignment   Assignment           @relation(fields: [assignmentId], references: [id])
   assignmentId String               @map("assignment_id")
@@ -192,38 +193,29 @@ model AssignmentSection {
 }
 
 model AssignmentQuestion {
-  id                  String                  @id @default(cuid())
-  orderKey            String                  @map("order_key")
-  assignmentSection   AssignmentSection       @relation(fields: [assignmentSectionId], references: [id])
-  assignmentSectionId String                  @map("assignment_section_id")
+  id                  String                            @id @default(cuid())
+  orderKey            String                            @map("order_key")
+  assignmentSection   AssignmentSection                 @relation(fields: [assignmentSectionId], references: [id])
+  assignmentSectionId String                            @map("assignment_section_id")
   content             Json
-  task                AssignmentQuestionTask?
+  answers             AssignmentAnswerOption[]
+  correctAnswers      AssignmentQuestionCorrectAnswer[]
   type                AssignmentQuestionType
-  variantId           String                  @map("variant_id")
-  variant             AssignmentVariant       @relation(fields: [variantId], references: [id])
-  createdAt           DateTime                @default(now()) @map("created_at")
-  updatedAt           DateTime                @default(now()) @map("updated_at")
+  variantId           String                            @map("variant_id")
+  variant             AssignmentVariant                 @relation(fields: [variantId], references: [id])
+  createdAt           DateTime                          @default(now()) @map("created_at")
+  updatedAt           DateTime                          @default(now()) @map("updated_at")
 
   @@map("assignment_question_blocks")
 }
 
 enum AssignmentQuestionType {
-  OneOf
-  Multiple
+  SingleChoice
+  MultipleChoice
   Text
   Number
-  // Image
-  // Document
-}
-
-model AssignmentQuestionTask {
-  id             String                            @id @default(cuid())
-  answers        AssignmentAnswerOption[]
-  correctAnswers AssignmentQuestionCorrectAnswer[]
-  questionId     String                            @map("question_id")
-  question       AssignmentQuestion                @relation(fields: [questionId], references: [id])
-
-  @@map("assignment_questions_tasks")
+  Image
+  Document
 }
 
 model AssignmentAnswerOption {
@@ -237,19 +229,19 @@ model AssignmentAnswerOption {
   // image question
   imageUrl String?
 
-  assignmentQuestionTask          AssignmentQuestionTask?          @relation(fields: [assignmentQuestionTaskId], references: [id])
-  assignmentQuestionTaskId        String?
+  assignmentQuestionId            String?
+  assignmentQuestion              AssignmentQuestion?              @relation(fields: [assignmentQuestionId], references: [id])
   assignmentQuestionCorrectAnswer AssignmentQuestionCorrectAnswer?
 
   @@map("assignment_question_answer_options")
 }
 
 model AssignmentQuestionCorrectAnswer {
-  id                       String                 @id @default(cuid())
-  assignmentQuestionTaskId String                 @map("assignment_question_task_id")
-  task                     AssignmentQuestionTask @relation(fields: [assignmentQuestionTaskId], references: [id])
-  answerOptionId           String                 @map("answer_id")
-  answer                   AssignmentAnswerOption @relation(fields: [answerOptionId], references: [id])
+  id                   String                 @id @default(cuid())
+  assignmentQuestionId String                 @map("assignment_question_id")
+  question             AssignmentQuestion     @relation(fields: [assignmentQuestionId], references: [id])
+  answerOptionId       String                 @map("answer_id")
+  answer               AssignmentAnswerOption @relation(fields: [answerOptionId], references: [id])
 
   @@map("assignment_questions_correct_answers")
 }
