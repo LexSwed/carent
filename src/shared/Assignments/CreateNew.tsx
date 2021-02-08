@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Flex, Picker, TextField } from '@fxtrot/ui'
-import { useClassTopics } from '../Topic/gql'
-import { useCreateAssignment } from '../Class/gql'
+import { useClassTopics } from '../../parts/Topic/gql'
+import { useCreateAssignment } from '../../parts/Class/gql'
 
 interface Props {
   selectedTopic?: string

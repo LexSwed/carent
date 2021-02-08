@@ -1,16 +1,15 @@
-import { Box } from '@fxtrot/ui'
 import React from 'react'
-import Topics from '../../../parts/Topic/Sidebar'
-import Layout from '../../../parts/Layout'
+
+import Layout from '../../../shared/Layout'
+
+import Sidebar from '../../../parts/Topic/Sidebar'
 import Topic from '../../../parts/Topic'
 
 const TopicsPage = () => {
   return (
     <Layout>
-      <Topics />
-      <Box>
-        <Topic />
-      </Box>
+      <Sidebar />
+      <Topic />
     </Layout>
   )
 }

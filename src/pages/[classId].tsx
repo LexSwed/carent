@@ -2,7 +2,7 @@ import React from 'react'
 import { getSession } from 'next-auth/client'
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
-import Layout from '../parts/Layout'
+import Layout from '../shared/Layout'
 import Sidebar from '../parts/Class/Sidebar'
 import ClassPage from '../parts/Class'
 

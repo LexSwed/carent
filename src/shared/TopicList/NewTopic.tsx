@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/router'
 import { Box, TextField, VisuallyHidden } from '@fxtrot/ui'
 
-import { useCreateNewTopic } from '../Class/gql'
+import { useCreateNewTopic } from '../../parts/Class/gql'
 import { useClassId } from '../../utils'
 
 export const NewTopic: React.FC = () => {

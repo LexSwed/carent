@@ -1,12 +1,12 @@
 import React from 'react'
-import { Flex, Grid, Heading } from '@fxtrot/ui'
+import { Flex, Grid } from '@fxtrot/ui'
 
 import { useTopicId } from '../../utils'
 import Header from './Header'
 import Placeholder from './Placeholder'
-import { Card } from '../Card'
+import { Card } from '../../shared/Card'
 import LinkedMaterials from './LinkedMaterials'
-import Assignments from '../Assignments'
+import Assignments from '../../shared/Assignments'
 
 const Topic = () => {
   const topicId = useTopicId()

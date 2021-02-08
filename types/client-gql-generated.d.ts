@@ -342,33 +342,6 @@ type User = Node & {
   name?: Maybe<Scalars['String']>;
 };
 
-type GetAssignmentsQueryVariables = Exact<{
-  classId: Scalars['ID'];
-  topicId?: Maybe<Scalars['ID']>;
-}>;
-
-
-type GetAssignmentsQuery = (
-  { __typename?: 'Query' }
-  & { assignments?: Maybe<(
-    { __typename?: 'AssignmentConnection' }
-    & { edges?: Maybe<Array<Maybe<(
-      { __typename?: 'AssignmentEdge' }
-      & { node?: Maybe<(
-        { __typename?: 'Assignment' }
-        & Pick<Assignment, 'id' | 'title' | 'description'>
-        & { topic: (
-          { __typename?: 'Topic' }
-          & Pick<Topic, 'id' | 'title'>
-        ), state?: Maybe<(
-          { __typename?: 'AssignmentState' }
-          & Pick<AssignmentState, 'id' | 'open'>
-        )> }
-      )> }
-    )>>> }
-  )> }
-);
-
 type GetLastUpdatedTopicQueryVariables = Exact<{
   classId: Scalars['ID'];
   sortOrder: ClassTopicsSortOrder;
@@ -390,27 +363,6 @@ type GetLastUpdatedTopicQuery = (
         )> }
       )>>> }
     )> }
-  )> }
-);
-
-type GetClassesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-type GetClassesQuery = (
-  { __typename?: 'Query' }
-  & { classes?: Maybe<(
-    { __typename?: 'ClassConnection' }
-    & { edges?: Maybe<Array<Maybe<(
-      { __typename?: 'ClassEdge' }
-      & { node?: Maybe<(
-        { __typename?: 'Class' }
-        & Pick<Class, 'id' | 'name'>
-        & { group: (
-          { __typename?: 'StudentGroup' }
-          & Pick<StudentGroup, 'id' | 'code'>
-        ) }
-      )> }
-    )>>> }
   )> }
 );
 
@@ -454,6 +406,27 @@ type GetGroupsQuery = (
       & { node?: Maybe<(
         { __typename?: 'StudentGroup' }
         & GroupFragmentFragment
+      )> }
+    )>>> }
+  )> }
+);
+
+type GetClassesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+type GetClassesQuery = (
+  { __typename?: 'Query' }
+  & { classes?: Maybe<(
+    { __typename?: 'ClassConnection' }
+    & { edges?: Maybe<Array<Maybe<(
+      { __typename?: 'ClassEdge' }
+      & { node?: Maybe<(
+        { __typename?: 'Class' }
+        & Pick<Class, 'id' | 'name'>
+        & { group: (
+          { __typename?: 'StudentGroup' }
+          & Pick<StudentGroup, 'id' | 'code'>
+        ) }
       )> }
     )>>> }
   )> }
@@ -690,5 +663,32 @@ type DeleteTopicAttachmentMutation = (
   & { deleteTopicAttachment?: Maybe<(
     { __typename?: 'TopicAttachment' }
     & Pick<TopicAttachment, 'id'>
+  )> }
+);
+
+type GetAssignmentsQueryVariables = Exact<{
+  classId: Scalars['ID'];
+  topicId?: Maybe<Scalars['ID']>;
+}>;
+
+
+type GetAssignmentsQuery = (
+  { __typename?: 'Query' }
+  & { assignments?: Maybe<(
+    { __typename?: 'AssignmentConnection' }
+    & { edges?: Maybe<Array<Maybe<(
+      { __typename?: 'AssignmentEdge' }
+      & { node?: Maybe<(
+        { __typename?: 'Assignment' }
+        & Pick<Assignment, 'id' | 'title' | 'description'>
+        & { topic: (
+          { __typename?: 'Topic' }
+          & Pick<Topic, 'id' | 'title'>
+        ), state?: Maybe<(
+          { __typename?: 'AssignmentState' }
+          & Pick<AssignmentState, 'id' | 'open'>
+        )> }
+      )> }
+    )>>> }
   )> }
 );

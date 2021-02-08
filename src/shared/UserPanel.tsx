@@ -2,6 +2,7 @@ import React from 'react'
 import { Text, Icon, Menu, styled, Flex } from '@fxtrot/ui'
 import { signOut, useSession } from 'next-auth/client'
 import { HiOutlineCog, HiOutlineDotsHorizontal, HiOutlineLogout } from 'react-icons/hi'
+
 import { Card } from './Card'
 
 const Panel = styled(Card, {

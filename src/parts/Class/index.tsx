@@ -3,11 +3,11 @@ import { Flex, Box, Heading, Grid } from '@fxtrot/ui'
 import Image from 'next/image'
 
 import ClassHeader from './Header'
-import { Card } from '../Card'
-import TopicList from '../TopicList'
+import { Card } from '../../shared/Card'
+import TopicList from '../../shared/TopicList'
 
 import { useClassId } from '../../utils'
-import Assignments from '../Assignments'
+import Assignments from '../../shared/Assignments'
 
 const ClassPage = () => {
   const classId = useClassId()
@@ -24,7 +24,7 @@ const ClassPage = () => {
 
   return (
     <Box maxWidth={900}>
-      <Flex space="$8">
+      <Flex space="$4">
         <ClassHeader />
         <Flex space="$8">
           <Card>

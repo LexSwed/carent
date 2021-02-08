@@ -7,7 +7,7 @@ import { useClassId } from '../../utils'
 import { HiChevronRight, HiArrowRight } from 'react-icons/hi'
 import { useRouter } from 'next/router'
 import { useCreateNewTopic } from './gql'
-import { Card } from '../Card'
+import { Card } from '../../shared/Card'
 
 const MaterialsSection = () => {
   const classId = useClassId()

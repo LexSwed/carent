@@ -1,10 +1,9 @@
 import React from 'react'
-import { Flex, Heading, TextLink } from '@fxtrot/ui'
+import { Heading, TextLink } from '@fxtrot/ui'
 
 import { useClassTopics } from '../gql'
-import UserPanel from '../../UserPanel'
-import { Card } from '../../Card'
-import TopicList from '../../TopicList'
+import { Card } from '../../../shared/Card'
+import TopicList from '../../../shared/TopicList'
 import { useClassId } from '../../../utils'
 
 const Topics = () => {
@@ -12,19 +11,16 @@ const Topics = () => {
   const classId = useClassId()
 
   return (
-    <Flex space="$4">
-      <UserPanel />
-      <Card>
-        <TopicList
-          title={<Heading level={3}>All topics</Heading>}
-          subtitle={
-            <TextLink to={`/${classId}`} size="xs" tone="light" css={{ color: '$textLight', fontWeight: 'normal' }}>
-              {data?.class?.name}
-            </TextLink>
-          }
-        />
-      </Card>
-    </Flex>
+    <Card>
+      <TopicList
+        title={<Heading level={3}>All topics</Heading>}
+        subtitle={
+          <TextLink to={`/${classId}`} size="xs" tone="light" css={{ color: '$textLight', fontWeight: 'normal' }}>
+            {data?.class?.name}
+          </TextLink>
+        }
+      />
+    </Card>
   )
 }
 

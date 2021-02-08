@@ -15,3 +15,9 @@ export function useTopicId() {
 
   return query.topicId as string
 }
+
+export function useAssignmentId() {
+  const { query } = useRouter()
+
+  return query.assignmentId as string
+}

@@ -1,5 +1,7 @@
-import { styled, Box } from '@fxtrot/ui'
+import { styled, Box, Flex } from '@fxtrot/ui'
 import React from 'react'
+
+import UserPanel from './UserPanel'
 
 const Grid = styled('div', {
   display: 'grid',
@@ -19,7 +21,12 @@ const Main = styled('main', {})
 const Layout = ({ children }) => {
   return (
     <Grid>
-      <Box height="100%">{children[0]}</Box>
+      <Box height="100%">
+        <Flex space="$4">
+          <UserPanel />
+          {children[0]}
+        </Flex>
+      </Box>
       <Main>{children[1]}</Main>
     </Grid>
   )
