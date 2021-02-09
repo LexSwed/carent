@@ -1,9 +1,14 @@
 import React from 'react'
 
 import { Card } from '../../shared/Card'
+import Header from './Header'
 
 const Sidebar = () => {
-  return <Card>render items D'n'D</Card>
+  return (
+    <Card>
+      <Header />
+    </Card>
+  )
 }
 
 export default Sidebar

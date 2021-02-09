@@ -210,8 +210,7 @@ model AssignmentQuestion {
 }
 
 enum AssignmentQuestionType {
-  SingleChoice
-  MultipleChoice
+  Choice
   Text
   Number
   Image

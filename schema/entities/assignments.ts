@@ -192,10 +192,8 @@ export const assignmentAnswer = interfaceType({
         return textQuestion.name
       case 'Number':
         return numberQuestion.name
-      case 'MultipleChoice':
-        return multipleChoiceQuestion.name
-      case 'SingleChoice':
-        return singleChoiceQuestion.name
+      case 'Choice':
+        return choiceQuestion.name
       default:
         throw new Error('Question block is not defined')
     }
@@ -233,22 +231,13 @@ export const assignmentAnswerOption = objectType({
     })
   },
 })
-export const multipleChoiceQuestion = objectType({
-  name: 'MultipleChoice',
-  definition(t) {
-    t.implements('AssignmentAnswer')
-    t.nonNull.list.field('options', {
-      type: assignmentAnswerOption,
-    })
-  },
-})
 
-export const singleChoiceQuestion = objectType({
-  name: 'SingleChoice',
+export const choiceQuestion = objectType({
+  name: 'Choice',
   definition(t) {
     t.implements('AssignmentAnswer')
     t.nonNull.list.field('options', {
-      type: assignmentAnswerOption,
+      type: 'AssignmentAnswerOption',
     })
   },
 })

@@ -1,16 +1,26 @@
-import { Flex } from '@fxtrot/ui'
 import React from 'react'
-import Header from './Header'
+import { Flex } from '@fxtrot/ui'
 
-import { Card } from '../../shared/Card'
+import Question from './Question'
 
 const AssignmentBuilder = () => {
   return (
     <Flex space="$4">
-      <Header />
-      <Card></Card>
+      <Question />
     </Flex>
   )
 }
 
 export default AssignmentBuilder
+
+/**
+ * content
+ * question type
+ * question answers
+ * add after question
+ * add before question
+ * duplicate question
+ * delete question
+ * dragging should make all elements to show only `content`
+ * "weight" of the option
+ */

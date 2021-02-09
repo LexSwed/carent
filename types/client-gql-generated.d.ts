@@ -113,6 +113,12 @@ type AssignmentVariantWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
 };
 
+type Choice = AssignmentAnswer & {
+  __typename?: 'Choice';
+  id?: Maybe<Scalars['ID']>;
+  options: Array<Maybe<AssignmentAnswerOption>>;
+};
+
 type Class = Node & {
   __typename?: 'Class';
   group: StudentGroup;
@@ -164,12 +170,6 @@ type CreateClassGroupInput = {
 };
 
 
-
-type MultipleChoice = AssignmentAnswer & {
-  __typename?: 'MultipleChoice';
-  id?: Maybe<Scalars['ID']>;
-  options: Array<Maybe<AssignmentAnswerOption>>;
-};
 
 type Mutation = {
   __typename?: 'Mutation';
@@ -319,12 +319,6 @@ type QueryGroupsArgs = {
 
 type QueryTopicArgs = {
   id: Scalars['ID'];
-};
-
-type SingleChoice = AssignmentAnswer & {
-  __typename?: 'SingleChoice';
-  id?: Maybe<Scalars['ID']>;
-  options: Array<Maybe<AssignmentAnswerOption>>;
 };
 
 type StudentGroup = Node & {
