@@ -28,13 +28,13 @@ const Dummy = styled('div', {
   backgroundSize: 'cover',
 })
 
-const UserPanel = () => {
+const UserPanel: React.FC<React.ComponentProps<typeof Panel>> = (props) => {
   const [session] = useSession()
 
   const user = session?.user || {}
 
   return (
-    <Panel>
+    <Panel {...props}>
       {user.image ? (
         <Avatar as="img" src={user.image} />
       ) : (

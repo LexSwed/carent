@@ -27,6 +27,7 @@
     "@apollo/link-batch-http": "^2.0.0-beta.3",
     "@fxtrot/ui": "^1.0.137",
     "@prisma/client": "2.16.1",
+    "@remirror/pm": "^0.0.0-pr706.1",
     "@remirror/react": "^0.0.0-pr706.1",
     "@stitches/react": "^0.0.3-canary.4",
     "apollo-server-micro": "^2.19.2",

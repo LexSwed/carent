@@ -24,12 +24,21 @@ type Assignment = Node & {
   state?: Maybe<AssignmentState>;
   title: Scalars['String'];
   topic: Topic;
+  variants: Array<AssignmentVariant>;
 };
 
 
 type AssignmentSectionsArgs = {
   after?: Maybe<AssignmentSectionWhereUniqueInput>;
   before?: Maybe<AssignmentSectionWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+type AssignmentVariantsArgs = {
+  after?: Maybe<AssignmentVariantWhereUniqueInput>;
+  before?: Maybe<AssignmentVariantWhereUniqueInput>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
 };
@@ -62,18 +71,10 @@ type AssignmentEdge = {
 
 type AssignmentQuestion = Node & {
   __typename?: 'AssignmentQuestion';
-  answer: Array<Maybe<AssignmentAnswer>>;
+  answers: Array<Maybe<AssignmentAnswer>>;
   content?: Maybe<Scalars['JSON']>;
-  correctAnswers: Array<AssignmentQuestionCorrectAnswer>;
+  correctAnswers: Array<Maybe<AssignmentQuestionCorrectAnswer>>;
   id: Scalars['String'];
-};
-
-
-type AssignmentQuestionCorrectAnswersArgs = {
-  after?: Maybe<AssignmentQuestionCorrectAnswerWhereUniqueInput>;
-  before?: Maybe<AssignmentQuestionCorrectAnswerWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
 };
 
 type AssignmentQuestionCorrectAnswer = Node & {
@@ -82,28 +83,12 @@ type AssignmentQuestionCorrectAnswer = Node & {
   id: Scalars['String'];
 };
 
-type AssignmentQuestionCorrectAnswerWhereUniqueInput = {
-  id?: Maybe<Scalars['String']>;
-};
-
-type AssignmentQuestionWhereUniqueInput = {
-  id?: Maybe<Scalars['String']>;
-};
-
 type AssignmentSection = Node & {
   __typename?: 'AssignmentSection';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
-  questions: Array<AssignmentQuestion>;
+  questions: Array<Maybe<AssignmentQuestion>>;
   title: Scalars['String'];
-};
-
-
-type AssignmentSectionQuestionsArgs = {
-  after?: Maybe<AssignmentQuestionWhereUniqueInput>;
-  before?: Maybe<AssignmentQuestionWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
 };
 
 type AssignmentSectionWhereUniqueInput = {
@@ -116,6 +101,16 @@ type AssignmentState = Node & {
   id: Scalars['String'];
   open: Scalars['Boolean'];
   openedAt: Scalars['DateTime'];
+};
+
+type AssignmentVariant = Node & {
+  __typename?: 'AssignmentVariant';
+  id: Scalars['String'];
+  name: Scalars['String'];
+};
+
+type AssignmentVariantWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
 };
 
 type Class = Node & {

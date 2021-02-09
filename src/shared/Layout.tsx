@@ -21,11 +21,9 @@ const Main = styled('main', {})
 const Layout = ({ children }) => {
   return (
     <Grid>
-      <Box height="100%">
-        <Flex space="$4">
-          <UserPanel />
-          {children[0]}
-        </Flex>
+      <Box space="$4" as={Flex} minHeight="100%">
+        {children[0]}
+        <UserPanel css={{ mt: 'auto' }} />
       </Box>
       <Main>{children[1]}</Main>
     </Grid>

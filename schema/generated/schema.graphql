@@ -10,6 +10,7 @@ type Assignment implements Node {
   state: AssignmentState
   title: String!
   topic: Topic!
+  variants(after: AssignmentVariantWhereUniqueInput, before: AssignmentVariantWhereUniqueInput, first: Int, last: Int): [AssignmentVariant!]!
 }
 
 interface AssignmentAnswer {
@@ -42,9 +43,9 @@ type AssignmentEdge {
 }
 
 type AssignmentQuestion implements Node {
-  answer: [AssignmentAnswer]!
+  answers: [AssignmentAnswer]!
   content: JSON
-  correctAnswers(after: AssignmentQuestionCorrectAnswerWhereUniqueInput, before: AssignmentQuestionCorrectAnswerWhereUniqueInput, first: Int, last: Int): [AssignmentQuestionCorrectAnswer!]!
+  correctAnswers: [AssignmentQuestionCorrectAnswer]!
   id: String!
 }
 
@@ -53,18 +54,10 @@ type AssignmentQuestionCorrectAnswer implements Node {
   id: String!
 }
 
-input AssignmentQuestionCorrectAnswerWhereUniqueInput {
-  id: String
-}
-
-input AssignmentQuestionWhereUniqueInput {
-  id: String
-}
-
 type AssignmentSection implements Node {
   description: String
   id: String!
-  questions(after: AssignmentQuestionWhereUniqueInput, before: AssignmentQuestionWhereUniqueInput, first: Int, last: Int): [AssignmentQuestion!]!
+  questions: [AssignmentQuestion]!
   title: String!
 }
 
@@ -77,6 +70,15 @@ type AssignmentState implements Node {
   id: String!
   open: Boolean!
   openedAt: DateTime!
+}
+
+type AssignmentVariant implements Node {
+  id: String!
+  name: String!
+}
+
+input AssignmentVariantWhereUniqueInput {
+  id: String
 }
 
 type Class implements Node {

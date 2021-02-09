@@ -1032,18 +1032,18 @@
   integrity sha512-W8VGvO76PH1EnR26Gix6f0weMv/mBptz24euAo1vC8HahyUP/A9RAYyOPPs3C39iAbHPLiGWA/UtS/UoYQbDZA==
 
 "@lingui/core@^3.5.0":
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-3.5.0.tgz#bd41c5b986849f14968a9eb011ff18102f16003b"
-  integrity sha512-csoabE0/q0hcE2CJyKEUnODLsRghHVR3KyrzIAP+zoPa3zAz7iW9ywB4qG8AA+pswgKBD0MKsgZT1vFeFHgPNw==
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-3.5.1.tgz#c84c12691dcd0b8586e0735375c6d8fdc4ddab51"
+  integrity sha512-/YtTQs/3IQtEWVCFTHubPwnn3+nQa5Jn+ygEDimDZpUSQo5gZXbtcLHf/NcnUw3t+5TAbxOf11DzMfNExDEzfQ==
   dependencies:
     "@babel/runtime" "^7.11.2"
     make-plural "^6.2.2"
     messageformat-parser "^4.1.3"
 
 "@lingui/detect-locale@^3.5.0":
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@lingui/detect-locale/-/detect-locale-3.5.0.tgz#62bf7635eb1f71d6ef7671d7569e2978f041c0ce"
-  integrity sha512-RPKeBSBt1oo/ekXezZe1FcLvZFbxIWWdENxvpQPQue3LUyL1yfOICBmUz59G9djbVtBhcy3WFg/qE/W31kme1w==
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/@lingui/detect-locale/-/detect-locale-3.5.1.tgz#130f114d0719e54ab4f01124f9afd4b19594f4ef"
+  integrity sha512-tnSyh7Elb+j0oGgEJYjlGHZtLlcM5kdim0rq7vJFSlD4Wsvq4+YBEBn/crO5nlXdO5xiliO9dsEdAEAgl02bVQ==
 
 "@next/env@10.0.6":
   version "10.0.6"
@@ -1933,7 +1933,7 @@
     "@lingui/core" "^3.5.0"
     "@remirror/core-helpers" "0.0.0-pr706.1"
 
-"@remirror/pm@0.0.0-pr706.1":
+"@remirror/pm@0.0.0-pr706.1", "@remirror/pm@^0.0.0-pr706.1":
   version "0.0.0-pr706.1"
   resolved "https://registry.yarnpkg.com/@remirror/pm/-/pm-0.0.0-pr706.1.tgz#897cd89268f48a759c8080e39b58f9bb26e842a5"
   integrity sha512-HSni98bmJXVmXPvvDVeMROcyL3O4DAmxXu0fH6WYcSpy8lyYpA8f3ccgvOu45cWtMbw75C5FwG9JF5Td2vFJrw==

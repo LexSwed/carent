@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Flex, MenuList, Text, StyleRecord } from '@fxtrot/ui'
+import { Flex, MenuList, Text, StyleRecord, Heading } from '@fxtrot/ui'
 import { gql, useQuery } from '@apollo/client'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -59,18 +59,21 @@ const Sidebar = () => {
         {noClasses ? (
           <NoClasses />
         ) : (
-          <MenuList as="nav">
-            {data.classes.edges.map((item) => (
-              <Link href={`/${item.node.id}`} key={item.node.id}>
-                <Item css={styles.tile} selected={item.node.id === classId} as="a">
-                  <Text ellipsis>{item.node.name} </Text>
-                  <Text tone="light" size="xs">
-                    {item.node.group.code}
-                  </Text>
-                </Item>
-              </Link>
-            ))}
-          </MenuList>
+          <Flex space="$4">
+            <Heading level={3}>Classes</Heading>
+            <MenuList as="nav">
+              {data.classes.edges.map((item) => (
+                <Link href={`/${item.node.id}`} key={item.node.id}>
+                  <Item css={styles.tile} selected={item.node.id === classId} as="a">
+                    <Text ellipsis>{item.node.name} </Text>
+                    <Text tone="light" size="xs">
+                      {item.node.group.code}
+                    </Text>
+                  </Item>
+                </Link>
+              ))}
+            </MenuList>
+          </Flex>
         )}
         <CreateNewClass defaultOpen={data.classes.edges.length === 0} />
       </Flex>

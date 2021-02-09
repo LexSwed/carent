@@ -114,8 +114,11 @@ export const topicAssignment = objectType({
     t.model.state({
       type: 'AssignmentState',
     })
+    t.model.variants({
+      type: 'AssignmentVariant',
+    })
     t.model.sections({
-      type: 'AssignmentSection',
+      type: 'AssignmentSection' as any,
     })
   },
 })
@@ -128,6 +131,15 @@ export const assignmentState = objectType({
     t.model.open()
     t.model.openedAt()
     t.model.closedAt()
+  },
+})
+
+export const assignmentVariant = objectType({
+  name: 'AssignmentVariant',
+  definition(t) {
+    t.implements('Node')
+    t.model.id()
+    t.model.name()
   },
 })
 
@@ -152,10 +164,10 @@ export const assignmentQuestion = objectType({
     t.field('content', {
       type: 'JSON',
     })
-    t.nonNull.list.field('correctAswers', {
+    t.nonNull.list.field('correctAnswers', {
       type: 'AssignmentQuestionCorrectAnswer',
     })
-    t.nonNull.list.field('answer', {
+    t.nonNull.list.field('answers', {
       type: 'AssignmentAnswer',
     })
   },
@@ -172,7 +184,7 @@ export const questionCorrectAnswer = objectType({
   },
 })
 
-export const questionTask = interfaceType({
+export const assignmentAnswer = interfaceType({
   name: 'AssignmentAnswer',
   resolveType(question: PrismaAssignmentQuestion) {
     switch (question.type) {
