@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { styled, Button, Flex, Icon, Picker, TextField, ThemeProvider, VisuallyHidden, Text, Popover } from '@fxtrot/ui'
+import { styled, Button, Flex, Icon, Picker, TextField, ThemeProvider, VisuallyHidden, Popover } from '@fxtrot/ui'
 import type { AssignmentQuestionType } from '@prisma/client'
 import { HiOutlineX, HiOutlineDocumentDuplicate, HiOutlineTrash, HiOutlineClipboardCheck } from 'react-icons/hi'
 
@@ -11,21 +11,17 @@ const QuestionSettings: React.FC<{
   return (
     <SubCard>
       <Flex space="$4" main="spread" css={{ height: '100%' }}>
-        <Picker value={type} onChange={onChange as (v: string) => void} label="Question type">
-          {questionTypes.map(({ label, value }) => (
-            <Picker.Item key={label} value={value} label={label} />
-          ))}
-        </Picker>
         <Flex space="$2">
+          <Picker value={type} onChange={onChange as (v: string) => void} label="Question type">
+            {questionTypes.map(({ label, value }) => (
+              <Picker.Item key={label} value={value} label={label} />
+            ))}
+          </Picker>
           <Popover>
             <Popover.Trigger main="spread">
               Add correct answers
               <Icon as={HiOutlineClipboardCheck} />
             </Popover.Trigger>
-            <Button main="spread">
-              Duplicate
-              <Icon as={HiOutlineDocumentDuplicate} />
-            </Button>
             <Popover.Content>
               <Flex space="$4">
                 <form
@@ -66,6 +62,12 @@ const QuestionSettings: React.FC<{
               </Flex>
             </Popover.Content>
           </Popover>
+        </Flex>
+        <Flex space="$2">
+          <Button main="spread">
+            Duplicate
+            <Icon as={HiOutlineDocumentDuplicate} />
+          </Button>
           <ThemeProvider theme="red">
             <Button title="Delete question" main="spread" variant="primary">
               Delete
@@ -103,7 +105,6 @@ const SubCard = styled('div', {
   borderTopRightRadius: '$sm',
   borderBottomRightRadius: '$sm',
   p: '$4',
-  pt: '$2',
   float: 'right',
   shadow: '$xs',
 })
