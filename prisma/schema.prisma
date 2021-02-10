@@ -197,6 +197,7 @@ model AssignmentQuestion {
   orderKey            String                            @map("order_key")
   assignmentSection   AssignmentSection                 @relation(fields: [assignmentSectionId], references: [id])
   assignmentSectionId String                            @map("assignment_section_id")
+  score               Int                               @default(0)
   content             Json
   answers             AssignmentAnswerOption[]
   correctAnswers      AssignmentQuestionCorrectAnswer[]
