@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
 import { Box, TextField, VisuallyHidden } from '@fxtrot/ui'
 
 import { useCreateNewTopic } from '../../parts/Class/gql'
@@ -7,7 +6,6 @@ import { useClassId } from '../../utils'
 
 export const NewTopic: React.FC = () => {
   const classId = useClassId()
-  const router = useRouter()
   const [create] = useCreateNewTopic()
   const [title, setTitle] = useState('')
 
@@ -15,14 +13,13 @@ export const NewTopic: React.FC = () => {
     e.preventDefault()
     const newTitle = title.trim()
     if (newTitle !== '') {
-      const { data } = await create({
+      await create({
         variables: {
           classId,
           title: newTitle,
         },
       })
       setTitle('')
-      router.push(`/${classId}/materials/${data?.createTopic?.id}`)
     }
   }
 

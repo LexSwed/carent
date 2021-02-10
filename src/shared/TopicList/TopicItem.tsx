@@ -4,6 +4,7 @@ import { HiMenuAlt4 } from 'react-icons/hi'
 import { Draggable } from 'react-beautiful-dnd'
 import { useClassId, useTopicId } from '../../utils'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 type FetchedTopic = GetClassTopicsQuery['class']['topics']['edges'][number]['node']
 interface TopicCardProps extends FetchedTopic {
@@ -15,6 +16,8 @@ export const TopicItem = React.memo<TopicCardProps>(({ id, title, index }) => {
   const router = useRouter()
   const topicId = useTopicId()
 
+  const href = `/${classId}/materials/${id}`
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided, snapshot) => (
@@ -25,7 +28,7 @@ export const TopicItem = React.memo<TopicCardProps>(({ id, title, index }) => {
           flow="row"
           cross="center"
           main="start"
-          onClick={() => router.push(`${classId}/materials/${id}`)}
+          onClick={() => router.push(href)}
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
@@ -38,11 +41,13 @@ export const TopicItem = React.memo<TopicCardProps>(({ id, title, index }) => {
           >
             <Icon size="sm" as={HiMenuAlt4} />
           </Button>
-          <Button variant="transparent" size="sm">
-            <Text size="sm" ellipsis>
-              {title}
-            </Text>
-          </Button>
+          <Link href={href}>
+            <Button as="a" variant="transparent" size="sm">
+              <Text size="sm" ellipsis>
+                {title}
+              </Text>
+            </Button>
+          </Link>
         </TopicCard>
       )}
     </Draggable>
