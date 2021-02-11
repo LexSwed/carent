@@ -4,7 +4,7 @@ import { Box, Flex, TextField } from '@fxtrot/ui'
 import type { AssignmentQuestionType } from '@prisma/client'
 import QuestionOptions from './QuestionOptions'
 
-const QuestionBody = () => {
+const QuestionContent = () => {
   const [type, setType] = React.useState<AssignmentQuestionType>('Text')
   const [score, setScore] = React.useState(0)
   return (
@@ -33,4 +33,4 @@ const QuestionBody = () => {
   )
 }
 
-export default QuestionBody
+export default QuestionContent

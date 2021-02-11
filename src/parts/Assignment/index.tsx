@@ -1,30 +1,47 @@
 import React from 'react'
-import { Flex, Spinner } from '@fxtrot/ui'
+import { Box, Flex, Spinner } from '@fxtrot/ui'
 
 import Question from './Question'
 import { Card } from '../../shared/Card'
 import { useAssignmentDetails } from './gql'
+import NewQuestion from './Question/NewQuestion'
 
 const AssignmentBuilder = () => {
   const { data, loading } = useAssignmentDetails()
 
-  return (
-    <Flex space="$4">
-      {loading ? (
+  if (loading) {
+    return (
+      <Box height={400}>
         <Flex main="center" cross="center">
           <Spinner />
         </Flex>
-      ) : (
-        data?.assignment?.sections?.map((section) => {
-          return (
-            <Card>
-              {section.questions.map((q) => (
-                <Question />
-              ))}
-            </Card>
-          )
-        })
-      )}
+      </Box>
+    )
+  }
+
+  const isFormEmpty = data?.assignment?.sections.every((s) => s.questions.length === 0)
+
+  if (isFormEmpty) {
+    return (
+      <Flex space="$4">
+        <Card>
+          <NewQuestion />
+        </Card>
+      </Flex>
+    )
+  }
+
+  return (
+    <Flex space="$4">
+      {data?.assignment?.sections?.map((section) => {
+        return (
+          <Card>
+            {section.questions.map((q) => (
+              <Question />
+            ))}
+          </Card>
+        )
+      })}
     </Flex>
   )
 }
