@@ -2,6 +2,7 @@
   "name": "@fxtrot/carent",
   "version": "0.0.1",
   "private": true,
+  "license": "GNU GPLv3",
   "engines": {
     "node": ">=12"
   },

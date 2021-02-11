@@ -17,3 +17,10 @@ export function useAssignmentDetails() {
     variables: { id },
   })
 }
+
+/**
+ * Mutations:
+ *   - addAssignmentQuestion(assignmentId, type)
+ *   - duplicateAssignmentQuestion(assignmentId, questionId)
+ *   - updateAssignmentQuestion(assignmentId, { type, correctAnswers, hint, content })
+ */

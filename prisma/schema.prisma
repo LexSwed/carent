@@ -221,7 +221,7 @@ enum AssignmentQuestionType {
 model AssignmentAnswerOption {
   id       String  @id @default(cuid())
   // text/number questions
-  label    String?
+  value    String?
   hint     String?
   // choice question
   content  Json?
