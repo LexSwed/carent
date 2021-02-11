@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex, Spinner } from '@fxtrot/ui'
+import { Box, Flex, Spinner, TextField } from '@fxtrot/ui'
 
 import Question from './Question'
 import { Card } from '../../shared/Card'
@@ -35,11 +35,19 @@ const AssignmentBuilder = () => {
     <Flex space="$4">
       {data?.assignment?.sections?.map((section) => {
         return (
-          <Card>
-            {section.questions.map((q) => (
-              <Question />
-            ))}
-          </Card>
+          <Flex space="$2">
+            <TextField defaultValue={section.title} placeholder="Section title" variant="transparent" />
+            <TextField
+              defaultValue={section.description}
+              placeholder="Description of the section"
+              variant="transparent"
+            />
+            <Card>
+              {section.questions.map((q) => (
+                <Question />
+              ))}
+            </Card>
+          </Flex>
         )
       })}
     </Flex>

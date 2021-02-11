@@ -1,64 +1,8 @@
-import type {
-  AssignmentQuestion as PrismaAssignmentQuestion,
-  AssignmentSection as PrismaAssignmentSection,
-} from '@prisma/client'
+import type { AssignmentQuestion as PrismaAssignmentQuestion } from '@prisma/client'
 import { ApolloError } from 'apollo-server-micro'
 import { LexoRank } from 'lexorank'
-import { idArg, inputObjectType, interfaceType, mutationField, nonNull, objectType, queryField, stringArg } from 'nexus'
-import type { Context } from '../context'
-import { relayToPrismaPagination } from '../utils'
-
-export const getClassAssignments = queryField((t) => {
-  t.connectionField('assignments', {
-    type: 'Assignment',
-    additionalArgs: {
-      classId: nonNull(
-        idArg({
-          description: 'ID of the Class the assignments belong to',
-        })
-      ),
-      topicId: idArg({
-        description: 'ID of the Topic the assignments belong to',
-      }),
-    },
-    nodes: (_root, { classId, topicId, ...args }, { prisma, session }) => {
-      return prisma.assignment.findMany({
-        ...relayToPrismaPagination(args),
-        where: {
-          creatorId: session?.user.teacherId,
-          topicId: topicId,
-          topic: {
-            classId,
-            archivedAt: {
-              equals: null,
-            },
-          },
-        },
-      })
-    },
-  })
-
-  t.field('assignment', {
-    type: 'Assignment',
-    args: {
-      id: nonNull(
-        idArg({
-          description: 'ID of the assignment',
-        })
-      ),
-    },
-    resolve: (_root, { id }, { prisma, session }) => {
-      return prisma.assignment.findUnique({
-        where: {
-          id_creatorId: {
-            id,
-            creatorId: session?.user.teacherId,
-          },
-        },
-      })
-    },
-  })
-})
+import { idArg, inputObjectType, mutationField, nonNull, stringArg } from 'nexus'
+import type { Context } from '../../context'
 
 export const createAssignment = mutationField((t) => {
   t.field('createAssignment', {
@@ -75,37 +19,80 @@ export const createAssignment = mutationField((t) => {
         })
       ),
     },
-    resolve: (_, { title, topicId }, { prisma, session }) => {
-      return prisma.assignment.create({
-        data: {
-          title,
-          state: {
-            create: {},
-          },
-          sections: {
-            create: {
-              title: 'main',
+    resolve: async (_, { title, topicId }, { prisma, session }) => {
+      try {
+        const assignment = await prisma.assignment.create({
+          data: {
+            title,
+            state: {
+              create: {},
             },
-          },
-          variants: {
-            create: {
-              name: 'main',
+            sections: {
+              create: {
+                title: 'main',
+              },
             },
-          },
-          creatorId: session?.user.teacherId,
-          topic: {
-            connect: {
-              id_teacherId: {
-                id: topicId,
-                teacherId: session?.user.teacherId,
+            variants: {
+              create: {
+                name: 'main',
+              },
+            },
+            creatorId: session?.user.teacherId,
+            topic: {
+              connect: {
+                id_teacherId: {
+                  id: topicId,
+                  teacherId: session?.user.teacherId,
+                },
               },
             },
           },
-        },
-      })
+          select: {
+            id: true,
+            sections: {
+              select: {
+                id: true,
+              },
+            },
+            variants: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        })
+
+        await prisma.assignmentQuestion.create({
+          data: {
+            type: AssignmentQuestionType.Text,
+            content: {},
+            assignmentSectionId: assignment.sections[0].id,
+            variantId: assignment.variants[0].id,
+            orderKey: LexoRank.middle().toString(),
+          },
+        })
+
+        return prisma.assignment.findUnique({
+          where: {
+            id: assignment.id,
+          },
+          include: {
+            sections: {
+              include: {
+                questions: true,
+              },
+            },
+            variants: true,
+          },
+        })
+      } catch (error) {
+        throw new ApolloError('Failed to create new assignment', '400')
+      }
     },
   })
+})
 
+export const addQuestion = mutationField((t) => {
   t.field('addAssignmentQuestion', {
     type: 'AssignmentQuestion',
     args: {
@@ -185,7 +172,9 @@ export const createAssignment = mutationField((t) => {
       }
     },
   })
+})
 
+export const updateQuestion = mutationField((t) => {
   t.field('updateAssignmentQuestion', {
     type: 'AssignmentQuestion',
     args: {
@@ -224,7 +213,7 @@ export const createAssignment = mutationField((t) => {
       ),
     },
     authorize: (_, { assignmentId }, ctx) => canUpdateAssignment(assignmentId, ctx),
-    resolve: (_root, { questionId, assignmentId }, { prisma }) => {
+    resolve: (_root, {}, {}) => {
       // const { type, content, variantId, assignmentSectionId, answers } = prisma.assignmentQuestion.findUnique({
       //   where: {
       //     id: questionId,
@@ -260,7 +249,9 @@ export const createAssignment = mutationField((t) => {
       // })
     },
   })
+})
 
+export const deleteQuestion = mutationField((t) => {
   t.field('deleteAssignmentQuestion', {
     type: 'AssignmentQuestion',
     args: {
@@ -284,152 +275,6 @@ export const createAssignment = mutationField((t) => {
       })
     },
   })
-})
-
-export const topicAssignment = objectType({
-  name: 'Assignment',
-  definition(t) {
-    t.implements('Node')
-    t.model.id()
-    t.model.title()
-    t.model.description({
-      description: 'Assignment goals, things to cover, etc',
-    })
-    t.model.topic()
-    t.model.state({
-      type: 'AssignmentState',
-    })
-    t.model.variants({
-      type: 'AssignmentVariant',
-    })
-    t.model.sections({
-      type: 'AssignmentSection' as any,
-    })
-  },
-})
-
-export const assignmentState = objectType({
-  name: 'AssignmentState',
-  definition(t) {
-    t.implements('Node')
-    t.model.id()
-    t.model.open()
-    t.model.openedAt()
-    t.model.closedAt()
-  },
-})
-
-export const assignmentVariant = objectType({
-  name: 'AssignmentVariant',
-  definition(t) {
-    t.implements('Node')
-    t.model.id()
-    t.model.name()
-  },
-})
-
-export const assignmentSection = objectType({
-  name: 'AssignmentSection',
-  definition(t) {
-    t.implements('Node')
-    t.model.id()
-    t.model.title()
-    t.model.description()
-    t.nonNull.list.field('questions', {
-      type: 'AssignmentQuestion',
-      resolve: (parent: PrismaAssignmentSection) => {
-        return parent.questions ? parent.questions : []
-      },
-    })
-  },
-})
-
-export const assignmentQuestion = objectType({
-  name: 'AssignmentQuestion',
-  definition(t) {
-    t.implements('Node')
-    t.model.id()
-    t.model.type()
-    t.model.score()
-    t.field('content', {
-      type: 'JSON',
-    })
-    t.nonNull.list.field('correctAnswers', {
-      type: 'AssignmentQuestionCorrectAnswer',
-    })
-    t.nonNull.list.field('answers', {
-      type: 'AssignmentAnswer',
-    })
-  },
-})
-
-export const questionCorrectAnswer = objectType({
-  name: 'AssignmentQuestionCorrectAnswer',
-  definition(t) {
-    t.implements('Node')
-    t.model.id()
-    t.nonNull.field('answer', {
-      type: 'AssignmentAnswer',
-    })
-  },
-})
-
-export const assignmentAnswer = interfaceType({
-  name: 'AssignmentAnswer',
-  resolveType(question: PrismaAssignmentQuestion) {
-    switch (question.type) {
-      case 'Text':
-        return textQuestion.name
-      case 'Number':
-        return numberQuestion.name
-      case 'Choice':
-        return choiceQuestion.name
-      default:
-        throw new Error('Question block is not defined')
-    }
-  },
-  definition(t) {
-    t.id('id')
-  },
-})
-
-export const textQuestion = objectType({
-  name: 'TextQuestion',
-  definition(t) {
-    t.implements('AssignmentAnswer')
-    t.string('label')
-    t.string('hint')
-  },
-})
-
-export const numberQuestion = objectType({
-  name: 'NumberQuestion',
-  definition(t) {
-    t.implements('AssignmentAnswer')
-    t.string('label')
-    t.string('hint')
-  },
-})
-
-export const assignmentAnswerOption = objectType({
-  name: 'AssignmentAnswerOption',
-  definition(t) {
-    t.implements('Node')
-    t.model.id()
-    t.nonNull.field('content', {
-      type: 'JSON',
-    })
-  },
-})
-
-export const choiceQuestion = objectType({
-  name: 'Choice',
-  definition(t) {
-    t.implements('AssignmentAnswer')
-    t.nonNull.list.field('options', {
-      type: 'AssignmentAnswerOption',
-    })
-  },
 })
 
 async function canUpdateAssignment(id: PrismaAssignmentQuestion['id'], { prisma, session }: Context) {

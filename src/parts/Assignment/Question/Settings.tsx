@@ -27,7 +27,6 @@ const QuestionSettings: React.FC<{
                 <form
                   onSubmit={(e) => {
                     e.preventDefault()
-                    console.log((e.currentTarget as any).elements.answer.value)
                     setCorrectAnswers([...answers, (e.currentTarget as any).elements.answer.value])
                     ;(e.currentTarget as any).elements.answer.value = ''
                   }}

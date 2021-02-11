@@ -220,18 +220,13 @@ enum AssignmentQuestionType {
 }
 
 model AssignmentAnswerOption {
-  id       String  @id @default(cuid())
-  // text/number questions
-  value    String?
-  hint     String?
-  // choice question
-  content  Json?
-  orderKey String
-  // image question
-  imageUrl String?
+  id          String  @id @default(cuid())
+  content     Json
+  textContent String
+  hint        String?
 
-  assignmentQuestionId            String?
-  assignmentQuestion              AssignmentQuestion?              @relation(fields: [assignmentQuestionId], references: [id])
+  assignmentQuestionId            String
+  assignmentQuestion              AssignmentQuestion               @relation(fields: [assignmentQuestionId], references: [id])
   assignmentQuestionCorrectAnswer AssignmentQuestionCorrectAnswer?
 
   @@map("assignment_question_answer_options")
