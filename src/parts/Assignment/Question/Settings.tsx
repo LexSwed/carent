@@ -104,7 +104,6 @@ const SubCard = styled('div', {
   bc: '$blueGray50',
   borderTopRightRadius: '$sm',
   borderBottomRightRadius: '$sm',
+  borderLeft: '1px solid $blueGray100',
   p: '$4',
-  float: 'right',
-  shadow: '$xs',
 })

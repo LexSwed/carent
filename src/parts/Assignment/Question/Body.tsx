@@ -1,7 +1,6 @@
 import React from 'react'
-import { Box, Flex, styled, TextField } from '@fxtrot/ui'
+import { Box, Flex, TextField } from '@fxtrot/ui'
 
-import { Card } from '../../../shared/Card'
 import type { AssignmentQuestionType } from '@prisma/client'
 import QuestionOptions from './QuestionOptions'
 
@@ -9,7 +8,7 @@ const QuestionBody = () => {
   const [type, setType] = React.useState<AssignmentQuestionType>('Text')
   const [score, setScore] = React.useState(0)
   return (
-    <QuestionCard>
+    <Box p="$4" pt="$2">
       <Flex space="$2">
         <Flex flow="row" main="end">
           <TextField
@@ -30,15 +29,8 @@ const QuestionBody = () => {
           <QuestionOptions type={type} />
         </Flex>
       </Flex>
-    </QuestionCard>
+    </Box>
   )
 }
 
 export default QuestionBody
-
-const QuestionCard = styled(Card, {
-  borderTopRightRadius: 0,
-  borderBottomRightRadius: 0,
-  zIndex: 10,
-  pt: '$2',
-})

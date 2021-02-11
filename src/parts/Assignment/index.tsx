@@ -2,11 +2,14 @@ import React from 'react'
 import { Flex } from '@fxtrot/ui'
 
 import Question from './Question'
+import { Card } from '../../shared/Card'
 
 const AssignmentBuilder = () => {
   return (
     <Flex space="$4">
-      <Question />
+      <Card>
+        <Question />
+      </Card>
     </Flex>
   )
 }
