@@ -1,8 +1,9 @@
 import { useMemo } from 'react'
-import { ApolloClient, InMemoryCache, HttpLink, concat } from '@apollo/client'
+import { ApolloClient, InMemoryCache, concat } from '@apollo/client'
 import { BatchHttpLink } from '@apollo/link-batch-http'
 import { onError } from '@apollo/client/link/error'
 import Router from 'next/router'
+import generatedIntrospection from './gql-fragments'
 
 let apolloClient
 
@@ -32,7 +33,9 @@ function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
     link: createIsomorphLink(),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      possibleTypes: generatedIntrospection.possibleTypes,
+    }),
   })
 }
 

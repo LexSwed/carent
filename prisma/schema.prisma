@@ -188,6 +188,7 @@ model AssignmentSection {
   questions    AssignmentQuestion[]
   assignment   Assignment           @relation(fields: [assignmentId], references: [id])
   assignmentId String               @map("assignment_id")
+  createdAt    DateTime             @default(now()) @map("created_at")
 
   @@map("assignment_sections")
 }

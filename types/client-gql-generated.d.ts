@@ -75,6 +75,8 @@ type AssignmentQuestion = Node & {
   content?: Maybe<Scalars['JSON']>;
   correctAnswers: Array<Maybe<AssignmentQuestionCorrectAnswer>>;
   id: Scalars['String'];
+  score: Scalars['Int'];
+  type: AssignmentQuestionType;
 };
 
 type AssignmentQuestionCorrectAnswer = Node & {
@@ -82,6 +84,14 @@ type AssignmentQuestionCorrectAnswer = Node & {
   answer: AssignmentAnswer;
   id: Scalars['String'];
 };
+
+enum AssignmentQuestionType {
+  Choice = 'Choice',
+  Document = 'Document',
+  Image = 'Image',
+  Number = 'Number',
+  Text = 'Text'
+}
 
 type AssignmentSection = Node & {
   __typename?: 'AssignmentSection';
@@ -173,16 +183,27 @@ type CreateClassGroupInput = {
 
 type Mutation = {
   __typename?: 'Mutation';
+  addAssignmentQuestion?: Maybe<AssignmentQuestion>;
   addTopicAttachment?: Maybe<TopicAttachment>;
   createAssignment?: Maybe<Assignment>;
   createClass?: Maybe<Class>;
   createTopic?: Maybe<Topic>;
+  deleteAssignmentQuestion?: Maybe<AssignmentQuestion>;
   deleteTopic?: Maybe<Topic>;
   deleteTopicAttachment?: Maybe<TopicAttachment>;
+  duplicateAssignmentQuestion?: Maybe<AssignmentQuestion>;
   renameTopicAttachment?: Maybe<TopicAttachment>;
   reorderTopic?: Maybe<Topic>;
+  updateAssignmentQuestion?: Maybe<AssignmentQuestion>;
   updateClassName?: Maybe<Class>;
   updateTopic?: Maybe<Topic>;
+};
+
+
+type MutationAddAssignmentQuestionArgs = {
+  assignmentId: Scalars['ID'];
+  type: AssignmentQuestionType;
+  variantId: Scalars['ID'];
 };
 
 
@@ -210,6 +231,12 @@ type MutationCreateTopicArgs = {
 };
 
 
+type MutationDeleteAssignmentQuestionArgs = {
+  assignmentId: Scalars['ID'];
+  questionId: Scalars['ID'];
+};
+
+
 type MutationDeleteTopicArgs = {
   id: Scalars['ID'];
 };
@@ -217,6 +244,12 @@ type MutationDeleteTopicArgs = {
 
 type MutationDeleteTopicAttachmentArgs = {
   id: Scalars['ID'];
+};
+
+
+type MutationDuplicateAssignmentQuestionArgs = {
+  assignmentId: Scalars['ID'];
+  questionId: Scalars['ID'];
 };
 
 
@@ -230,6 +263,12 @@ type MutationReorderTopicArgs = {
   after?: Maybe<Scalars['ID']>;
   before?: Maybe<Scalars['ID']>;
   id: Scalars['ID'];
+};
+
+
+type MutationUpdateAssignmentQuestionArgs = {
+  assignmentId: Scalars['ID'];
+  questionSettings: UpdateAssignmentQuestionInput;
 };
 
 
@@ -424,6 +463,10 @@ enum TopicSortOrder {
   Desc = 'DESC'
 }
 
+type UpdateAssignmentQuestionInput = {
+  type?: Maybe<AssignmentQuestionType>;
+};
+
 type User = Node & {
   __typename?: 'User';
   email?: Maybe<Scalars['String']>;
@@ -431,6 +474,28 @@ type User = Node & {
   image?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
 };
+
+type QuestionBlockFragment = (
+  { __typename?: 'AssignmentQuestion' }
+  & Pick<AssignmentQuestion, 'id' | 'content' | 'type'>
+  & { correctAnswers: Array<Maybe<(
+    { __typename?: 'AssignmentQuestionCorrectAnswer' }
+    & Pick<AssignmentQuestionCorrectAnswer, 'id'>
+  )>>, answers: Array<Maybe<(
+    { __typename?: 'Choice' }
+    & Pick<Choice, 'id'>
+    & { options: Array<Maybe<(
+      { __typename?: 'AssignmentAnswerOption' }
+      & Pick<AssignmentAnswerOption, 'id' | 'content'>
+    )>> }
+  ) | (
+    { __typename?: 'NumberQuestion' }
+    & Pick<NumberQuestion, 'id' | 'label' | 'hint'>
+  ) | (
+    { __typename?: 'TextQuestion' }
+    & Pick<TextQuestion, 'id' | 'label' | 'hint'>
+  )>> }
+);
 
 type GetAssignmentDetailsQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -442,6 +507,20 @@ type GetAssignmentDetailsQuery = (
   & { assignment?: Maybe<(
     { __typename?: 'Assignment' }
     & Pick<Assignment, 'id' | 'title' | 'description'>
+    & { state?: Maybe<(
+      { __typename?: 'AssignmentState' }
+      & Pick<AssignmentState, 'open'>
+    )>, variants: Array<(
+      { __typename?: 'AssignmentVariant' }
+      & Pick<AssignmentVariant, 'id' | 'name'>
+    )>, sections: Array<(
+      { __typename?: 'AssignmentSection' }
+      & Pick<AssignmentSection, 'id' | 'title' | 'description'>
+      & { questions: Array<Maybe<(
+        { __typename?: 'AssignmentQuestion' }
+        & QuestionBlockFragment
+      )>> }
+    )> }
   )> }
 );
 

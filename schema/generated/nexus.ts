@@ -51,9 +51,13 @@ export interface NexusGenInputs {
     href: string; // String!
     name: string; // String!
   }
+  UpdateAssignmentQuestionInput: { // input type
+    type?: NexusGenEnums['AssignmentQuestionType'] | null; // AssignmentQuestionType
+  }
 }
 
 export interface NexusGenEnums {
+  AssignmentQuestionType: "Choice" | "Document" | "Image" | "Number" | "Text"
   ClassTopicsOrder: "orderKey_asc" | "orderKey_desc" | "updatedAt_asc" | "updatedAt_desc"
   TopicSortKey: "orderKey" | "updatedAt"
   TopicSortOrder: "asc" | "desc"
@@ -92,6 +96,8 @@ export interface NexusGenObjects {
     content?: NexusGenScalars['JSON'] | null; // JSON
     correctAnswers: Array<NexusGenRootTypes['AssignmentQuestionCorrectAnswer'] | null>; // [AssignmentQuestionCorrectAnswer]!
     id: string; // String!
+    score: number; // Int!
+    type: NexusGenEnums['AssignmentQuestionType']; // AssignmentQuestionType!
   }
   AssignmentQuestionCorrectAnswer: { // root type
     answer: NexusGenRootTypes['AssignmentAnswer']; // AssignmentAnswer!
@@ -100,7 +106,6 @@ export interface NexusGenObjects {
   AssignmentSection: { // root type
     description?: string | null; // String
     id: string; // String!
-    questions: Array<NexusGenRootTypes['AssignmentQuestion'] | null>; // [AssignmentQuestion]!
     title: string; // String!
   }
   AssignmentState: { // root type
@@ -233,6 +238,8 @@ export interface NexusGenFieldTypes {
     content: NexusGenScalars['JSON'] | null; // JSON
     correctAnswers: Array<NexusGenRootTypes['AssignmentQuestionCorrectAnswer'] | null>; // [AssignmentQuestionCorrectAnswer]!
     id: string; // String!
+    score: number; // Int!
+    type: NexusGenEnums['AssignmentQuestionType']; // AssignmentQuestionType!
   }
   AssignmentQuestionCorrectAnswer: { // field return type
     answer: NexusGenRootTypes['AssignmentAnswer']; // AssignmentAnswer!
@@ -273,14 +280,18 @@ export interface NexusGenFieldTypes {
     node: NexusGenRootTypes['Class'] | null; // Class
   }
   Mutation: { // field return type
+    addAssignmentQuestion: NexusGenRootTypes['AssignmentQuestion'] | null; // AssignmentQuestion
     addTopicAttachment: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
     createAssignment: NexusGenRootTypes['Assignment'] | null; // Assignment
     createClass: NexusGenRootTypes['Class'] | null; // Class
     createTopic: NexusGenRootTypes['Topic'] | null; // Topic
+    deleteAssignmentQuestion: NexusGenRootTypes['AssignmentQuestion'] | null; // AssignmentQuestion
     deleteTopic: NexusGenRootTypes['Topic'] | null; // Topic
     deleteTopicAttachment: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
+    duplicateAssignmentQuestion: NexusGenRootTypes['AssignmentQuestion'] | null; // AssignmentQuestion
     renameTopicAttachment: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
     reorderTopic: NexusGenRootTypes['Topic'] | null; // Topic
+    updateAssignmentQuestion: NexusGenRootTypes['AssignmentQuestion'] | null; // AssignmentQuestion
     updateClassName: NexusGenRootTypes['Class'] | null; // Class
     updateTopic: NexusGenRootTypes['Topic'] | null; // Topic
   }
@@ -390,6 +401,8 @@ export interface NexusGenFieldTypeNames {
     content: 'JSON'
     correctAnswers: 'AssignmentQuestionCorrectAnswer'
     id: 'String'
+    score: 'Int'
+    type: 'AssignmentQuestionType'
   }
   AssignmentQuestionCorrectAnswer: { // field return type name
     answer: 'AssignmentAnswer'
@@ -430,14 +443,18 @@ export interface NexusGenFieldTypeNames {
     node: 'Class'
   }
   Mutation: { // field return type name
+    addAssignmentQuestion: 'AssignmentQuestion'
     addTopicAttachment: 'TopicAttachment'
     createAssignment: 'Assignment'
     createClass: 'Class'
     createTopic: 'Topic'
+    deleteAssignmentQuestion: 'AssignmentQuestion'
     deleteTopic: 'Topic'
     deleteTopicAttachment: 'TopicAttachment'
+    duplicateAssignmentQuestion: 'AssignmentQuestion'
     renameTopicAttachment: 'TopicAttachment'
     reorderTopic: 'Topic'
+    updateAssignmentQuestion: 'AssignmentQuestion'
     updateClassName: 'Class'
     updateTopic: 'Topic'
   }
@@ -545,6 +562,11 @@ export interface NexusGenArgTypes {
     }
   }
   Mutation: {
+    addAssignmentQuestion: { // args
+      assignmentId: string; // ID!
+      type: NexusGenEnums['AssignmentQuestionType']; // AssignmentQuestionType!
+      variantId: string; // ID!
+    }
     addTopicAttachment: { // args
       data: NexusGenInputs['TopicAttachmentInput']; // TopicAttachmentInput!
       topicId: string; // ID!
@@ -561,11 +583,19 @@ export interface NexusGenArgTypes {
       classId: string; // ID!
       title: string; // String!
     }
+    deleteAssignmentQuestion: { // args
+      assignmentId: string; // ID!
+      questionId: string; // ID!
+    }
     deleteTopic: { // args
       id: string; // ID!
     }
     deleteTopicAttachment: { // args
       id: string; // ID!
+    }
+    duplicateAssignmentQuestion: { // args
+      assignmentId: string; // ID!
+      questionId: string; // ID!
     }
     renameTopicAttachment: { // args
       id: string; // ID!
@@ -575,6 +605,10 @@ export interface NexusGenArgTypes {
       after?: string | null; // ID
       before?: string | null; // ID
       id: string; // ID!
+    }
+    updateAssignmentQuestion: { // args
+      assignmentId: string; // ID!
+      questionSettings: NexusGenInputs['UpdateAssignmentQuestionInput']; // UpdateAssignmentQuestionInput!
     }
     updateClassName: { // args
       id: string; // ID!

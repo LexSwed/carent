@@ -47,11 +47,21 @@ type AssignmentQuestion implements Node {
   content: JSON
   correctAnswers: [AssignmentQuestionCorrectAnswer]!
   id: String!
+  score: Int!
+  type: AssignmentQuestionType!
 }
 
 type AssignmentQuestionCorrectAnswer implements Node {
   answer: AssignmentAnswer!
   id: String!
+}
+
+enum AssignmentQuestionType {
+  Choice
+  Document
+  Image
+  Number
+  Text
 }
 
 type AssignmentSection implements Node {
@@ -154,6 +164,14 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 type Mutation {
+  addAssignmentQuestion(
+    """ID of the assignment a question belongs to"""
+    assignmentId: ID!
+    type: AssignmentQuestionType!
+
+    """ID of the variant a question belongs to"""
+    variantId: ID!
+  ): AssignmentQuestion
   addTopicAttachment(data: TopicAttachmentInput!, topicId: ID!): TopicAttachment
   createAssignment(
     """
@@ -170,6 +188,13 @@ type Mutation {
     classId: ID!
     title: String!
   ): Topic
+  deleteAssignmentQuestion(
+    """ID of the assignment a question belongs to"""
+    assignmentId: ID!
+
+    """ID of the question to delete"""
+    questionId: ID!
+  ): AssignmentQuestion
   deleteTopic(
     """ID of the topic to delete"""
     id: ID!
@@ -178,6 +203,13 @@ type Mutation {
     """Attachment ID"""
     id: ID!
   ): TopicAttachment
+  duplicateAssignmentQuestion(
+    """ID of the assignment a question belongs to"""
+    assignmentId: ID!
+
+    """ID of the question to duplicate"""
+    questionId: ID!
+  ): AssignmentQuestion
   renameTopicAttachment(
     """Attachment ID"""
     id: ID!
@@ -195,6 +227,11 @@ type Mutation {
     """ID of the topic to reorder"""
     id: ID!
   ): Topic
+  updateAssignmentQuestion(
+    """ID of the assignment a question belongs to"""
+    assignmentId: ID!
+    questionSettings: UpdateAssignmentQuestionInput!
+  ): AssignmentQuestion
   updateClassName(id: ID!, name: String!): Class
   updateTopic(
     """ID of the topic"""
@@ -410,6 +447,10 @@ Sort direction, ASC = ascending (normal - latest on top), DESC = descending (rev
 enum TopicSortOrder {
   ASC
   DESC
+}
+
+input UpdateAssignmentQuestionInput {
+  type: AssignmentQuestionType
 }
 
 type User implements Node {

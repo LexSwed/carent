@@ -1,15 +1,30 @@
 import React from 'react'
-import { Flex } from '@fxtrot/ui'
+import { Flex, Spinner } from '@fxtrot/ui'
 
 import Question from './Question'
 import { Card } from '../../shared/Card'
+import { useAssignmentDetails } from './gql'
 
 const AssignmentBuilder = () => {
+  const { data, loading } = useAssignmentDetails()
+
   return (
     <Flex space="$4">
-      <Card>
-        <Question />
-      </Card>
+      {loading ? (
+        <Flex main="center" cross="center">
+          <Spinner />
+        </Flex>
+      ) : (
+        data?.assignment?.sections?.map((section) => {
+          return (
+            <Card>
+              {section.questions.map((q) => (
+                <Question />
+              ))}
+            </Card>
+          )
+        })
+      )}
     </Flex>
   )
 }

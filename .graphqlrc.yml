@@ -9,3 +9,8 @@ generates:
     plugins:
       - typescript
       - typescript-operations
+  src/gql-fragments.ts:
+    config:
+      apolloClientVersion: 3 
+    plugins:
+      - fragment-matcher

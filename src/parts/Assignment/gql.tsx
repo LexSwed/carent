@@ -1,14 +1,32 @@
 import { gql, useQuery } from '@apollo/client'
 import { useAssignmentId } from '../../utils'
 
+import Question from './Question'
+
 const getAssignmentDetails = gql`
   query getAssignmentDetails($id: ID!) {
     assignment(id: $id) {
       id
       title
       description
+      state {
+        open
+      }
+      variants {
+        id
+        name
+      }
+      sections {
+        id
+        title
+        description
+        questions {
+          ...QuestionBlock
+        }
+      }
     }
   }
+  ${Question.fragment}
 `
 
 export function useAssignmentDetails() {
@@ -17,10 +35,3 @@ export function useAssignmentDetails() {
     variables: { id },
   })
 }
-
-/**
- * Mutations:
- *   - addAssignmentQuestion(assignmentId, type)
- *   - duplicateAssignmentQuestion(assignmentId, questionId)
- *   - updateAssignmentQuestion(assignmentId, { type, correctAnswers, hint, content })
- */
