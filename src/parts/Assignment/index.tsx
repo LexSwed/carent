@@ -4,7 +4,7 @@ import { Box, Flex, Spinner, TextField } from '@fxtrot/ui'
 import Question from './Question'
 import { Card } from '../../shared/Card'
 import { useAssignmentDetails } from './gql'
-import NewQuestion from './Question/NewQuestion'
+import AssignmentHeader from './AssignmentHeader'
 
 const AssignmentBuilder = () => {
   const { data, loading } = useAssignmentDetails()
@@ -19,32 +19,24 @@ const AssignmentBuilder = () => {
     )
   }
 
-  const isFormEmpty = data?.assignment?.sections.every((s) => s.questions.length === 0)
-
-  if (isFormEmpty) {
-    return (
-      <Flex space="$4">
-        <Card>
-          <NewQuestion />
-        </Card>
-      </Flex>
-    )
-  }
-
   return (
-    <Flex space="$4">
+    <Flex space="$2">
+      <AssignmentHeader />
       {data?.assignment?.sections?.map((section) => {
         return (
           <Flex space="$2">
-            <TextField defaultValue={section.title} placeholder="Section title" variant="transparent" />
-            <TextField
-              defaultValue={section.description}
-              placeholder="Description of the section"
-              variant="transparent"
-            />
+            <Flex>
+              <TextField defaultValue={section.title} size="lg" placeholder="Section title" variant="transparent" />
+              <TextField
+                defaultValue={section.description}
+                placeholder="Description of the section"
+                variant="transparent"
+                size="sm"
+              />
+            </Flex>
             <Card>
               {section.questions.map((q) => (
-                <Question />
+                <Question key={q.id} />
               ))}
             </Card>
           </Flex>

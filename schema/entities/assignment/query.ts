@@ -20,6 +20,9 @@ export const getClassAssignments = queryField((t) => {
         where: {
           creatorId: session?.user.teacherId,
           topicId: topicId,
+          archivedAt: {
+            equals: null,
+          },
           topic: {
             classId,
             archivedAt: {
@@ -48,6 +51,18 @@ export const getAssignmentById = queryField((t) => {
           id_creatorId: {
             id,
             creatorId: session?.user.teacherId,
+          },
+        },
+        include: {
+          sections: {
+            include: {
+              questions: {
+                include: {
+                  answers: true,
+                  correctAnswers: true,
+                },
+              },
+            },
           },
         },
       })

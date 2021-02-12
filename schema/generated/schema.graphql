@@ -2,6 +2,11 @@
 ### Do not make changes to this file directly
 
 
+"""Partial response of archived assignment"""
+type ArchivedAssignment {
+  id: ID
+}
+
 type Assignment implements Node {
   """Assignment goals, things to cover, etc"""
   description: String
@@ -20,6 +25,10 @@ interface AssignmentAnswer {
 type AssignmentAnswerOption implements Node {
   content: JSON!
   id: String!
+}
+
+input AssignmentAnswerOptionWhereUniqueInput {
+  id: String
 }
 
 type AssignmentConnection {
@@ -43,9 +52,9 @@ type AssignmentEdge {
 }
 
 type AssignmentQuestion implements Node {
-  answers: [AssignmentAnswer]!
+  answers(after: AssignmentAnswerOptionWhereUniqueInput, before: AssignmentAnswerOptionWhereUniqueInput, first: Int, last: Int): [AssignmentAnswer!]!
   content: JSON
-  correctAnswers: [AssignmentQuestionCorrectAnswer]!
+  correctAnswers(after: AssignmentQuestionCorrectAnswerWhereUniqueInput, before: AssignmentQuestionCorrectAnswerWhereUniqueInput, first: Int, last: Int): [AssignmentQuestionCorrectAnswer!]!
   id: String!
   score: Int!
   type: AssignmentQuestionType!
@@ -56,6 +65,10 @@ type AssignmentQuestionCorrectAnswer implements Node {
   id: String!
 }
 
+input AssignmentQuestionCorrectAnswerWhereUniqueInput {
+  id: String
+}
+
 enum AssignmentQuestionType {
   Choice
   Document
@@ -64,10 +77,14 @@ enum AssignmentQuestionType {
   Text
 }
 
+input AssignmentQuestionWhereUniqueInput {
+  id: String
+}
+
 type AssignmentSection implements Node {
   description: String
   id: String!
-  questions: [AssignmentQuestion]!
+  questions(after: AssignmentQuestionWhereUniqueInput, before: AssignmentQuestionWhereUniqueInput, first: Int, last: Int): [AssignmentQuestion!]!
   title: String!
 }
 
@@ -173,6 +190,12 @@ type Mutation {
     variantId: ID!
   ): AssignmentQuestion
   addTopicAttachment(data: TopicAttachmentInput!, topicId: ID!): TopicAttachment
+
+  """Archive assignment. Returns ID of the assignment"""
+  archiveAssignment(
+    """ID of the assignment to delete"""
+    id: ID!
+  ): ArchivedAssignment
   createAssignment(
     """
     Title of the assignment, e.g. "Home test" or "Control assignment"

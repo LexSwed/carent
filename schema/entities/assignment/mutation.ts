@@ -1,7 +1,7 @@
-import type { AssignmentQuestion as PrismaAssignmentQuestion } from '@prisma/client'
+import { AssignmentQuestion as PrismaAssignmentQuestion, AssignmentQuestionType } from '@prisma/client'
 import { ApolloError } from 'apollo-server-micro'
 import { LexoRank } from 'lexorank'
-import { idArg, inputObjectType, mutationField, nonNull, stringArg } from 'nexus'
+import { idArg, inputObjectType, mutationField, nonNull, objectType, stringArg } from 'nexus'
 import type { Context } from '../../context'
 
 export const createAssignment = mutationField((t) => {
@@ -29,12 +29,12 @@ export const createAssignment = mutationField((t) => {
             },
             sections: {
               create: {
-                title: 'main',
+                title: 'Section 1',
               },
             },
             variants: {
               create: {
-                name: 'main',
+                name: 'Variant',
               },
             },
             creatorId: session?.user.teacherId,
@@ -65,7 +65,7 @@ export const createAssignment = mutationField((t) => {
         await prisma.assignmentQuestion.create({
           data: {
             type: AssignmentQuestionType.Text,
-            content: {},
+            content: null,
             assignmentSectionId: assignment.sections[0].id,
             variantId: assignment.variants[0].id,
             orderKey: LexoRank.middle().toString(),
@@ -86,7 +86,48 @@ export const createAssignment = mutationField((t) => {
           },
         })
       } catch (error) {
+        console.error(error)
         throw new ApolloError('Failed to create new assignment', '400')
+      }
+    },
+  })
+})
+
+export const archiveAssignment = mutationField((t) => {
+  t.field('archiveAssignment', {
+    description: 'Archive assignment. Returns ID of the assignment',
+    type: objectType({
+      name: 'ArchivedAssignment',
+      description: 'Partial response of archived assignment',
+      definition(t) {
+        t.id('id')
+      },
+    }),
+    args: {
+      id: nonNull(
+        idArg({
+          description: 'ID of the assignment to delete',
+        })
+      ),
+    },
+    resolve: (_, { id }, { prisma, session }) => {
+      try {
+        return prisma.assignment.update({
+          where: {
+            id_creatorId: {
+              id,
+              creatorId: session?.user?.teacherId,
+            },
+          },
+          data: {
+            archivedAt: new Date(),
+          },
+          select: {
+            id: true,
+          },
+        })
+      } catch (error) {
+        throw new ApolloError('Failed to archive the assignment', '400')
       }
     },
   })
@@ -272,19 +313,33 @@ export const deleteQuestion = mutationField((t) => {
         where: {
           id: questionId,
         },
+        include: {
+          assignmentSection: {
+            include: {
+              questions: true,
+            },
+          },
+          answers: true,
+          correctAnswers: {
+            include: {
+              answer: true,
+            },
+          },
+        },
       })
     },
   })
 })
 
 async function canUpdateAssignment(id: PrismaAssignmentQuestion['id'], { prisma, session }: Context) {
-  const topic = await prisma.assignment.findUnique({
+  const assignment = await prisma.assignment.findFirst({
     where: {
-      id_creatorId: {
-        id,
-        creatorId: session.user.teacherId,
+      id,
+      creatorId: session.user.teacherId,
+      archivedAt: {
+        equals: null,
       },
     },
   })
-  return !!topic
+  return !!assignment
 }

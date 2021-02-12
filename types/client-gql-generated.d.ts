@@ -15,6 +15,12 @@ type Scalars = {
   JSON: any;
 };
 
+/** Partial response of archived assignment */
+type ArchivedAssignment = {
+  __typename?: 'ArchivedAssignment';
+  id?: Maybe<Scalars['ID']>;
+};
+
 type Assignment = Node & {
   __typename?: 'Assignment';
   /** Assignment goals, things to cover, etc */
@@ -53,6 +59,10 @@ type AssignmentAnswerOption = Node & {
   id: Scalars['String'];
 };
 
+type AssignmentAnswerOptionWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
+};
+
 type AssignmentConnection = {
   __typename?: 'AssignmentConnection';
   /** https://facebook.github.io/relay/graphql/connections.htm#sec-Edge-Types */
@@ -71,18 +81,38 @@ type AssignmentEdge = {
 
 type AssignmentQuestion = Node & {
   __typename?: 'AssignmentQuestion';
-  answers: Array<Maybe<AssignmentAnswer>>;
+  answers: Array<AssignmentAnswer>;
   content?: Maybe<Scalars['JSON']>;
-  correctAnswers: Array<Maybe<AssignmentQuestionCorrectAnswer>>;
+  correctAnswers: Array<AssignmentQuestionCorrectAnswer>;
   id: Scalars['String'];
   score: Scalars['Int'];
   type: AssignmentQuestionType;
+};
+
+
+type AssignmentQuestionAnswersArgs = {
+  after?: Maybe<AssignmentAnswerOptionWhereUniqueInput>;
+  before?: Maybe<AssignmentAnswerOptionWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+type AssignmentQuestionCorrectAnswersArgs = {
+  after?: Maybe<AssignmentQuestionCorrectAnswerWhereUniqueInput>;
+  before?: Maybe<AssignmentQuestionCorrectAnswerWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 type AssignmentQuestionCorrectAnswer = Node & {
   __typename?: 'AssignmentQuestionCorrectAnswer';
   answer: AssignmentAnswer;
   id: Scalars['String'];
+};
+
+type AssignmentQuestionCorrectAnswerWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
 };
 
 enum AssignmentQuestionType {
@@ -93,12 +123,24 @@ enum AssignmentQuestionType {
   Text = 'Text'
 }
 
+type AssignmentQuestionWhereUniqueInput = {
+  id?: Maybe<Scalars['String']>;
+};
+
 type AssignmentSection = Node & {
   __typename?: 'AssignmentSection';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
-  questions: Array<Maybe<AssignmentQuestion>>;
+  questions: Array<AssignmentQuestion>;
   title: Scalars['String'];
+};
+
+
+type AssignmentSectionQuestionsArgs = {
+  after?: Maybe<AssignmentQuestionWhereUniqueInput>;
+  before?: Maybe<AssignmentQuestionWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 type AssignmentSectionWhereUniqueInput = {
@@ -185,6 +227,8 @@ type Mutation = {
   __typename?: 'Mutation';
   addAssignmentQuestion?: Maybe<AssignmentQuestion>;
   addTopicAttachment?: Maybe<TopicAttachment>;
+  /** Archive assignment. Returns ID of the assignment */
+  archiveAssignment?: Maybe<ArchivedAssignment>;
   createAssignment?: Maybe<Assignment>;
   createClass?: Maybe<Class>;
   createTopic?: Maybe<Topic>;
@@ -210,6 +254,11 @@ type MutationAddAssignmentQuestionArgs = {
 type MutationAddTopicAttachmentArgs = {
   data: TopicAttachmentInput;
   topicId: Scalars['ID'];
+};
+
+
+type MutationArchiveAssignmentArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -478,10 +527,10 @@ type User = Node & {
 type QuestionBlockFragment = (
   { __typename?: 'AssignmentQuestion' }
   & Pick<AssignmentQuestion, 'id' | 'content' | 'type'>
-  & { correctAnswers: Array<Maybe<(
+  & { correctAnswers: Array<(
     { __typename?: 'AssignmentQuestionCorrectAnswer' }
     & Pick<AssignmentQuestionCorrectAnswer, 'id'>
-  )>>, answers: Array<Maybe<(
+  )>, answers: Array<(
     { __typename?: 'Choice' }
     & Pick<Choice, 'id'>
     & { options: Array<Maybe<(
@@ -494,7 +543,20 @@ type QuestionBlockFragment = (
   ) | (
     { __typename?: 'TextQuestion' }
     & Pick<TextQuestion, 'id' | 'label' | 'hint'>
-  )>> }
+  )> }
+);
+
+type DeleteAssignmentMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+type DeleteAssignmentMutation = (
+  { __typename?: 'Mutation' }
+  & { archiveAssignment?: Maybe<(
+    { __typename?: 'ArchivedAssignment' }
+    & Pick<ArchivedAssignment, 'id'>
+  )> }
 );
 
 type GetAssignmentDetailsQueryVariables = Exact<{
@@ -516,10 +578,10 @@ type GetAssignmentDetailsQuery = (
     )>, sections: Array<(
       { __typename?: 'AssignmentSection' }
       & Pick<AssignmentSection, 'id' | 'title' | 'description'>
-      & { questions: Array<Maybe<(
+      & { questions: Array<(
         { __typename?: 'AssignmentQuestion' }
         & QuestionBlockFragment
-      )>> }
+      )> }
     )> }
   )> }
 );

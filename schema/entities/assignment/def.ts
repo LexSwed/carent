@@ -18,7 +18,7 @@ export const topicAssignment = objectType({
       type: 'AssignmentVariant',
     })
     t.model.sections({
-      type: 'AssignmentSection' as any,
+      type: 'AssignmentSection',
     })
   },
 })
@@ -50,12 +50,16 @@ export const assignmentSection = objectType({
     t.model.id()
     t.model.title()
     t.model.description()
-    t.nonNull.list.field('questions', {
-      type: 'AssignmentQuestion',
-      resolve: (parent: any) => {
-        return parent.questions ? parent.questions : []
-      },
+    t.model.questions({
+      type: 'AssignmentQuestion' as any,
     })
+    // t.nonNull.list.field('questions', {
+    //   type: '',
+    //   resolve: (parent: any) => {
+    //     console.log(parent)
+    //     return parent.questions ? parent.questions : []
+    //   },
+    // })
   },
 })
 
@@ -69,11 +73,11 @@ export const assignmentQuestion = objectType({
     t.field('content', {
       type: 'JSON',
     })
-    t.nonNull.list.field('correctAnswers', {
-      type: 'AssignmentQuestionCorrectAnswer',
+    t.model.correctAnswers({
+      type: 'AssignmentQuestionCorrectAnswer' as any,
     })
-    t.nonNull.list.field('answers', {
-      type: 'AssignmentAnswer',
+    t.model.answers({
+      type: 'AssignmentAnswer' as any,
     })
   },
 })

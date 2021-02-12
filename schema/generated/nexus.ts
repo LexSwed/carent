@@ -33,6 +33,15 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  AssignmentAnswerOptionWhereUniqueInput: { // input type
+    id?: string | null; // String
+  }
+  AssignmentQuestionCorrectAnswerWhereUniqueInput: { // input type
+    id?: string | null; // String
+  }
+  AssignmentQuestionWhereUniqueInput: { // input type
+    id?: string | null; // String
+  }
   AssignmentSectionWhereUniqueInput: { // input type
     id?: string | null; // String
   }
@@ -74,6 +83,9 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  ArchivedAssignment: { // root type
+    id?: string | null; // ID
+  }
   Assignment: { // root type
     description?: string | null; // String
     id: string; // String!
@@ -92,9 +104,7 @@ export interface NexusGenObjects {
     node?: NexusGenRootTypes['Assignment'] | null; // Assignment
   }
   AssignmentQuestion: { // root type
-    answers: Array<NexusGenRootTypes['AssignmentAnswer'] | null>; // [AssignmentAnswer]!
     content?: NexusGenScalars['JSON'] | null; // JSON
-    correctAnswers: Array<NexusGenRootTypes['AssignmentQuestionCorrectAnswer'] | null>; // [AssignmentQuestionCorrectAnswer]!
     id: string; // String!
     score: number; // Int!
     type: NexusGenEnums['AssignmentQuestionType']; // AssignmentQuestionType!
@@ -212,6 +222,9 @@ export type NexusGenRootTypes = NexusGenInterfaces & NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  ArchivedAssignment: { // field return type
+    id: string | null; // ID
+  }
   Assignment: { // field return type
     description: string | null; // String
     id: string; // String!
@@ -234,9 +247,9 @@ export interface NexusGenFieldTypes {
     node: NexusGenRootTypes['Assignment'] | null; // Assignment
   }
   AssignmentQuestion: { // field return type
-    answers: Array<NexusGenRootTypes['AssignmentAnswer'] | null>; // [AssignmentAnswer]!
+    answers: NexusGenRootTypes['AssignmentAnswer'][]; // [AssignmentAnswer!]!
     content: NexusGenScalars['JSON'] | null; // JSON
-    correctAnswers: Array<NexusGenRootTypes['AssignmentQuestionCorrectAnswer'] | null>; // [AssignmentQuestionCorrectAnswer]!
+    correctAnswers: NexusGenRootTypes['AssignmentQuestionCorrectAnswer'][]; // [AssignmentQuestionCorrectAnswer!]!
     id: string; // String!
     score: number; // Int!
     type: NexusGenEnums['AssignmentQuestionType']; // AssignmentQuestionType!
@@ -248,7 +261,7 @@ export interface NexusGenFieldTypes {
   AssignmentSection: { // field return type
     description: string | null; // String
     id: string; // String!
-    questions: Array<NexusGenRootTypes['AssignmentQuestion'] | null>; // [AssignmentQuestion]!
+    questions: NexusGenRootTypes['AssignmentQuestion'][]; // [AssignmentQuestion!]!
     title: string; // String!
   }
   AssignmentState: { // field return type
@@ -282,6 +295,7 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     addAssignmentQuestion: NexusGenRootTypes['AssignmentQuestion'] | null; // AssignmentQuestion
     addTopicAttachment: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
+    archiveAssignment: NexusGenRootTypes['ArchivedAssignment'] | null; // ArchivedAssignment
     createAssignment: NexusGenRootTypes['Assignment'] | null; // Assignment
     createClass: NexusGenRootTypes['Class'] | null; // Class
     createTopic: NexusGenRootTypes['Topic'] | null; // Topic
@@ -375,6 +389,9 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  ArchivedAssignment: { // field return type name
+    id: 'ID'
+  }
   Assignment: { // field return type name
     description: 'String'
     id: 'String'
@@ -445,6 +462,7 @@ export interface NexusGenFieldTypeNames {
   Mutation: { // field return type name
     addAssignmentQuestion: 'AssignmentQuestion'
     addTopicAttachment: 'TopicAttachment'
+    archiveAssignment: 'ArchivedAssignment'
     createAssignment: 'Assignment'
     createClass: 'Class'
     createTopic: 'Topic'
@@ -552,6 +570,28 @@ export interface NexusGenArgTypes {
       last?: number | null; // Int
     }
   }
+  AssignmentQuestion: {
+    answers: { // args
+      after?: NexusGenInputs['AssignmentAnswerOptionWhereUniqueInput'] | null; // AssignmentAnswerOptionWhereUniqueInput
+      before?: NexusGenInputs['AssignmentAnswerOptionWhereUniqueInput'] | null; // AssignmentAnswerOptionWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+    correctAnswers: { // args
+      after?: NexusGenInputs['AssignmentQuestionCorrectAnswerWhereUniqueInput'] | null; // AssignmentQuestionCorrectAnswerWhereUniqueInput
+      before?: NexusGenInputs['AssignmentQuestionCorrectAnswerWhereUniqueInput'] | null; // AssignmentQuestionCorrectAnswerWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+  }
+  AssignmentSection: {
+    questions: { // args
+      after?: NexusGenInputs['AssignmentQuestionWhereUniqueInput'] | null; // AssignmentQuestionWhereUniqueInput
+      before?: NexusGenInputs['AssignmentQuestionWhereUniqueInput'] | null; // AssignmentQuestionWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+  }
   Class: {
     topics: { // args
       after?: string | null; // String
@@ -570,6 +610,9 @@ export interface NexusGenArgTypes {
     addTopicAttachment: { // args
       data: NexusGenInputs['TopicAttachmentInput']; // TopicAttachmentInput!
       topicId: string; // ID!
+    }
+    archiveAssignment: { // args
+      id: string; // ID!
     }
     createAssignment: { // args
       title: string; // String!

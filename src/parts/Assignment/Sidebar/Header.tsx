@@ -3,8 +3,8 @@ import { Button, Flex, Icon, TextField } from '@fxtrot/ui'
 import Link from 'next/link'
 import { HiChevronLeft } from 'react-icons/hi'
 
-import { useClassId } from '../../utils'
-import { useAssignmentDetails } from './gql'
+import { useClassId } from '../../../utils'
+import { useAssignmentDetails } from '../gql'
 
 const Header = () => {
   const classId = useClassId()
