@@ -27,7 +27,7 @@ const QuestionCard: React.FC<Props> = ({ type, onUpdate, onAdd }) => {
       </Flex>
       <Grid columns="minmax(300px, 2fr) 220px" css={{ border: '1px solid $blueGray100' }}>
         <Content />
-        <QuestionSettings type={type} onChange={(newType) => onUpdate({ type: newType })} />
+        <QuestionSettings />
       </Grid>
     </Grid>
   )
@@ -69,3 +69,15 @@ type QuestionUpdate =
         hint: string
       }
     }
+
+// sections = atom([{ title, description }, { title, description }])
+// questions = atom({
+//   [id]: {
+//     id
+//     type
+//     points
+//     hint
+//     answers: []
+//     correctAnswers: []
+//   }
+// })
