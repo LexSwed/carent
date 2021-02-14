@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex, Spinner, TextField } from '@fxtrot/ui'
+import { Box, Flex, Spinner } from '@fxtrot/ui'
 
 import Question from './Question'
 import { Card } from '../../shared/Card'

@@ -1,13 +1,21 @@
-import React, { useState } from 'react'
-import { styled, Button, Flex, Icon, Picker, TextField, ThemeProvider, VisuallyHidden, Popover } from '@fxtrot/ui'
-import type { AssignmentQuestionType } from '@prisma/client'
-import { HiOutlineX, HiOutlineDocumentDuplicate, HiOutlineTrash, HiOutlineClipboardCheck } from 'react-icons/hi'
+import React from 'react'
+import { styled, Button, Flex, Icon, Picker, ThemeProvider, Popover } from '@fxtrot/ui'
+import { AssignmentQuestionType } from '@prisma/client'
+import { HiOutlineDocumentDuplicate, HiOutlineTrash, HiOutlineClipboardCheck } from 'react-icons/hi'
+import { TextAnswers } from './types/Text'
+import { NumberAnswers } from './types/Number'
+
+const correctAnswersSetup = {
+  [AssignmentQuestionType.Text]: TextAnswers,
+  [AssignmentQuestionType.Number]: NumberAnswers,
+}
 
 const QuestionSettings: React.FC<{
   type: AssignmentQuestionType
   onChange: (v: AssignmentQuestionType) => void
 }> = ({ type, onChange }) => {
-  const [answers, setCorrectAnswers] = useState<string[]>([])
+  const CorrectAnswersSetup = correctAnswersSetup[type]
+
   return (
     <SubCard>
       <Flex space="$4" main="spread" css={{ height: '100%' }}>
@@ -23,42 +31,7 @@ const QuestionSettings: React.FC<{
               <Icon as={HiOutlineClipboardCheck} />
             </Popover.Trigger>
             <Popover.Content placement="bottom-end">
-              <Flex space="$4">
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    setCorrectAnswers([...answers, (e.currentTarget as any).elements.answer.value])
-                    ;(e.currentTarget as any).elements.answer.value = ''
-                  }}
-                >
-                  <VisuallyHidden {...({ as: 'button' } as any)} type="submit" />
-                  <TextField label="Add correct answers" hint="press Enter ↵ to add a new answer" name="answer" />
-                </form>
-                <Flex space="$2">
-                  {answers.map((label, i) => (
-                    <Flex flow="row" cross="center" space="$2">
-                      <TextField
-                        value={label}
-                        onChange={(v) =>
-                          setCorrectAnswers((answers) => {
-                            answers[i] = v
-                            return [...answers]
-                          })
-                        }
-                        validity="valid"
-                        size="sm"
-                      />
-                      <Button
-                        variant="flat"
-                        size="sm"
-                        onClick={() => setCorrectAnswers([...answers.slice(0, i), ...answers.slice(i + 1)])}
-                      >
-                        <Icon as={HiOutlineX} />
-                      </Button>
-                    </Flex>
-                  ))}
-                </Flex>
-              </Flex>
+              <CorrectAnswersSetup />
             </Popover.Content>
           </Popover>
         </Flex>

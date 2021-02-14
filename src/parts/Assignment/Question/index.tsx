@@ -6,11 +6,13 @@ import { HiOutlineMenuAlt4, HiOutlinePlus } from 'react-icons/hi'
 
 import QuestionSettings from './Settings'
 
-import TextContent from './content/Text'
+import TextContent from './types/Text'
+import NumberContent from './types/Number'
 import { gql } from '@apollo/client'
 
 const content = {
   [AssignmentQuestionType.Text]: TextContent,
+  [AssignmentQuestionType.Number]: NumberContent,
 }
 
 type Props = GetAssignmentDetailsQuery['assignment']['sections'][number]['questions'][number]
@@ -30,7 +32,7 @@ const Question = ({ id, type }: Props) => {
       </Flex>
       <Grid columns="minmax(300px, 2fr) 220px" css={{ border: '1px solid $blueGray100' }}>
         <Content />
-        <QuestionSettings />
+        <QuestionSettings type={type} onChange={() => {}} />
       </Grid>
     </Grid>
   )

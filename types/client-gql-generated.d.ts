@@ -575,7 +575,7 @@ type UpdateAssignmentSectionMutation = (
   { __typename?: 'Mutation' }
   & { updateAssignmentSection?: Maybe<(
     { __typename?: 'AssignmentSection' }
-    & Pick<AssignmentSection, 'id' | 'title' | 'description'>
+    & AssignmentSectionFragmentFragment
   )> }
 );
 
