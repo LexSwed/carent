@@ -25,7 +25,7 @@ export const TextBlock = () => {
 export const TextAnswers = () => {
   const [answers, setCorrectAnswers] = useState<string[]>([])
   return (
-    <Flex space="$4" as={Box} width={240}>
+    <Flex space="$4">
       <form
         onSubmit={(e) => {
           e.preventDefault()

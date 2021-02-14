@@ -16,7 +16,7 @@ export const NumberAnswers = () => {
         }}
       >
         <VisuallyHidden {...({ as: 'button' } as any)} type="submit" />
-        <TextField label="Add correct answers" hint="press Enter ↵ to add a new answer" name="answer" />
+        <TextField label="Add correct answers" hint="press Enter ↵ to add a new answer" name="answer" type="number" />
       </form>
       <Flex space="$2">
         {answers.map((label, i) => (

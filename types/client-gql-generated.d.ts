@@ -538,6 +538,11 @@ type User = Node & {
   name?: Maybe<Scalars['String']>;
 };
 
+type QuestionBlockTypeUpdateFragment = (
+  { __typename?: 'AssignmentQuestion' }
+  & Pick<AssignmentQuestion, 'type'>
+);
+
 type QuestionBlockFragment = (
   { __typename?: 'AssignmentQuestion' }
   & Pick<AssignmentQuestion, 'id' | 'content' | 'type'>

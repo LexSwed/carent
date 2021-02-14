@@ -1,4 +1,5 @@
 import React from 'react'
+import { gql, useApolloClient } from '@apollo/client'
 import { Box, Button, Flex, Grid, Icon } from '@fxtrot/ui'
 
 import { AssignmentQuestionType } from '@prisma/client'
@@ -7,7 +8,6 @@ import { HiOutlineMenuAlt4, HiOutlinePlus } from 'react-icons/hi'
 import { TextBlock, NumberBlock, ChoiceBlock } from './blocks'
 import QuestionSettings from './Settings'
 
-import { gql } from '@apollo/client'
 import Score from './Score'
 
 const content = {
@@ -20,6 +20,7 @@ type Props = GetAssignmentDetailsQuery['assignment']['sections'][number]['questi
 
 const Question = ({ id, type }: Props) => {
   const QuestionBlock = content[type]
+  const client = useApolloClient()
 
   return (
     <Grid columns="auto 1fr" gap="$2" css={{ alignItems: 'center' }}>
@@ -44,7 +45,25 @@ const Question = ({ id, type }: Props) => {
             </Flex>
           </Flex>
         </Box>
-        <QuestionSettings type={type} onChange={() => {}} />
+        <QuestionSettings
+          type={type}
+          onChange={(type) => {
+            client.cache.writeFragment({
+              id: client.cache.identify({
+                __typename: 'AssignmentQuestion',
+                id,
+              }),
+              fragment: gql`
+                fragment QuestionBlockTypeUpdate on AssignmentQuestion {
+                  type
+                }
+              `,
+              data: {
+                type,
+              },
+            })
+          }}
+        />
       </Grid>
     </Grid>
   )

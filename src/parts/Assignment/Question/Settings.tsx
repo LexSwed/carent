@@ -1,5 +1,5 @@
 import React from 'react'
-import { styled, Button, Flex, Icon, Picker, ThemeProvider, Popover } from '@fxtrot/ui'
+import { styled, Box, Button, Flex, Icon, Picker, ThemeProvider, Popover } from '@fxtrot/ui'
 import { AssignmentQuestionType } from '@prisma/client'
 import { HiOutlineDocumentDuplicate, HiOutlineTrash, HiOutlineClipboardCheck } from 'react-icons/hi'
 import { TextAnswers, NumberAnswers, ChoiceAnswers } from './blocks'
@@ -31,7 +31,9 @@ const QuestionSettings: React.FC<{
               <Icon as={HiOutlineClipboardCheck} />
             </Popover.Trigger>
             <Popover.Content placement="bottom-end">
-              <CorrectAnswersSetup />
+              <Box width={240}>
+                <CorrectAnswersSetup />
+              </Box>
             </Popover.Content>
           </Popover>
         </Flex>
