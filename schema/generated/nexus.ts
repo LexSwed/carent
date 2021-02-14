@@ -42,6 +42,10 @@ export interface NexusGenInputs {
   AssignmentQuestionWhereUniqueInput: { // input type
     id?: string | null; // String
   }
+  AssignmentSectionUpdateInput: { // input type
+    description?: string | null; // String
+    title?: string | null; // String
+  }
   AssignmentSectionWhereUniqueInput: { // input type
     id?: string | null; // String
   }
@@ -306,6 +310,7 @@ export interface NexusGenFieldTypes {
     renameTopicAttachment: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
     reorderTopic: NexusGenRootTypes['Topic'] | null; // Topic
     updateAssignmentQuestion: NexusGenRootTypes['AssignmentQuestion'] | null; // AssignmentQuestion
+    updateAssignmentSection: NexusGenRootTypes['AssignmentSection'] | null; // AssignmentSection
     updateClassName: NexusGenRootTypes['Class'] | null; // Class
     updateTopic: NexusGenRootTypes['Topic'] | null; // Topic
   }
@@ -473,6 +478,7 @@ export interface NexusGenFieldTypeNames {
     renameTopicAttachment: 'TopicAttachment'
     reorderTopic: 'Topic'
     updateAssignmentQuestion: 'AssignmentQuestion'
+    updateAssignmentSection: 'AssignmentSection'
     updateClassName: 'Class'
     updateTopic: 'Topic'
   }
@@ -652,6 +658,10 @@ export interface NexusGenArgTypes {
     updateAssignmentQuestion: { // args
       assignmentId: string; // ID!
       questionSettings: NexusGenInputs['UpdateAssignmentQuestionInput']; // UpdateAssignmentQuestionInput!
+    }
+    updateAssignmentSection: { // args
+      id: string; // ID!
+      section: NexusGenInputs['AssignmentSectionUpdateInput']; // AssignmentSectionUpdateInput!
     }
     updateClassName: { // args
       id: string; // ID!

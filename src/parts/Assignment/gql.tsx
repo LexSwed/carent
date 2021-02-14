@@ -2,6 +2,7 @@ import { gql, useQuery } from '@apollo/client'
 import { useAssignmentId } from '../../utils'
 
 import Question from './Question'
+import Section from './Section'
 
 const getAssignmentDetails = gql`
   query getAssignmentDetails($id: ID!) {
@@ -17,9 +18,7 @@ const getAssignmentDetails = gql`
         name
       }
       sections {
-        id
-        title
-        description
+        ...AssignmentSectionFragment
         questions {
           ...QuestionBlock
         }
@@ -27,6 +26,7 @@ const getAssignmentDetails = gql`
     }
   }
   ${Question.fragment}
+  ${Section.fragment}
 `
 
 export function useAssignmentDetails() {

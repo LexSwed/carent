@@ -88,6 +88,14 @@ type AssignmentSection implements Node {
   title: String!
 }
 
+input AssignmentSectionUpdateInput {
+  """A new description for the section"""
+  description: String
+
+  """A new title for the section"""
+  title: String
+}
+
 input AssignmentSectionWhereUniqueInput {
   id: String
 }
@@ -255,6 +263,11 @@ type Mutation {
     assignmentId: ID!
     questionSettings: UpdateAssignmentQuestionInput!
   ): AssignmentQuestion
+  updateAssignmentSection(
+    """ID of the section to update"""
+    id: ID!
+    section: AssignmentSectionUpdateInput!
+  ): AssignmentSection
   updateClassName(id: ID!, name: String!): Class
   updateTopic(
     """ID of the topic"""

@@ -143,6 +143,13 @@ type AssignmentSectionQuestionsArgs = {
   last?: Maybe<Scalars['Int']>;
 };
 
+type AssignmentSectionUpdateInput = {
+  /** A new description for the section */
+  description?: Maybe<Scalars['String']>;
+  /** A new title for the section */
+  title?: Maybe<Scalars['String']>;
+};
+
 type AssignmentSectionWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
 };
@@ -239,6 +246,7 @@ type Mutation = {
   renameTopicAttachment?: Maybe<TopicAttachment>;
   reorderTopic?: Maybe<Topic>;
   updateAssignmentQuestion?: Maybe<AssignmentQuestion>;
+  updateAssignmentSection?: Maybe<AssignmentSection>;
   updateClassName?: Maybe<Class>;
   updateTopic?: Maybe<Topic>;
 };
@@ -318,6 +326,12 @@ type MutationReorderTopicArgs = {
 type MutationUpdateAssignmentQuestionArgs = {
   assignmentId: Scalars['ID'];
   questionSettings: UpdateAssignmentQuestionInput;
+};
+
+
+type MutationUpdateAssignmentSectionArgs = {
+  id: Scalars['ID'];
+  section: AssignmentSectionUpdateInput;
 };
 
 
@@ -546,6 +560,25 @@ type QuestionBlockFragment = (
   )> }
 );
 
+type AssignmentSectionFragmentFragment = (
+  { __typename?: 'AssignmentSection' }
+  & Pick<AssignmentSection, 'id' | 'title' | 'description'>
+);
+
+type UpdateAssignmentSectionMutationVariables = Exact<{
+  id: Scalars['ID'];
+  section: AssignmentSectionUpdateInput;
+}>;
+
+
+type UpdateAssignmentSectionMutation = (
+  { __typename?: 'Mutation' }
+  & { updateAssignmentSection?: Maybe<(
+    { __typename?: 'AssignmentSection' }
+    & Pick<AssignmentSection, 'id' | 'title' | 'description'>
+  )> }
+);
+
 type DeleteAssignmentMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -577,11 +610,11 @@ type GetAssignmentDetailsQuery = (
       & Pick<AssignmentVariant, 'id' | 'name'>
     )>, sections: Array<(
       { __typename?: 'AssignmentSection' }
-      & Pick<AssignmentSection, 'id' | 'title' | 'description'>
       & { questions: Array<(
         { __typename?: 'AssignmentQuestion' }
         & QuestionBlockFragment
       )> }
+      & AssignmentSectionFragmentFragment
     )> }
   )> }
 );

@@ -133,6 +133,59 @@ export const archiveAssignment = mutationField((t) => {
   })
 })
 
+export const updateAssignmentSection = mutationField((t) => {
+  t.field('updateAssignmentSection', {
+    type: 'AssignmentSection',
+    args: {
+      id: nonNull(
+        idArg({
+          description: 'ID of the section to update',
+        })
+      ),
+      section: nonNull(
+        inputObjectType({
+          name: 'AssignmentSectionUpdateInput',
+          definition(t) {
+            t.string('title', { description: 'A new title for the section' })
+            t.string('description', { description: 'A new description for the section' })
+          },
+        })
+      ),
+    },
+    authorize: (_, { id }, { prisma, session }) => {
+      const item = prisma.assignmentSection.findFirst({
+        where: {
+          id,
+          AND: {
+            assignment: {
+              creatorId: session?.user.teacherId,
+              archivedAt: {
+                equals: null,
+              },
+            },
+          },
+        },
+        select: {
+          id: true,
+        },
+      })
+
+      return !!item
+    },
+    resolve: (_, { id, section }, { prisma, session }) => {
+      return prisma.assignmentSection.update({
+        where: {
+          id,
+        },
+        data: {
+          title: section.title ?? undefined,
+          description: section.description ?? undefined,
+        },
+      })
+    },
+  })
+})
+
 export const addQuestion = mutationField((t) => {
   t.field('addAssignmentQuestion', {
     type: 'AssignmentQuestion',

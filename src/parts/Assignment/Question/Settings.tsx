@@ -22,7 +22,7 @@ const QuestionSettings: React.FC<{
               Add correct answers
               <Icon as={HiOutlineClipboardCheck} />
             </Popover.Trigger>
-            <Popover.Content>
+            <Popover.Content placement="bottom-end">
               <Flex space="$4">
                 <form
                   onSubmit={(e) => {
