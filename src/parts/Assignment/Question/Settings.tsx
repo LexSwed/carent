@@ -2,12 +2,12 @@ import React from 'react'
 import { styled, Button, Flex, Icon, Picker, ThemeProvider, Popover } from '@fxtrot/ui'
 import { AssignmentQuestionType } from '@prisma/client'
 import { HiOutlineDocumentDuplicate, HiOutlineTrash, HiOutlineClipboardCheck } from 'react-icons/hi'
-import { TextAnswers } from './types/Text'
-import { NumberAnswers } from './types/Number'
+import { TextAnswers, NumberAnswers, ChoiceAnswers } from './blocks'
 
 const correctAnswersSetup = {
   [AssignmentQuestionType.Text]: TextAnswers,
   [AssignmentQuestionType.Number]: NumberAnswers,
+  [AssignmentQuestionType.Choice]: ChoiceAnswers,
 }
 
 const QuestionSettings: React.FC<{
@@ -60,15 +60,15 @@ const questionTypes: {
 }[] = [
   {
     label: 'Text input',
-    value: 'Text',
-  },
-  {
-    label: 'Choice',
-    value: 'Choice',
+    value: AssignmentQuestionType.Text,
   },
   {
     label: 'Number input',
-    value: 'Number',
+    value: AssignmentQuestionType.Number,
+  },
+  {
+    label: 'Choice',
+    value: AssignmentQuestionType.Choice,
   },
 ]
 

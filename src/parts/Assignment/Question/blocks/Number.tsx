@@ -1,10 +1,8 @@
-import { Flex, VisuallyHidden, TextField, Button, Icon } from '@fxtrot/ui'
 import React, { useState } from 'react'
+import { Flex, VisuallyHidden, TextField, Button, Icon } from '@fxtrot/ui'
 import { HiOutlineX } from 'react-icons/hi'
 
-import TextContent from './Text'
-
-export default TextContent
+export { TextBlock as NumberBlock } from './Text'
 
 export const NumberAnswers = () => {
   const [answers, setCorrectAnswers] = useState<number[]>([])

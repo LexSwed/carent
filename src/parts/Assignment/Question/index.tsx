@@ -1,24 +1,25 @@
 import React from 'react'
-import { Button, Flex, Grid, Icon } from '@fxtrot/ui'
+import { Box, Button, Flex, Grid, Icon } from '@fxtrot/ui'
 
 import { AssignmentQuestionType } from '@prisma/client'
 import { HiOutlineMenuAlt4, HiOutlinePlus } from 'react-icons/hi'
 
+import { TextBlock, NumberBlock, ChoiceBlock } from './blocks'
 import QuestionSettings from './Settings'
 
-import TextContent from './types/Text'
-import NumberContent from './types/Number'
 import { gql } from '@apollo/client'
+import Score from './Score'
 
 const content = {
-  [AssignmentQuestionType.Text]: TextContent,
-  [AssignmentQuestionType.Number]: NumberContent,
+  [AssignmentQuestionType.Text]: TextBlock,
+  [AssignmentQuestionType.Number]: NumberBlock,
+  [AssignmentQuestionType.Choice]: ChoiceBlock,
 }
 
 type Props = GetAssignmentDetailsQuery['assignment']['sections'][number]['questions'][number]
 
 const Question = ({ id, type }: Props) => {
-  const Content = content[type]
+  const QuestionBlock = content[type]
 
   return (
     <Grid columns="auto 1fr" gap="$2" css={{ alignItems: 'center' }}>
@@ -31,7 +32,18 @@ const Question = ({ id, type }: Props) => {
         </Button>
       </Flex>
       <Grid columns="minmax(300px, 2fr) 220px" css={{ border: '1px solid $blueGray100' }}>
-        <Content />
+        <Box p="$4" pt="$2">
+          <Flex space="$2">
+            <Score />
+            <Flex space="$4">
+              <Box height={200} br="$sm" width="100%" bc="$surfaceHover">
+                Content block
+              </Box>
+
+              <QuestionBlock />
+            </Flex>
+          </Flex>
+        </Box>
         <QuestionSettings type={type} onChange={() => {}} />
       </Grid>
     </Grid>
