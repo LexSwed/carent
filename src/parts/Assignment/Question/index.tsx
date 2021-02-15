@@ -40,7 +40,6 @@ const Question = ({ id, type }: Props) => {
               <Box height={200} br="$sm" width="100%" bc="$surfaceHover">
                 Content block
               </Box>
-
               <QuestionBlock />
             </Flex>
           </Flex>

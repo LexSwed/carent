@@ -7,7 +7,6 @@ import { TextAnswers, NumberAnswers, ChoiceAnswers } from './blocks'
 const correctAnswersSetup = {
   [AssignmentQuestionType.Text]: TextAnswers,
   [AssignmentQuestionType.Number]: NumberAnswers,
-  [AssignmentQuestionType.Choice]: ChoiceAnswers,
 }
 
 const QuestionSettings: React.FC<{
@@ -25,17 +24,19 @@ const QuestionSettings: React.FC<{
               <Picker.Item key={label} value={value} label={label} />
             ))}
           </Picker>
-          <Popover>
-            <Popover.Trigger main="spread">
-              Add correct answers
-              <Icon as={HiOutlineClipboardCheck} />
-            </Popover.Trigger>
-            <Popover.Content placement="bottom-end">
-              <Box width={240}>
-                <CorrectAnswersSetup />
-              </Box>
-            </Popover.Content>
-          </Popover>
+          {CorrectAnswersSetup && (
+            <Popover>
+              <Popover.Trigger main="spread">
+                Add correct answers
+                <Icon as={HiOutlineClipboardCheck} />
+              </Popover.Trigger>
+              <Popover.Content placement="bottom-end">
+                <Box width={240}>
+                  <CorrectAnswersSetup />
+                </Box>
+              </Popover.Content>
+            </Popover>
+          )}
         </Flex>
         <Flex space="$2">
           <Button main="spread">
