@@ -18,7 +18,7 @@ const content = {
 
 type Props = GetAssignmentDetailsQuery['assignment']['sections'][number]['questions'][number]
 
-const Question = ({ id, type }: Props) => {
+const Question = ({ id, type, answers, correctAnswers, ...props }: Props) => {
   const QuestionBlock = content[type]
   const client = useApolloClient()
 
@@ -32,7 +32,7 @@ const Question = ({ id, type }: Props) => {
           <Icon as={HiOutlineMenuAlt4} />
         </Button>
       </Flex>
-      <Grid columns="minmax(300px, 2fr) 220px" css={{ border: '1px solid $blueGray100' }}>
+      <Grid columns="minmax(300px, 2fr) 220px" css={{ border: '1px solid $primaryLight', br: '$md' }}>
         <Box p="$4" pt="$2">
           <Flex space="$2">
             <Score />
@@ -40,7 +40,7 @@ const Question = ({ id, type }: Props) => {
               <Box height={200} br="$sm" width="100%" bc="$surfaceHover">
                 Content block
               </Box>
-              <QuestionBlock />
+              <QuestionBlock answers={answers} correctAnswers={correctAnswers} />
             </Flex>
           </Flex>
         </Box>

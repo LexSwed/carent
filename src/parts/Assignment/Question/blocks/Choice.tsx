@@ -1,11 +1,16 @@
-import { Box, Checkbox, Flex, styled, TextField } from '@fxtrot/ui'
+import { Box, Grid, Button, Checkbox, Flex, Icon, styled, TextField } from '@fxtrot/ui'
 import React from 'react'
+import { HiOutlinePhotograph, HiOutlinePlus } from 'react-icons/hi'
 
 export const ChoiceBlock = () => {
   return (
     <Flex space="$2" cross="stretch">
       <Choice label="sadsa" />
       <Choice label="dasdasdas sdsa" />
+      <Button main="center" variant="outline" size="lg" space="$4">
+        <Icon as={HiOutlinePlus} />
+        Add new option
+      </Button>
     </Flex>
   )
 }
@@ -13,15 +18,17 @@ export const ChoiceBlock = () => {
 const Choice: React.FC<React.ComponentProps<typeof Checkbox>> = ({ label }) => {
   return (
     <ChoiceBox>
-      <Flex flow="row" space="$2" main="spread">
+      <Grid gap="$4" columns="1fr 100px">
         <Box p="$3" flex={2}>
           <Flex space="$2">
             <Checkbox label="Correct answer" />
             <TextField variant="transparent" defaultValue={label} />
           </Flex>
         </Box>
-        <ImageBox></ImageBox>
-      </Flex>
+        <ImageBox>
+          <Icon as={HiOutlinePhotograph} size="2xl" />
+        </ImageBox>
+      </Grid>
     </ChoiceBox>
   )
 }
@@ -34,8 +41,7 @@ const ChoiceBox = styled('div', {
 })
 
 const ImageBox = styled('div', {
-  alignSelf: 'stretch',
-  height: '100%',
-  aspectRatio: '1/1',
   bc: '$surfaceHover',
+  display: 'grid',
+  placeItems: 'center',
 })

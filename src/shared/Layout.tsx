@@ -7,24 +7,25 @@ const Grid = styled('div', {
   display: 'grid',
   gridTemplateColumns: '320px [sidebar] 1fr [main]',
   gap: '$4',
-  height: '100vh',
-  width: '100vw',
-  overflow: 'hidden',
+  minHeight: '100vh',
+  height: '100%',
+  width: '100%',
   transition: '0.2s easy-in-out',
-  p: '$4',
   maxWidth: 1600,
   mx: 'auto',
 })
 
-const Main = styled('main', {})
+const Main = styled('main', {
+  p: '$4',
+})
 
 const Layout = ({ children }) => {
   return (
     <Grid>
-      <Box space="$4" as={Flex} minHeight="100%">
+      <Flex space="$4" css={{ minHeight: '100%', p: '$4' }}>
         {children[0]}
         <UserPanel css={{ mt: 'auto' }} />
-      </Box>
+      </Flex>
       <Main>{children[1]}</Main>
     </Grid>
   )

@@ -7,7 +7,7 @@ type Props = GetAssignmentDetailsQuery['assignment']['sections'][number]
 const Section: React.FC<Props> & { fragment: DocumentNode } = ({ id, title, description }) => {
   // const onBlur = useUpdate({ id, title, description })
   return (
-    <Flex as="form">
+    <Flex as="form" css={{ px: '$2' }}>
       <TextField name="title" defaultValue={title} size="lg" placeholder="Section title" variant="transparent" />
       <TextField
         name="description"

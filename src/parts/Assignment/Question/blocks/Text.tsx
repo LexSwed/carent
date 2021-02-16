@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { Box, Grid, Flex, TextField, VisuallyHidden, Button, Icon } from '@fxtrot/ui'
+import { Grid, Flex, TextField, VisuallyHidden, Button, Icon } from '@fxtrot/ui'
 import { HiOutlineX } from 'react-icons/hi'
 
-export const TextBlock = () => {
-  const [hint, setHint] = React.useState('Enter correct answer')
+type Props = { answers: { hint: string; id: string }[] }
+
+export const TextBlock: React.FC<Props> = ({ answers }) => {
+  const [hint, setHint] = React.useState(answers?.[0]?.hint || 'Enter correct answer')
   return (
     <Grid columns="1fr 1fr" gap="$4">
       <Flex space="$1" cross="start">

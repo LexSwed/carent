@@ -10,6 +10,8 @@ const Panel = styled(Card, {
   gridTemplateColumns: 'auto 1fr auto',
   gap: '$4',
   alignItems: 'center',
+  position: 'sticky',
+  bottom: '$4',
 })
 
 const Avatar = styled(Flex, {
