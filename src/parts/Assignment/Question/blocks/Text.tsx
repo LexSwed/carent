@@ -31,8 +31,9 @@ export const TextAnswers = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault()
-          setCorrectAnswers([...answers, (e.currentTarget as any).elements.answer.value])
-          ;(e.currentTarget as any).elements.answer.value = ''
+          const answer = e.currentTarget.elements.namedItem('answer') as HTMLInputElement
+          setCorrectAnswers([...answers, answer.value])
+          answer.value = ''
         }}
       >
         <VisuallyHidden {...({ as: 'button' } as any)} type="submit" />

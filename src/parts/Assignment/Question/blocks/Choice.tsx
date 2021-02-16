@@ -7,9 +7,9 @@ export const ChoiceBlock = () => {
     <Flex space="$2" cross="stretch">
       <Choice label="sadsa" />
       <Choice label="dasdasdas sdsa" />
-      <Button main="center" variant="outline" size="lg" space="$4">
+      <Button main="center" variant="flat" css={{ color: '$primaryStill' }} size="lg" space="$4">
         <Icon as={HiOutlinePlus} />
-        Add new option
+        Another option
       </Button>
     </Flex>
   )
