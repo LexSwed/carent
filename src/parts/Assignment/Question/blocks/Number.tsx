@@ -4,7 +4,11 @@ import { HiOutlineX } from 'react-icons/hi'
 
 export { TextBlock as NumberBlock } from './Text'
 
-export const NumberAnswers = () => {
+interface Props {
+  correctAnswers: QuestionBlockFragment['correctAnswers']
+}
+
+export const NumberAnswers: React.FC<Props> = () => {
   const [answers, setCorrectAnswers] = useState<number[]>([])
   return (
     <Flex space="$4">

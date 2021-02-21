@@ -20,7 +20,7 @@ const getAssignmentDetails = gql`
       sections {
         ...AssignmentSectionFragment
         questions {
-          ...QuestionBlock
+          ...QuestionBlockFragment
         }
       }
     }

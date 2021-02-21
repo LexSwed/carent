@@ -40,12 +40,14 @@ const Question = ({ id, type, answers, correctAnswers, ...props }: Props) => {
               <Box height={200} br="$sm" width="100%" bc="$surfaceHover">
                 Content block
               </Box>
-              <QuestionBlock answers={answers} correctAnswers={correctAnswers} />
+              <QuestionBlock answers={answers} />
             </Flex>
           </Flex>
         </Box>
         <QuestionSettings
           type={type}
+          answers={answers}
+          correctAnswers={correctAnswers}
           onChange={(type) => {
             client.cache.writeFragment({
               id: client.cache.identify({
@@ -98,30 +100,35 @@ type QuestionUpdate =
     }
 
 Question.fragment = gql`
-  fragment QuestionBlock on AssignmentQuestion {
+  fragment QuestionBlockFragment on AssignmentQuestion {
     id
     content
     type
     correctAnswers {
       id
+      answer {
+        ...QuestionBlockAnswerFragment
+      }
     }
     answers {
-      ... on AssignmentAnswer {
+      ...QuestionBlockAnswerFragment
+    }
+  }
+
+  fragment QuestionBlockAnswerFragment on AssignmentAnswer {
+    id
+    ... on TextQuestion {
+      label
+      hint
+    }
+    ... on NumberQuestion {
+      label
+      hint
+    }
+    ... on Choice {
+      options {
         id
-      }
-      ... on TextQuestion {
-        label
-        hint
-      }
-      ... on NumberQuestion {
-        label
-        hint
-      }
-      ... on Choice {
-        options {
-          id
-          content
-        }
+        content
       }
     }
   }

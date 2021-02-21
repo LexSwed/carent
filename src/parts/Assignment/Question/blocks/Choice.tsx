@@ -20,10 +20,7 @@ const Choice: React.FC<React.ComponentProps<typeof Checkbox>> = ({ label }) => {
     <ChoiceBox>
       <Grid gap="$4" columns="1fr 100px">
         <Box p="$3" flex={2}>
-          <Flex space="$2">
-            <Checkbox label="Correct answer" />
-            <TextField variant="transparent" defaultValue={label} />
-          </Flex>
+          <TextField variant="transparent" defaultValue={label} />
         </Box>
         <ImageBox>
           <Icon as={HiOutlinePhotograph} size="2xl" />
@@ -31,6 +28,10 @@ const Choice: React.FC<React.ComponentProps<typeof Checkbox>> = ({ label }) => {
       </Grid>
     </ChoiceBox>
   )
+}
+
+export const ChoiceAnswers: React.FC<{ correctAnswers: QuestionBlockFragment['correctAnswers'] }> = () => {
+  return null
 }
 
 const ChoiceBox = styled('div', {

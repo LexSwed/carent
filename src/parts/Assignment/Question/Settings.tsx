@@ -4,15 +4,28 @@ import { AssignmentQuestionType } from '@prisma/client'
 import { HiOutlineDocumentDuplicate, HiOutlineTrash, HiOutlineClipboardCheck } from 'react-icons/hi'
 import { TextAnswers, NumberAnswers, ChoiceAnswers } from './blocks'
 
-const correctAnswersSetup = {
-  [AssignmentQuestionType.Text]: TextAnswers,
-  [AssignmentQuestionType.Number]: NumberAnswers,
+interface Props {
+  type: AssignmentQuestionType
+  answers: QuestionBlockFragment['answers']
+  correctAnswers: QuestionBlockFragment['correctAnswers']
+  onChange: (v: AssignmentQuestionType) => void
 }
 
-const QuestionSettings: React.FC<{
-  type: AssignmentQuestionType
-  onChange: (v: AssignmentQuestionType) => void
-}> = ({ type, onChange }) => {
+const correctAnswersSetup: Record<
+  AssignmentQuestionType,
+  React.ElementType<{
+    correctAnswers: QuestionBlockFragment['correctAnswers']
+    answers: QuestionBlockFragment['answers']
+  }>
+> = {
+  [AssignmentQuestionType.Text]: TextAnswers,
+  [AssignmentQuestionType.Number]: NumberAnswers,
+  [AssignmentQuestionType.Choice]: ChoiceAnswers,
+  [AssignmentQuestionType.Image]: () => null,
+  [AssignmentQuestionType.Document]: () => null,
+}
+
+const QuestionSettings: React.FC<Props> = ({ type, onChange, answers, correctAnswers }) => {
   const CorrectAnswersSetup = correctAnswersSetup[type]
 
   return (
@@ -32,7 +45,7 @@ const QuestionSettings: React.FC<{
               </Popover.Trigger>
               <Popover.Content placement="bottom-end">
                 <Box width={240}>
-                  <CorrectAnswersSetup />
+                  <CorrectAnswersSetup correctAnswers={correctAnswers} answers={answers} />
                 </Box>
               </Popover.Content>
             </Popover>

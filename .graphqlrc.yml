@@ -6,6 +6,8 @@ generates:
       - 'src/**/!(*.d).{ts,tsx}'
     config:
       noExport: true
+      preResolveTypes: true
+      dedupeOperationSuffix: true
     plugins:
       - typescript
       - typescript-operations

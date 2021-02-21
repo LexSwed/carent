@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Grid, Flex, TextField, VisuallyHidden, Button, Icon } from '@fxtrot/ui'
 import { HiOutlineX } from 'react-icons/hi'
 
@@ -23,16 +23,17 @@ export const TextBlock: React.FC<Props> = ({ answers }) => {
     </Grid>
   )
 }
+interface AnswersProps {
+  correctAnswers: QuestionBlockFragment['correctAnswers']
+}
 
-export const TextAnswers = () => {
-  const [answers, setCorrectAnswers] = useState<string[]>([])
+export const TextAnswers: React.FC<AnswersProps> = ({ correctAnswers }) => {
   return (
     <Flex space="$4">
       <form
         onSubmit={(e) => {
           e.preventDefault()
           const answer = e.currentTarget.elements.namedItem('answer') as HTMLInputElement
-          setCorrectAnswers([...answers, answer.value])
           answer.value = ''
         }}
       >
@@ -40,29 +41,29 @@ export const TextAnswers = () => {
         <TextField label="Add correct answers" hint="press Enter ↵ to add a new answer" name="answer" />
       </form>
       <Flex space="$2">
-        {answers.map((label, i) => (
-          <Flex flow="row" cross="center" space="$2">
-            <TextField
-              value={label}
-              onChange={(v) =>
-                setCorrectAnswers((answers) => {
-                  answers[i] = v
-                  return [...answers]
-                })
-              }
-              type="text"
-              validity="valid"
-              size="sm"
-            />
-            <Button
-              variant="flat"
-              size="sm"
-              onClick={() => setCorrectAnswers([...answers.slice(0, i), ...answers.slice(i + 1)])}
-            >
-              <Icon as={HiOutlineX} />
-            </Button>
-          </Flex>
-        ))}
+        {correctAnswers.map((correct, i) => {
+          const answer = correct.answer as QuestionBlockAnswerFragment_TextQuestion_
+          return (
+            <Flex flow="row" key={correct.id} cross="center" space="$2">
+              <TextField
+                value={answer.label}
+                onChange={(v) => console.log({ newValue: v })}
+                type="text"
+                validity="valid"
+                size="sm"
+              />
+              <Button
+                variant="flat"
+                size="sm"
+                onClick={() => {
+                  console.log('delete', { label: answer.label, i })
+                }}
+              >
+                <Icon as={HiOutlineX} />
+              </Button>
+            </Flex>
+          )
+        })}
       </Flex>
     </Flex>
   )
