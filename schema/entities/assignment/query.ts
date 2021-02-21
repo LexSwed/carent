@@ -59,7 +59,6 @@ export const getAssignmentById = queryField((t) => {
               questions: {
                 include: {
                   answers: true,
-                  correctAnswers: true,
                 },
               },
             },

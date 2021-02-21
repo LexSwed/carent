@@ -18,16 +18,13 @@ type Assignment implements Node {
   variants(after: AssignmentVariantWhereUniqueInput, before: AssignmentVariantWhereUniqueInput, first: Int, last: Int): [AssignmentVariant!]!
 }
 
-interface AssignmentAnswer {
-  id: ID
-}
-
-type AssignmentAnswerOption implements Node {
-  content: JSON!
+interface AssignmentAnswer implements Node {
+  """Resource ID"""
   id: String!
+  markedCorrect: Boolean!
 }
 
-input AssignmentAnswerOptionWhereUniqueInput {
+input AssignmentAnswerWhereUniqueInput {
   id: String
 }
 
@@ -52,21 +49,13 @@ type AssignmentEdge {
 }
 
 type AssignmentQuestion implements Node {
-  answers(after: AssignmentAnswerOptionWhereUniqueInput, before: AssignmentAnswerOptionWhereUniqueInput, first: Int, last: Int): [AssignmentAnswer!]!
+  answers(after: AssignmentAnswerWhereUniqueInput, before: AssignmentAnswerWhereUniqueInput, first: Int, last: Int): [AssignmentAnswer!]!
   content: JSON
-  correctAnswers(after: AssignmentQuestionCorrectAnswerWhereUniqueInput, before: AssignmentQuestionCorrectAnswerWhereUniqueInput, first: Int, last: Int): [AssignmentQuestionCorrectAnswer!]!
+
+  """Resource ID"""
   id: String!
   score: Int!
   type: AssignmentQuestionType!
-}
-
-type AssignmentQuestionCorrectAnswer implements Node {
-  answer: AssignmentAnswer!
-  id: String!
-}
-
-input AssignmentQuestionCorrectAnswerWhereUniqueInput {
-  id: String
 }
 
 enum AssignmentQuestionType {
@@ -83,6 +72,8 @@ input AssignmentQuestionWhereUniqueInput {
 
 type AssignmentSection implements Node {
   description: String
+
+  """Resource ID"""
   id: String!
   questions(after: AssignmentQuestionWhereUniqueInput, before: AssignmentQuestionWhereUniqueInput, first: Int, last: Int): [AssignmentQuestion!]!
   title: String!
@@ -116,9 +107,12 @@ input AssignmentVariantWhereUniqueInput {
   id: String
 }
 
-type Choice implements AssignmentAnswer {
-  id: ID
-  options: [AssignmentAnswerOption]!
+type ChoiceQuestionAnswer implements AssignmentAnswer & Node {
+  content: JSON!
+
+  """Resource ID"""
+  id: String!
+  markedCorrect: Boolean!
 }
 
 type Class implements Node {
@@ -281,10 +275,11 @@ interface Node {
   id: String!
 }
 
-type NumberQuestion implements AssignmentAnswer {
-  hint: String
-  id: ID
-  label: String
+type NumberQuestionAnswer implements AssignmentAnswer & Node {
+  """Resource ID"""
+  id: String!
+  markedCorrect: Boolean!
+  number: Float
 }
 
 """
@@ -392,10 +387,11 @@ type StudentGroupEdge {
   node: StudentGroup
 }
 
-type TextQuestion implements AssignmentAnswer {
-  hint: String
-  id: ID
-  label: String
+type TextQuestionAnswer implements AssignmentAnswer & Node {
+  """Resource ID"""
+  id: String!
+  markedCorrect: Boolean!
+  text: String
 }
 
 type Topic implements Node {

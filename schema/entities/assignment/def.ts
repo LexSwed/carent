@@ -1,4 +1,7 @@
-import type { AssignmentQuestion as PrismaAssignmentQuestion } from '@prisma/client'
+import type {
+  AssignmentQuestion as PrismaAssignmentQuestion,
+  AssignmentAnswer as PrismaAssignmentAnswer,
+} from '@prisma/client'
 import { interfaceType, objectType } from 'nexus'
 
 export const topicAssignment = objectType({
@@ -47,11 +50,10 @@ export const assignmentSection = objectType({
   name: 'AssignmentSection',
   definition(t) {
     t.implements('Node')
-    t.model.id()
     t.model.title()
     t.model.description()
     t.model.questions({
-      type: 'AssignmentQuestion' as any,
+      type: 'AssignmentQuestion',
     })
     // t.nonNull.list.field('questions', {
     //   type: '',
@@ -67,28 +69,13 @@ export const assignmentQuestion = objectType({
   name: 'AssignmentQuestion',
   definition(t) {
     t.implements('Node')
-    t.model.id()
     t.model.type()
     t.model.score()
     t.field('content', {
       type: 'JSON',
     })
-    t.model.correctAnswers({
-      type: 'AssignmentQuestionCorrectAnswer' as any,
-    })
     t.model.answers({
       type: 'AssignmentAnswer' as any,
-    })
-  },
-})
-
-export const questionCorrectAnswer = objectType({
-  name: 'AssignmentQuestionCorrectAnswer',
-  definition(t) {
-    t.implements('Node')
-    t.model.id()
-    t.nonNull.field('answer', {
-      type: 'AssignmentAnswer',
     })
   },
 })
@@ -108,45 +95,37 @@ export const assignmentAnswer = interfaceType({
     }
   },
   definition(t) {
-    t.id('id')
+    t.implements('Node')
+    t.model.markedCorrect()
   },
 })
 
 export const textQuestion = objectType({
-  name: 'TextQuestion',
+  name: 'TextQuestionAnswer',
   definition(t) {
     t.implements('AssignmentAnswer')
-    t.string('label')
-    t.string('hint')
+    t.string('text', {
+      resolve: (parent: PrismaAssignmentAnswer) => parent.textContent,
+    })
   },
 })
 
 export const numberQuestion = objectType({
-  name: 'NumberQuestion',
+  name: 'NumberQuestionAnswer',
   definition(t) {
     t.implements('AssignmentAnswer')
-    t.string('label')
-    t.string('hint')
-  },
-})
-
-export const assignmentAnswerOption = objectType({
-  name: 'AssignmentAnswerOption',
-  definition(t) {
-    t.implements('Node')
-    t.model.id()
-    t.nonNull.field('content', {
-      type: 'JSON',
+    t.float('number', {
+      resolve: (parent: PrismaAssignmentAnswer) => parseFloat(parent.textContent),
     })
   },
 })
 
 export const choiceQuestion = objectType({
-  name: 'Choice',
+  name: 'ChoiceQuestionAnswer',
   definition(t) {
     t.implements('AssignmentAnswer')
-    t.nonNull.list.field('options', {
-      type: 'AssignmentAnswerOption',
+    t.nonNull.field('content', {
+      type: 'JSON',
     })
   },
 })

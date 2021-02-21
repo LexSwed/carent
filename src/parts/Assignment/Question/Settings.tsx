@@ -7,14 +7,12 @@ import { TextAnswers, NumberAnswers, ChoiceAnswers } from './blocks'
 interface Props {
   type: AssignmentQuestionType
   answers: QuestionBlockFragment['answers']
-  correctAnswers: QuestionBlockFragment['correctAnswers']
   onChange: (v: AssignmentQuestionType) => void
 }
 
 const correctAnswersSetup: Record<
   AssignmentQuestionType,
   React.ElementType<{
-    correctAnswers: QuestionBlockFragment['correctAnswers']
     answers: QuestionBlockFragment['answers']
   }>
 > = {
@@ -25,7 +23,7 @@ const correctAnswersSetup: Record<
   [AssignmentQuestionType.Document]: () => null,
 }
 
-const QuestionSettings: React.FC<Props> = ({ type, onChange, answers, correctAnswers }) => {
+const QuestionSettings: React.FC<Props> = ({ type, onChange, answers }) => {
   const CorrectAnswersSetup = correctAnswersSetup[type]
 
   return (
@@ -45,7 +43,7 @@ const QuestionSettings: React.FC<Props> = ({ type, onChange, answers, correctAns
               </Popover.Trigger>
               <Popover.Content placement="bottom-end">
                 <Box width={240}>
-                  <CorrectAnswersSetup correctAnswers={correctAnswers} answers={answers} />
+                  <CorrectAnswersSetup answers={answers} />
                 </Box>
               </Popover.Content>
             </Popover>

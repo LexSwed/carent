@@ -24,10 +24,10 @@ export const TextBlock: React.FC<Props> = ({ answers }) => {
   )
 }
 interface AnswersProps {
-  correctAnswers: QuestionBlockFragment['correctAnswers']
+  answers: QuestionBlockFragment['answers']
 }
 
-export const TextAnswers: React.FC<AnswersProps> = ({ correctAnswers }) => {
+export const TextAnswers: React.FC<AnswersProps> = ({ answers }) => {
   return (
     <Flex space="$4">
       <form
@@ -41,12 +41,11 @@ export const TextAnswers: React.FC<AnswersProps> = ({ correctAnswers }) => {
         <TextField label="Add correct answers" hint="press Enter ↵ to add a new answer" name="answer" />
       </form>
       <Flex space="$2">
-        {correctAnswers.map((correct, i) => {
-          const answer = correct.answer as QuestionBlockAnswerFragment_TextQuestion_
+        {answers.map((answer: QuestionBlockAnswerFragment_TextQuestionAnswer_, i) => {
           return (
-            <Flex flow="row" key={correct.id} cross="center" space="$2">
+            <Flex flow="row" key={answer.id} cross="center" space="$2">
               <TextField
-                value={answer.label}
+                value={answer.text}
                 onChange={(v) => console.log({ newValue: v })}
                 type="text"
                 validity="valid"
@@ -56,7 +55,7 @@ export const TextAnswers: React.FC<AnswersProps> = ({ correctAnswers }) => {
                 variant="flat"
                 size="sm"
                 onClick={() => {
-                  console.log('delete', { label: answer.label, i })
+                  console.log('delete', { text: answer.text, i })
                 }}
               >
                 <Icon as={HiOutlineX} />

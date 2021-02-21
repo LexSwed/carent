@@ -18,7 +18,7 @@ const content = {
 
 type Props = GetAssignmentDetailsQuery['assignment']['sections'][number]['questions'][number]
 
-const Question = ({ id, type, answers, correctAnswers, ...props }: Props) => {
+const Question = ({ id, type, answers, ...props }: Props) => {
   const QuestionBlock = content[type]
   const client = useApolloClient()
 
@@ -47,7 +47,6 @@ const Question = ({ id, type, answers, correctAnswers, ...props }: Props) => {
         <QuestionSettings
           type={type}
           answers={answers}
-          correctAnswers={correctAnswers}
           onChange={(type) => {
             client.cache.writeFragment({
               id: client.cache.identify({
@@ -104,12 +103,6 @@ Question.fragment = gql`
     id
     content
     type
-    correctAnswers {
-      id
-      answer {
-        ...QuestionBlockAnswerFragment
-      }
-    }
     answers {
       ...QuestionBlockAnswerFragment
     }
@@ -117,19 +110,15 @@ Question.fragment = gql`
 
   fragment QuestionBlockAnswerFragment on AssignmentAnswer {
     id
-    ... on TextQuestion {
-      label
-      hint
+    markedCorrect
+    ... on TextQuestionAnswer {
+      text
     }
-    ... on NumberQuestion {
-      label
-      hint
+    ... on NumberQuestionAnswer {
+      number
     }
-    ... on Choice {
-      options {
-        id
-        content
-      }
+    ... on ChoiceQuestionAnswer {
+      content
     }
   }
 `

@@ -7,20 +7,21 @@
       const result: PossibleTypesResultData = {
   "possibleTypes": {
     "AssignmentAnswer": [
-      "Choice",
-      "NumberQuestion",
-      "TextQuestion"
+      "ChoiceQuestionAnswer",
+      "NumberQuestionAnswer",
+      "TextQuestionAnswer"
     ],
     "Node": [
       "Assignment",
-      "AssignmentAnswerOption",
       "AssignmentQuestion",
-      "AssignmentQuestionCorrectAnswer",
       "AssignmentSection",
       "AssignmentState",
       "AssignmentVariant",
+      "ChoiceQuestionAnswer",
       "Class",
+      "NumberQuestionAnswer",
       "StudentGroup",
+      "TextQuestionAnswer",
       "Topic",
       "TopicAttachment",
       "User"

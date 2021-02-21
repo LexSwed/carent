@@ -30,7 +30,7 @@ const Choice: React.FC<React.ComponentProps<typeof Checkbox>> = ({ label }) => {
   )
 }
 
-export const ChoiceAnswers: React.FC<{ correctAnswers: QuestionBlockFragment['correctAnswers'] }> = () => {
+export const ChoiceAnswers: React.FC<{ answers: QuestionBlockFragment['answers'] }> = () => {
   return null
 }
 
