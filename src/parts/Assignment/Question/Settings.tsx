@@ -35,19 +35,17 @@ const QuestionSettings: React.FC<Props> = ({ type, onChange, answers }) => {
               <Picker.Item key={label} value={value} label={label} />
             ))}
           </Picker>
-          {CorrectAnswersSetup && (
-            <Popover>
-              <Popover.Trigger main="spread">
-                Add correct answers
-                <Icon as={HiOutlineClipboardCheck} />
-              </Popover.Trigger>
-              <Popover.Content placement="bottom-end">
-                <Box width={240}>
-                  <CorrectAnswersSetup answers={answers} />
-                </Box>
-              </Popover.Content>
-            </Popover>
-          )}
+          <Popover>
+            <Popover.Trigger main="spread">
+              Add correct answers
+              <Icon as={HiOutlineClipboardCheck} />
+            </Popover.Trigger>
+            <Popover.Content placement="bottom-end">
+              <Box width={240}>
+                <CorrectAnswersSetup answers={answers} />
+              </Box>
+            </Popover.Content>
+          </Popover>
         </Flex>
         <Flex space="$2">
           <Button main="spread">

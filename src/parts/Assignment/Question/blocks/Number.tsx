@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Flex, VisuallyHidden, TextField, Button, Icon } from '@fxtrot/ui'
 import { HiOutlineX } from 'react-icons/hi'
 
@@ -19,7 +19,7 @@ export const NumberAnswers: React.FC<Props> = ({ answers }) => {
         }}
       >
         <VisuallyHidden {...({ as: 'button' } as any)} type="submit" />
-        <TextField label="Add correct answers" hint="press Enter ↵ to add a new answer" name="answer" />
+        <TextField label="Add correct answers" hint="press Enter ↵ to add a new answer" name="answer" type="number" />
       </form>
       <Flex space="$2">
         {answers.map((answer: QuestionBlockAnswerFragment_NumberQuestionAnswer_, i) => {

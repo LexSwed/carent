@@ -172,7 +172,7 @@ export const updateAssignmentSection = mutationField((t) => {
 
       return !!item
     },
-    resolve: (_, { id, section }, { prisma, session }) => {
+    resolve: (_, { id, section }, { prisma }) => {
       return prisma.assignmentSection.update({
         where: {
           id,
@@ -200,13 +200,12 @@ export const addQuestion = mutationField((t) => {
           description: 'ID of the variant a question belongs to',
         })
       ),
-      type: nonNull('AssignmentQuestionType'),
     },
     authorize: (_, { assignmentId }, ctx) => canUpdateAssignment(assignmentId, ctx),
-    resolve: async (_, { assignmentId, variantId, type }, { prisma }) => {
+    resolve: async (_, { assignmentId, variantId }, { prisma }) => {
       try {
         const lastQuestion = await prisma.assignmentQuestion.findFirst({
-          where: { assignmentSection: { assignmentId } },
+          where: { id: assignmentId },
           orderBy: { orderKey: 'asc' },
           select: { orderKey: true, assignmentSectionId: true },
         })
@@ -214,7 +213,7 @@ export const addQuestion = mutationField((t) => {
         if (lastQuestion) {
           return prisma.assignmentQuestion.create({
             data: {
-              type,
+              type: 'Text',
               content: {},
               orderKey: LexoRank.parse(lastQuestion.orderKey).genPrev().toString(),
               variantId,
@@ -222,11 +221,6 @@ export const addQuestion = mutationField((t) => {
             },
             include: {
               answers: true,
-              correctAnswers: {
-                include: {
-                  answer: true,
-                },
-              },
             },
           })
         }
@@ -246,7 +240,7 @@ export const addQuestion = mutationField((t) => {
 
         return prisma.assignmentQuestion.create({
           data: {
-            type,
+            type: 'Text',
             orderKey,
             content: {},
             variantId,
@@ -254,11 +248,6 @@ export const addQuestion = mutationField((t) => {
           },
           include: {
             answers: true,
-            correctAnswers: {
-              include: {
-                answer: true,
-              },
-            },
           },
         })
       } catch (error) {
@@ -277,21 +266,29 @@ export const updateQuestion = mutationField((t) => {
           description: 'ID of the assignment a question belongs to',
         })
       ),
-      questionSettings: nonNull(
+      questionId: nonNull(
+        idArg({
+          description: 'ID of the question to update',
+        })
+      ),
+      input: nonNull(
         inputObjectType({
           name: 'UpdateAssignmentQuestionInput',
           definition(t) {
             t.field('type', {
               type: 'AssignmentQuestionType',
             })
+            t.int('score')
           },
         })
       ),
     },
     authorize: (_, { assignmentId }, ctx) => canUpdateAssignment(assignmentId, ctx),
-    resolve: () => {},
+    resolve: (_, { questionId, input }) => {},
   })
+})
 
+export const duplicateQuestion = mutationField((t) => {
   t.field('duplicateAssignmentQuestion', {
     type: 'AssignmentQuestion',
     args: {
@@ -307,41 +304,7 @@ export const updateQuestion = mutationField((t) => {
       ),
     },
     authorize: (_, { assignmentId }, ctx) => canUpdateAssignment(assignmentId, ctx),
-    resolve: (_root, {}, {}) => {
-      // const { type, content, variantId, assignmentSectionId, answers } = prisma.assignmentQuestion.findUnique({
-      //   where: {
-      //     id: questionId,
-      //   },
-      //   select: {
-      //     type: true,
-      //     content: true,
-      //     variantId: true,
-      //     assignmentSectionId: true,
-      //     answers: {
-      //       select: {
-      //         value: true,
-      //         hint: true,
-      //         imageUrl: true,
-      //         content: true,
-      //       },
-      //     },
-      //   },
-      // })
-      // return prisma.assignmentQuestion.create({
-      //   data: {
-      //     type,
-      //     content,
-      //     variantId,
-      //     assignmentSectionId,
-      //     // answers: {
-      //     //   create: answers
-      //     // },
-      //   },
-      //   include: {
-      //     answers: true,
-      //   },
-      // })
-    },
+    resolve: (_root, {}, {}) => {},
   })
 })
 
@@ -373,11 +336,6 @@ export const deleteQuestion = mutationField((t) => {
             },
           },
           answers: true,
-          correctAnswers: {
-            include: {
-              answer: true,
-            },
-          },
         },
       })
     },

@@ -1,28 +1,20 @@
 import React from 'react'
-import { Grid, Flex, TextField, VisuallyHidden, Button, Icon } from '@fxtrot/ui'
+import { Grid, Flex, TextField, VisuallyHidden, Button, Text, Icon } from '@fxtrot/ui'
 import { HiOutlineX } from 'react-icons/hi'
 
 type Props = { answers: { hint: string; id: string }[] }
 
 export const TextBlock: React.FC<Props> = ({ answers }) => {
-  const [hint, setHint] = React.useState(answers?.[0]?.hint || 'Enter correct answer')
   return (
-    <Grid columns="1fr 1fr" gap="$4">
-      <Flex space="$1" cross="start">
-        <TextField
-          value={hint}
-          onChange={setHint}
-          hint="You can edit text inside the input"
-          css={{
-            '& input': {
-              color: '$textSubtle',
-            },
-          }}
-        />
-      </Flex>
-    </Grid>
+    <Flex space="$8" flow="row" wrap="wrap" cross="center">
+      <TextField value="Your answer..." onChange={() => {}} css={{ width: '40%' }} />
+      <Text tone="light" size="xs" css={{ flex: 2 }}>
+        Students will see this input field
+      </Text>
+    </Flex>
   )
 }
+
 interface AnswersProps {
   answers: QuestionBlockFragment['answers']
 }
@@ -38,7 +30,7 @@ export const TextAnswers: React.FC<AnswersProps> = ({ answers }) => {
         }}
       >
         <VisuallyHidden {...({ as: 'button' } as any)} type="submit" />
-        <TextField label="Add correct answers" hint="press Enter ↵ to add a new answer" name="answer" />
+        <TextField name="answer" label="Add correct answers" hint="press Enter ↵ to add a new answer" type="text" />
       </form>
       <Flex space="$2">
         {answers.map((answer: QuestionBlockAnswerFragment_TextQuestionAnswer_, i) => {

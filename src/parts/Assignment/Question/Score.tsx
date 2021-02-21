@@ -10,10 +10,10 @@ const Score = () => {
         label="points"
         flow="row-reverse"
         size="sm"
-        variant="transparent"
+        variant="underlined"
         value={score}
         onChange={setScore}
-        css={{ 'width': 80, '& input': { textAlign: 'right' } }}
+        css={{ 'width': 100, '& input': { textAlign: 'right' } }}
       />
     </Flex>
   )
