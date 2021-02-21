@@ -1,10 +1,12 @@
 import React from 'react'
-import { styled, Box, Button, Flex, Icon, Picker, ThemeProvider, Popover } from '@fxtrot/ui'
+import { styled, Box, Button, Flex, Icon, Picker, Popover } from '@fxtrot/ui'
 import { AssignmentQuestionType } from '@prisma/client'
-import { HiOutlineDocumentDuplicate, HiOutlineTrash, HiOutlineClipboardCheck } from 'react-icons/hi'
+import { HiOutlineDocumentDuplicate, HiOutlineClipboardCheck } from 'react-icons/hi'
 import { TextAnswers, NumberAnswers, ChoiceAnswers } from './blocks'
+import { DeleteQuestionBlock } from './DeleteQuestionBlock'
 
 interface Props {
+  id: QuestionBlockFragment['id']
   type: AssignmentQuestionType
   answers: QuestionBlockFragment['answers']
   onChange: (v: AssignmentQuestionType) => void
@@ -23,7 +25,7 @@ const correctAnswersSetup: Record<
   [AssignmentQuestionType.Document]: () => null,
 }
 
-const QuestionSettings: React.FC<Props> = ({ type, onChange, answers }) => {
+const QuestionSettings: React.FC<Props> = ({ id, type, onChange, answers }) => {
   const CorrectAnswersSetup = correctAnswersSetup[type]
 
   return (
@@ -52,12 +54,7 @@ const QuestionSettings: React.FC<Props> = ({ type, onChange, answers }) => {
             Duplicate
             <Icon as={HiOutlineDocumentDuplicate} />
           </Button>
-          <ThemeProvider theme="red">
-            <Button title="Delete question" main="spread" variant="primary">
-              Delete
-              <Icon as={HiOutlineTrash} />
-            </Button>
-          </ThemeProvider>
+          <DeleteQuestionBlock questionId={id} />
         </Flex>
       </Flex>
     </SubCard>

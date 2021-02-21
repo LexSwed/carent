@@ -310,7 +310,12 @@ export const duplicateQuestion = mutationField((t) => {
 
 export const deleteQuestion = mutationField((t) => {
   t.field('deleteAssignmentQuestion', {
-    type: 'AssignmentQuestion',
+    type: objectType({
+      name: 'DeleteAssignmentQuestionResult',
+      definition(t) {
+        t.nonNull.id('id')
+      },
+    }),
     args: {
       assignmentId: nonNull(
         idArg({
@@ -324,20 +329,17 @@ export const deleteQuestion = mutationField((t) => {
       ),
     },
     authorize: (_, { assignmentId }, ctx) => canUpdateAssignment(assignmentId, ctx),
-    resolve: (_root, { questionId }, { prisma }) => {
-      return prisma.assignmentQuestion.delete({
+    resolve: async (_root, { questionId }, { prisma }) => {
+      const res = await prisma.assignmentQuestion.delete({
         where: {
           id: questionId,
         },
-        include: {
-          assignmentSection: {
-            include: {
-              questions: true,
-            },
-          },
-          answers: true,
+        select: {
+          id: true,
         },
       })
+
+      return res?.id
     },
   })
 })

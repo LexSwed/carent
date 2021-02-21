@@ -10,6 +10,6 @@ export const Node = interfaceType({
   name: 'Node',
   resolveType: () => null,
   definition(t) {
-    t.nonNull.string('id', { description: 'Resource ID' })
+    t.nonNull.id('id', { description: 'Resource ID' })
   },
 })

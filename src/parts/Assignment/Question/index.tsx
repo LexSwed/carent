@@ -16,7 +16,7 @@ const content = {
   [AssignmentQuestionType.Choice]: ChoiceBlock,
 }
 
-type Props = GetAssignmentDetailsQuery['assignment']['sections'][number]['questions'][number]
+interface Props extends QuestionBlockFragment {}
 
 const Question = ({ id, type, answers }: Props) => {
   const QuestionBlock = content[type]
@@ -43,7 +43,7 @@ const Question = ({ id, type, answers }: Props) => {
             </Flex>
           </Flex>
         </Box>
-        <QuestionSettings type={type} answers={answers} onChange={(type) => {}} />
+        <QuestionSettings id={id} type={type} answers={answers} onChange={(type) => {}} />
       </Grid>
     </Grid>
   )

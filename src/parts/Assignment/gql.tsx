@@ -5,7 +5,7 @@ import Question from './Question'
 import SectionHeader from './SectionHeader'
 
 const getAssignmentDetails = gql`
-  query getAssignmentDetails($id: ID!) {
+  query GetAssignmentDetails($id: ID!) {
     assignment(id: $id) {
       id
       title
