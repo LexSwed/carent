@@ -186,7 +186,6 @@ type Mutation {
   addAssignmentQuestion(
     """ID of the assignment a question belongs to"""
     assignmentId: ID!
-    type: AssignmentQuestionType!
 
     """ID of the variant a question belongs to"""
     variantId: ID!
@@ -255,7 +254,10 @@ type Mutation {
   updateAssignmentQuestion(
     """ID of the assignment a question belongs to"""
     assignmentId: ID!
-    questionSettings: UpdateAssignmentQuestionInput!
+    input: UpdateAssignmentQuestionInput!
+
+    """ID of the question to update"""
+    questionId: ID!
   ): AssignmentQuestion
   updateAssignmentSection(
     """ID of the section to update"""
@@ -482,6 +484,7 @@ enum TopicSortOrder {
 }
 
 input UpdateAssignmentQuestionInput {
+  score: Int
   type: AssignmentQuestionType
 }
 

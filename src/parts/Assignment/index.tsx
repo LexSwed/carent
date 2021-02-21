@@ -5,7 +5,7 @@ import Question from './Question'
 import { Card } from '../../shared/Card'
 import { useAssignmentDetails } from './gql'
 import AssignmentHeader from './AssignmentHeader'
-import Section from './Section'
+import SectionHeader from './SectionHeader'
 
 const AssignmentBuilder = () => {
   const { data, loading } = useAssignmentDetails()
@@ -26,7 +26,7 @@ const AssignmentBuilder = () => {
       {data?.assignment?.sections?.map((section) => {
         return (
           <Flex space="$2" key={section.id}>
-            <Section {...section} />
+            <SectionHeader {...section} />
             <Card>
               {section.questions.map((q) => (
                 <Question {...q} key={q.id} />

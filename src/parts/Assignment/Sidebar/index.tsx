@@ -13,7 +13,7 @@ const Sidebar = () => {
     <Card>
       <Flex space="$4">
         <Header />
-        <Flex flow="row" space="$12" main="spread">
+        <Flex flow="row" space="$6" main="spread">
           <Button variant="outline" size="sm" main="center">
             Start accepting responses
           </Button>

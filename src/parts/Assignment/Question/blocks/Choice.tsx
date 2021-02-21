@@ -1,31 +1,30 @@
-import { Box, Grid, Button, Checkbox, Flex, Icon, styled, TextField } from '@fxtrot/ui'
+import { Flex, Button, Checkbox, Icon, styled, TextField } from '@fxtrot/ui'
 import React from 'react'
-import { HiOutlinePhotograph, HiOutlinePlus } from 'react-icons/hi'
+import { HiOutlinePhotograph, HiOutlineTrash } from 'react-icons/hi'
 
 export const ChoiceBlock = () => {
   return (
     <Flex space="$2" cross="stretch">
-      <Choice label="sadsa" />
-      <Choice label="dasdasdas sdsa" />
-      <Button main="center" variant="flat" css={{ color: '$primaryStill' }} size="lg" space="$4">
-        <Icon as={HiOutlinePlus} />
-        Another option
-      </Button>
+      <Choice content="sadsa" />
+      <Choice content="dasdasdas sdsa" />
+      <ChoiceBox $transparent>
+        <TextField variant="transparent" placeholder="Another option..." />
+        <UploadOptionPhoto />
+      </ChoiceBox>
     </Flex>
   )
 }
 
-const Choice: React.FC<React.ComponentProps<typeof Checkbox>> = ({ label }) => {
+const Choice: React.FC<{ content: string }> = ({ content }) => {
   return (
     <ChoiceBox>
-      <Grid gap="$4" columns="1fr 100px">
-        <Box p="$3" flex={2}>
-          <TextField variant="transparent" defaultValue={label} />
-        </Box>
-        <ImageBox>
-          <Icon as={HiOutlinePhotograph} size="2xl" />
-        </ImageBox>
-      </Grid>
+      <TextField variant="transparent" defaultValue={content} />
+      <Flex flow="row" space="$1">
+        <UploadOptionPhoto />
+        <Button variant="flat" size="sm" css={{ color: '$danger' }}>
+          <Icon as={HiOutlineTrash} size="lg" />
+        </Button>
+      </Flex>
     </ChoiceBox>
   )
 }
@@ -38,11 +37,25 @@ const ChoiceBox = styled('div', {
   minWidth: 160,
   maxHeight: 200,
   shadow: '$xs',
+  p: '$3',
   br: '$lg',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '$6',
+
+  variants: {
+    $transparent: {
+      true: {
+        shadow: 'none',
+      },
+    },
+  },
 })
 
-const ImageBox = styled('div', {
-  bc: '$surfaceHover',
-  display: 'grid',
-  placeItems: 'center',
-})
+const UploadOptionPhoto = () => {
+  return (
+    <Button variant="flat" size="sm">
+      <Icon as={HiOutlinePhotograph} size="lg" />
+    </Button>
+  )
+}

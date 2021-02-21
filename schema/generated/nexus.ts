@@ -62,6 +62,7 @@ export interface NexusGenInputs {
     name: string; // String!
   }
   UpdateAssignmentQuestionInput: { // input type
+    score?: number | null; // Int
     type?: NexusGenEnums['AssignmentQuestionType'] | null; // AssignmentQuestionType
   }
 }
@@ -578,7 +579,6 @@ export interface NexusGenArgTypes {
   Mutation: {
     addAssignmentQuestion: { // args
       assignmentId: string; // ID!
-      type: NexusGenEnums['AssignmentQuestionType']; // AssignmentQuestionType!
       variantId: string; // ID!
     }
     addTopicAttachment: { // args
@@ -625,7 +625,8 @@ export interface NexusGenArgTypes {
     }
     updateAssignmentQuestion: { // args
       assignmentId: string; // ID!
-      questionSettings: NexusGenInputs['UpdateAssignmentQuestionInput']; // UpdateAssignmentQuestionInput!
+      input: NexusGenInputs['UpdateAssignmentQuestionInput']; // UpdateAssignmentQuestionInput!
+      questionId: string; // ID!
     }
     updateAssignmentSection: { // args
       id: string; // ID!

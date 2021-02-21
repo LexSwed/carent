@@ -4,7 +4,7 @@ import { Flex, TextField } from '@fxtrot/ui'
 
 type Props = GetAssignmentDetailsQuery['assignment']['sections'][number]
 
-const Section: React.FC<Props> & { fragment: DocumentNode } = ({ id, title, description }) => {
+const SectionHeader: React.FC<Props> & { fragment: DocumentNode } = ({ id, title, description }) => {
   // const onBlur = useUpdate({ id, title, description })
   return (
     <Flex as="form" css={{ px: '$2' }}>
@@ -20,7 +20,7 @@ const Section: React.FC<Props> & { fragment: DocumentNode } = ({ id, title, desc
   )
 }
 
-Section.fragment = gql`
+SectionHeader.fragment = gql`
   fragment AssignmentSectionFragment on AssignmentSection {
     id
     title
@@ -28,7 +28,7 @@ Section.fragment = gql`
   }
 `
 
-export default Section
+export default SectionHeader
 
 const updateMutation = gql`
   mutation updateAssignmentSection($id: ID!, $section: AssignmentSectionUpdateInput!) {
@@ -36,7 +36,7 @@ const updateMutation = gql`
       ...AssignmentSectionFragment
     }
   }
-  ${Section.fragment}
+  ${SectionHeader.fragment}
 `
 
 function useUpdate({ id, title, description }: Partial<Props>) {

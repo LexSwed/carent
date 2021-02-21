@@ -18,9 +18,8 @@ const content = {
 
 type Props = GetAssignmentDetailsQuery['assignment']['sections'][number]['questions'][number]
 
-const Question = ({ id, type, answers, ...props }: Props) => {
+const Question = ({ id, type, answers }: Props) => {
   const QuestionBlock = content[type]
-  const client = useApolloClient()
 
   return (
     <Grid columns="auto 1fr" gap="$2" css={{ alignItems: 'center' }}>
@@ -44,26 +43,7 @@ const Question = ({ id, type, answers, ...props }: Props) => {
             </Flex>
           </Flex>
         </Box>
-        <QuestionSettings
-          type={type}
-          answers={answers}
-          onChange={(type) => {
-            client.cache.writeFragment({
-              id: client.cache.identify({
-                __typename: 'AssignmentQuestion',
-                id,
-              }),
-              fragment: gql`
-                fragment QuestionBlockTypeUpdate on AssignmentQuestion {
-                  type
-                }
-              `,
-              data: {
-                type,
-              },
-            })
-          }}
-        />
+        <QuestionSettings type={type} answers={answers} onChange={(type) => {}} />
       </Grid>
     </Grid>
   )
@@ -103,6 +83,7 @@ Question.fragment = gql`
     id
     content
     type
+    score
     answers {
       ...QuestionBlockAnswerFragment
     }
