@@ -128,7 +128,6 @@ export const Class = objectType({
   name: 'Class',
   definition(t) {
     t.implements('Node')
-    t.model.id()
     t.model.name()
     t.model.studentGroup({
       alias: 'group',

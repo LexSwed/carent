@@ -1,10 +1,11 @@
 import React from 'react'
-import { DocumentNode, gql, useMutation } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
 import { Flex, TextField } from '@fxtrot/ui'
+import { AssignmentSectionFragment } from './gql'
 
 type Props = GetAssignmentDetailsQuery['assignment']['sections'][number]
 
-const SectionHeader: React.FC<Props> & { fragment: DocumentNode } = ({ id, title, description }) => {
+const SectionHeader: React.FC<Props> = ({ id, title, description }) => {
   // const onBlur = useUpdate({ id, title, description })
   return (
     <Flex as="form" css={{ px: '$2' }}>
@@ -20,14 +21,6 @@ const SectionHeader: React.FC<Props> & { fragment: DocumentNode } = ({ id, title
   )
 }
 
-SectionHeader.fragment = gql`
-  fragment AssignmentSectionFragment on AssignmentSection {
-    id
-    title
-    description
-  }
-`
-
 export default SectionHeader
 
 const updateMutation = gql`
@@ -36,7 +29,7 @@ const updateMutation = gql`
       ...AssignmentSectionFragment
     }
   }
-  ${SectionHeader.fragment}
+  ${AssignmentSectionFragment}
 `
 
 function useUpdate({ id, title, description }: Partial<Props>) {

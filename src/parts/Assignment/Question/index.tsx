@@ -1,5 +1,4 @@
 import React from 'react'
-import { gql, useApolloClient } from '@apollo/client'
 import { Box, Button, Flex, Grid, Icon } from '@fxtrot/ui'
 
 import { AssignmentQuestionType } from '@prisma/client'
@@ -77,31 +76,5 @@ type QuestionUpdate =
         hint: string
       }
     }
-
-Question.fragment = gql`
-  fragment QuestionBlockFragment on AssignmentQuestion {
-    id
-    content
-    type
-    score
-    answers {
-      ...QuestionBlockAnswerFragment
-    }
-  }
-
-  fragment QuestionBlockAnswerFragment on AssignmentAnswer {
-    id
-    markedCorrect
-    ... on TextQuestionAnswer {
-      text
-    }
-    ... on NumberQuestionAnswer {
-      number
-    }
-    ... on ChoiceQuestionAnswer {
-      content
-    }
-  }
-`
 
 export default Question

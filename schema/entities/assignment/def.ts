@@ -4,11 +4,10 @@ import type {
 } from '@prisma/client'
 import { interfaceType, objectType } from 'nexus'
 
-export const topicAssignment = objectType({
+export const assignment = objectType({
   name: 'Assignment',
   definition(t) {
     t.implements('Node')
-    t.model.id()
     t.model.title()
     t.model.description({
       description: 'Assignment goals, things to cover, etc',
@@ -30,7 +29,6 @@ export const assignmentState = objectType({
   name: 'AssignmentState',
   definition(t) {
     t.implements('Node')
-    t.model.id()
     t.model.open()
     t.model.openedAt()
     t.model.closedAt()
@@ -41,8 +39,11 @@ export const assignmentVariant = objectType({
   name: 'AssignmentVariant',
   definition(t) {
     t.implements('Node')
-    t.model.id()
     t.model.name()
+    t.model.assignmentQuestion({
+      type: 'AssignmentQuestion',
+      alias: 'questions',
+    })
   },
 })
 
@@ -52,16 +53,6 @@ export const assignmentSection = objectType({
     t.implements('Node')
     t.model.title()
     t.model.description()
-    t.model.questions({
-      type: 'AssignmentQuestion',
-    })
-    // t.nonNull.list.field('questions', {
-    //   type: '',
-    //   resolve: (parent: any) => {
-    //     console.log(parent)
-    //     return parent.questions ? parent.questions : []
-    //   },
-    // })
   },
 })
 

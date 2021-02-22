@@ -27,7 +27,6 @@ export const StudentGroup = objectType({
   name: 'StudentGroup',
   definition(t) {
     t.implements('Node')
-    t.model.id()
     t.model.code()
   },
 })

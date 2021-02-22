@@ -1,11 +1,17 @@
 import { gql, useQuery } from '@apollo/client'
 import { useAssignmentId } from '../../utils'
+import { QuestionBlockFragment } from './Question/gql'
 
-import Question from './Question'
-import SectionHeader from './SectionHeader'
+export const AssignmentSectionFragment = gql`
+  fragment AssignmentSectionFragment on AssignmentSection {
+    id
+    title
+    description
+  }
+`
 
 const getAssignmentDetails = gql`
-  query GetAssignmentDetails($id: ID!) {
+  query GetAssignmentDetails($id: ID!, $variant: AssignmentVariantWhereUniqueInput) {
     assignment(id: $id) {
       id
       title
@@ -13,20 +19,24 @@ const getAssignmentDetails = gql`
       state {
         open
       }
-      variants {
+      allVariants: variants {
         id
         name
       }
-      sections {
-        ...AssignmentSectionFragment
+      variants(first: 1, after: $variant) {
+        id
+        name
         questions {
           ...QuestionBlockFragment
         }
       }
+      sections {
+        ...AssignmentSectionFragment
+      }
     }
   }
-  ${Question.fragment}
-  ${SectionHeader.fragment}
+  ${QuestionBlockFragment}
+  ${AssignmentSectionFragment}
 `
 
 export function useAssignmentDetails() {

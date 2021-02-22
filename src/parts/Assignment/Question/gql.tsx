@@ -2,6 +2,32 @@ import { useCallback } from 'react'
 import { gql, useApolloClient } from '@apollo/client'
 import type { AssignmentQuestionType } from '@prisma/client'
 
+export const QuestionBlockFragment = gql`
+  fragment QuestionBlockFragment on AssignmentQuestion {
+    id
+    content
+    type
+    score
+    answers {
+      ...QuestionBlockAnswerFragment
+    }
+  }
+
+  fragment QuestionBlockAnswerFragment on AssignmentAnswer {
+    id
+    markedCorrect
+    ... on TextQuestionAnswer {
+      text
+    }
+    ... on NumberQuestionAnswer {
+      number
+    }
+    ... on ChoiceQuestionAnswer {
+      content
+    }
+  }
+`
+
 const updateTypeFragment = gql`
   fragment QuestionBlockTypeUpdateFragment on AssignmentQuestion {
     type

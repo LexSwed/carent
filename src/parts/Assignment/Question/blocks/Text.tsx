@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Flex, TextField, VisuallyHidden, Button, Text, Icon } from '@fxtrot/ui'
+import { Flex, TextField, VisuallyHidden, Button, Text, Icon } from '@fxtrot/ui'
 import { HiOutlineX } from 'react-icons/hi'
 
 type Props = { answers: { hint: string; id: string }[] }

@@ -1,5 +1,5 @@
-import { Flex, Button, Checkbox, Icon, styled, TextField } from '@fxtrot/ui'
 import React from 'react'
+import { Flex, Button, Icon, styled, TextField } from '@fxtrot/ui'
 import { HiOutlinePhotograph, HiOutlineTrash } from 'react-icons/hi'
 
 export const ChoiceBlock = () => {

@@ -21,7 +21,7 @@ export const createAssignment = mutationField((t) => {
     },
     resolve: async (_, { title, topicId }, { prisma, session }) => {
       try {
-        const assignment = await prisma.assignment.create({
+        return prisma.assignment.create({
           data: {
             title,
             state: {
@@ -47,35 +47,6 @@ export const createAssignment = mutationField((t) => {
               },
             },
           },
-          select: {
-            id: true,
-            sections: {
-              select: {
-                id: true,
-              },
-            },
-            variants: {
-              select: {
-                id: true,
-              },
-            },
-          },
-        })
-
-        await prisma.assignmentQuestion.create({
-          data: {
-            type: AssignmentQuestionType.Text,
-            content: null,
-            assignmentSectionId: assignment.sections[0].id,
-            variantId: assignment.variants[0].id,
-            orderKey: LexoRank.middle().toString(),
-          },
-        })
-
-        return prisma.assignment.findUnique({
-          where: {
-            id: assignment.id,
-          },
           include: {
             sections: {
               include: {
@@ -86,7 +57,6 @@ export const createAssignment = mutationField((t) => {
           },
         })
       } catch (error) {
-        console.error(error)
         throw new ApolloError('Failed to create new assignment', '400')
       }
     },
@@ -195,64 +165,62 @@ export const addQuestion = mutationField((t) => {
           description: 'ID of the assignment a question belongs to',
         })
       ),
-      variantId: nonNull(
+      afterQuestionId: nonNull(
         idArg({
-          description: 'ID of the variant a question belongs to',
+          description: 'ID of the question next to which the new one will be created',
         })
       ),
     },
     authorize: (_, { assignmentId }, ctx) => canUpdateAssignment(assignmentId, ctx),
-    resolve: async (_, { assignmentId, variantId }, { prisma }) => {
-      try {
-        const lastQuestion = await prisma.assignmentQuestion.findFirst({
-          where: { id: assignmentId },
-          orderBy: { orderKey: 'asc' },
-          select: { orderKey: true, assignmentSectionId: true },
-        })
-
-        if (lastQuestion) {
+    resolve: async (_, { assignmentId, afterQuestionId }, { prisma }) => {
+      if (afterQuestionId) {
+        try {
+          const lastQuestion = await prisma.assignmentQuestion.findUnique({
+            where: { id: afterQuestionId },
+            select: { orderKey: true, assignmentSectionId: true, variantId: true },
+          })
           return prisma.assignmentQuestion.create({
             data: {
               type: 'Text',
               content: {},
               orderKey: LexoRank.parse(lastQuestion.orderKey).genPrev().toString(),
-              variantId,
+              variantId: lastQuestion.variantId,
               assignmentSectionId: lastQuestion.assignmentSectionId,
             },
             include: {
               answers: true,
             },
           })
+        } catch (err) {
+          throw new ApolloError('Failed to create new assignment question', '400')
         }
-
-        const lastSection = await prisma.assignmentSection.findFirst({
-          where: {
-            assignmentId,
-          },
-          orderBy: {
-            createdAt: 'asc',
-          },
-          select: {
-            id: true,
-          },
-        })
-        const orderKey = LexoRank.middle().toString()
-
-        return prisma.assignmentQuestion.create({
-          data: {
-            type: 'Text',
-            orderKey,
-            content: {},
-            variantId,
-            assignmentSectionId: lastSection.id,
-          },
-          include: {
-            answers: true,
-          },
-        })
-      } catch (error) {
-        throw new ApolloError('Failed to create new assignment question', '400')
       }
+
+      const lastSection = await prisma.assignmentSection.findFirst({
+        where: {
+          assignmentId,
+        },
+        orderBy: {
+          createdAt: 'asc',
+        },
+        select: {
+          id: true,
+        },
+      })
+      const orderKey = LexoRank.middle().toString()
+
+      return prisma.assignmentQuestion.create({
+        data: {
+          type: 'Text',
+          orderKey,
+          content: {},
+          variantId,
+          assignmentSectionId: lastSection.id,
+        },
+        include: {
+          answers: true,
+        },
+      })
     },
   })
 })

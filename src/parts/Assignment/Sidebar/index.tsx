@@ -3,7 +3,7 @@ import { Box, Button, Dialog, Flex, Icon, Menu, ThemeProvider } from '@fxtrot/ui
 
 import { Card } from '../../../shared/Card'
 import Header from './Header'
-import { HiOutlineArchive, HiOutlineDotsVertical, HiOutlineTrash } from 'react-icons/hi'
+import { HiOutlineArchive, HiOutlineDotsVertical } from 'react-icons/hi'
 import { gql, useMutation } from '@apollo/client'
 import { useAssignmentId, useClassId } from '../../../utils'
 import { useRouter } from 'next/router'

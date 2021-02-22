@@ -5,7 +5,6 @@ import Question from './Question'
 import { Card } from '../../shared/Card'
 import { useAssignmentDetails } from './gql'
 import AssignmentHeader from './AssignmentHeader'
-import SectionHeader from './SectionHeader'
 
 const AssignmentBuilder = () => {
   const { data, loading } = useAssignmentDetails()
@@ -23,16 +22,13 @@ const AssignmentBuilder = () => {
   return (
     <Flex space="$2">
       <AssignmentHeader />
-      {data?.assignment?.sections?.map((section) => {
+      {data?.assignment?.variants?.map((variant) => {
         return (
-          <Flex space="$2" key={section.id}>
-            <SectionHeader {...section} />
-            <Card>
-              {section.questions.map((q) => (
-                <Question {...q} key={q.id} />
-              ))}
-            </Card>
-          </Flex>
+          <Card>
+            {variant.questions.map((q) => (
+              <Question {...q} key={q.id} />
+            ))}
+          </Card>
         )
       })}
     </Flex>

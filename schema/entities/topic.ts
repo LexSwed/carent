@@ -273,7 +273,6 @@ export const Topic = objectType({
   name: 'Topic',
   definition(t) {
     t.implements('Node')
-    t.model.id()
     t.model.title()
     t.model.createdAt()
     t.model.updatedAt()
@@ -345,7 +344,6 @@ export const TopicAttachment = objectType({
   name: 'TopicAttachment',
   definition(t) {
     t.implements('Node')
-    t.model.id()
     t.model.href()
     t.model.name()
   },

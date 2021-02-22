@@ -4,7 +4,7 @@
  */
 
 
-import { Context } from "./../context"
+import { Context as Context } from "./../context"
 import { core, connectionPluginCore } from "nexus"
 import { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
 
@@ -139,6 +139,9 @@ export interface NexusGenObjects {
     cursor: string; // String!
     node?: NexusGenRootTypes['Class'] | null; // Class
   }
+  DeleteAssignmentQuestionResult: { // root type
+    id: string; // ID!
+  }
   Mutation: {};
   NumberQuestionAnswer: { // root type
     id: string; // String!
@@ -245,7 +248,6 @@ export interface NexusGenFieldTypes {
   AssignmentSection: { // field return type
     description: string | null; // String
     id: string; // String!
-    questions: NexusGenRootTypes['AssignmentQuestion'][]; // [AssignmentQuestion!]!
     title: string; // String!
   }
   AssignmentState: { // field return type
@@ -257,6 +259,7 @@ export interface NexusGenFieldTypes {
   AssignmentVariant: { // field return type
     id: string; // String!
     name: string; // String!
+    questions: NexusGenRootTypes['AssignmentQuestion'][]; // [AssignmentQuestion!]!
   }
   ChoiceQuestionAnswer: { // field return type
     content: NexusGenScalars['JSON']; // JSON!
@@ -277,6 +280,9 @@ export interface NexusGenFieldTypes {
     cursor: string; // String!
     node: NexusGenRootTypes['Class'] | null; // Class
   }
+  DeleteAssignmentQuestionResult: { // field return type
+    id: string; // ID!
+  }
   Mutation: { // field return type
     addAssignmentQuestion: NexusGenRootTypes['AssignmentQuestion'] | null; // AssignmentQuestion
     addTopicAttachment: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
@@ -284,7 +290,7 @@ export interface NexusGenFieldTypes {
     createAssignment: NexusGenRootTypes['Assignment'] | null; // Assignment
     createClass: NexusGenRootTypes['Class'] | null; // Class
     createTopic: NexusGenRootTypes['Topic'] | null; // Topic
-    deleteAssignmentQuestion: NexusGenRootTypes['AssignmentQuestion'] | null; // AssignmentQuestion
+    deleteAssignmentQuestion: NexusGenRootTypes['DeleteAssignmentQuestionResult'] | null; // DeleteAssignmentQuestionResult
     deleteTopic: NexusGenRootTypes['Topic'] | null; // Topic
     deleteTopicAttachment: NexusGenRootTypes['TopicAttachment'] | null; // TopicAttachment
     duplicateAssignmentQuestion: NexusGenRootTypes['AssignmentQuestion'] | null; // AssignmentQuestion
@@ -406,7 +412,6 @@ export interface NexusGenFieldTypeNames {
   AssignmentSection: { // field return type name
     description: 'String'
     id: 'String'
-    questions: 'AssignmentQuestion'
     title: 'String'
   }
   AssignmentState: { // field return type name
@@ -418,6 +423,7 @@ export interface NexusGenFieldTypeNames {
   AssignmentVariant: { // field return type name
     id: 'String'
     name: 'String'
+    questions: 'AssignmentQuestion'
   }
   ChoiceQuestionAnswer: { // field return type name
     content: 'JSON'
@@ -438,6 +444,9 @@ export interface NexusGenFieldTypeNames {
     cursor: 'String'
     node: 'Class'
   }
+  DeleteAssignmentQuestionResult: { // field return type name
+    id: 'ID'
+  }
   Mutation: { // field return type name
     addAssignmentQuestion: 'AssignmentQuestion'
     addTopicAttachment: 'TopicAttachment'
@@ -445,7 +454,7 @@ export interface NexusGenFieldTypeNames {
     createAssignment: 'Assignment'
     createClass: 'Class'
     createTopic: 'Topic'
-    deleteAssignmentQuestion: 'AssignmentQuestion'
+    deleteAssignmentQuestion: 'DeleteAssignmentQuestionResult'
     deleteTopic: 'Topic'
     deleteTopicAttachment: 'TopicAttachment'
     duplicateAssignmentQuestion: 'AssignmentQuestion'
@@ -559,7 +568,7 @@ export interface NexusGenArgTypes {
       last?: number | null; // Int
     }
   }
-  AssignmentSection: {
+  AssignmentVariant: {
     questions: { // args
       after?: NexusGenInputs['AssignmentQuestionWhereUniqueInput'] | null; // AssignmentQuestionWhereUniqueInput
       before?: NexusGenInputs['AssignmentQuestionWhereUniqueInput'] | null; // AssignmentQuestionWhereUniqueInput
@@ -578,8 +587,8 @@ export interface NexusGenArgTypes {
   }
   Mutation: {
     addAssignmentQuestion: { // args
+      afterQuestionId: string; // ID!
       assignmentId: string; // ID!
-      variantId: string; // ID!
     }
     addTopicAttachment: { // args
       data: NexusGenInputs['TopicAttachmentInput']; // TopicAttachmentInput!

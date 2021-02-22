@@ -10,6 +10,9 @@ export const Node = interfaceType({
   name: 'Node',
   resolveType: () => null,
   definition(t) {
-    t.nonNull.id('id', { description: 'Resource ID' })
+    t.nonNull.string('id', {
+      description: 'Resource ID',
+      // resolve: ({ id }: any, args, ctx, info) => Buffer.from(`${info.parentType}:${id}`).toString('base64'),
+    })
   },
 })

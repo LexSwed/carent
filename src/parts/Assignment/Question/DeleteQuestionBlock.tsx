@@ -1,13 +1,11 @@
 import React from 'react'
 import { Button, ThemeProvider, Icon } from '@fxtrot/ui'
 import { HiOutlineTrash } from 'react-icons/hi'
-import { useAssignmentDetails } from '../gql'
 import { gql, useMutation } from '@apollo/client'
 import { useAssignmentId } from '../../../utils'
 
 export const DeleteQuestionBlock: React.FC<{ questionId: string }> = ({ questionId }) => {
   const assignmentId = useAssignmentId()
-  const { data } = useAssignmentDetails()
   const [deleteQuestion, { loading }] = useMutation<DeleteQuestionBlockMutation, DeleteQuestionBlockMutationVariables>(
     deleteQuestionBlockMutation,
     {
@@ -33,7 +31,7 @@ export const DeleteQuestionBlock: React.FC<{ questionId: string }> = ({ question
         title="Delete question"
         main="spread"
         variant="primary"
-        disabled={loading || data.assignment.sections[0].questions.length === 1}
+        disabled={loading}
         onClick={() => deleteQuestion()}
       >
         Delete
