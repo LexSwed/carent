@@ -30,13 +30,9 @@ const getAssignmentDetails = gql`
           ...QuestionBlockFragment
         }
       }
-      sections {
-        ...AssignmentSectionFragment
-      }
     }
   }
   ${QuestionBlockFragment}
-  ${AssignmentSectionFragment}
 `
 
 export function useAssignmentDetails() {

@@ -4,10 +4,10 @@ import { HiOutlineX } from 'react-icons/hi'
 
 type Props = { answers: { hint: string; id: string }[] }
 
-export const TextBlock: React.FC<Props> = ({ answers }) => {
+export const TextBlock: React.FC<Props> = () => {
   return (
     <Flex space="$8" flow="row" wrap="wrap" cross="center">
-      <TextField value="Your answer..." onChange={() => {}} css={{ width: '40%' }} />
+      <TextField label="Your answer" css={{ width: '40%' }} />
       <Text tone="light" size="xs" css={{ flex: 2 }}>
         Students will see this input field
       </Text>

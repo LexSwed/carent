@@ -1,4 +1,4 @@
-import React from 'react'
+/* import React from 'react'
 import { gql, useMutation } from '@apollo/client'
 import { Flex, TextField } from '@fxtrot/ui'
 import { AssignmentSectionFragment } from './gql'
@@ -61,3 +61,8 @@ function useUpdate({ id, title, description }: Partial<Props>) {
 
   return onBlur
 }
+ */
+
+const SectionHeader = () => null
+
+export default SectionHeader
