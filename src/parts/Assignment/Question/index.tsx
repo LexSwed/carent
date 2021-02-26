@@ -42,39 +42,10 @@ const Question = ({ id, type, answers }: Props) => {
             </Flex>
           </Flex>
         </Box>
-        <QuestionSettings id={id} type={type} answers={answers} onChange={(type) => {}} />
+        <QuestionSettings id={id} type={type} answers={answers} />
       </Grid>
     </Grid>
   )
 }
-
-type QuestionUpdate =
-  | {
-      type?: AssignmentQuestionType.Text
-      answer?: {
-        hint: string
-      }
-      correctAnswers?: string[]
-    }
-  | {
-      type?: AssignmentQuestionType.Number
-      answer?: {
-        hint: string
-      }
-      correctAnswers?: number[]
-    }
-  | {
-      type?: AssignmentQuestionType.Choice
-      answers?: {
-        content: JSON
-      }[]
-      correctAnswers?: number[]
-    }
-  | {
-      type?: AssignmentQuestionType.Image
-      answer?: {
-        hint: string
-      }
-    }
 
 export default Question

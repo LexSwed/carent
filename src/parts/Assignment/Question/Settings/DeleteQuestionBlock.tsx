@@ -2,7 +2,8 @@ import React from 'react'
 import { Button, ThemeProvider, Icon } from '@fxtrot/ui'
 import { HiOutlineTrash } from 'react-icons/hi'
 import { gql, useMutation } from '@apollo/client'
-import { useAssignmentId } from '../../../utils'
+
+import { useAssignmentId } from '../../../../utils'
 
 export const DeleteQuestionBlock: React.FC<{ questionId: string }> = ({ questionId }) => {
   const assignmentId = useAssignmentId()

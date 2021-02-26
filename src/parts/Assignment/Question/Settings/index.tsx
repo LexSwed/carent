@@ -1,15 +1,16 @@
 import React from 'react'
-import { styled, Box, Button, Flex, Icon, Picker, Popover } from '@fxtrot/ui'
+import { styled, Box, Button, Flex, Icon, Popover } from '@fxtrot/ui'
 import { AssignmentQuestionType } from '@prisma/client'
 import { HiOutlineDocumentDuplicate, HiOutlineClipboardCheck } from 'react-icons/hi'
-import { TextAnswers, NumberAnswers, ChoiceAnswers } from './blocks'
+
+import { TextAnswers, NumberAnswers, ChoiceAnswers } from '../blocks'
 import { DeleteQuestionBlock } from './DeleteQuestionBlock'
+import QuestionType from './QuestionType'
 
 interface Props {
   id: QuestionBlockFragment['id']
-  type: AssignmentQuestionType
+  type: QuestionBlockFragment['type']
   answers: QuestionBlockFragment['answers']
-  onChange: (v: AssignmentQuestionType) => void
 }
 
 const correctAnswersSetup: Record<
@@ -25,18 +26,14 @@ const correctAnswersSetup: Record<
   [AssignmentQuestionType.Document]: () => null,
 }
 
-const QuestionSettings: React.FC<Props> = ({ id, type, onChange, answers }) => {
+const QuestionSettings: React.FC<Props> = ({ id, type, answers }) => {
   const CorrectAnswersSetup = correctAnswersSetup[type]
 
   return (
     <SubCard>
       <Flex space="$4" main="spread" css={{ height: '100%' }}>
         <Flex space="$2">
-          <Picker value={type} onChange={onChange as (v: string) => void} label="Question type">
-            {questionTypes.map(({ label, value }) => (
-              <Picker.Item key={label} value={value} label={label} />
-            ))}
-          </Picker>
+          <QuestionType questionId={id} type={type} />
           <Popover>
             <Popover.Trigger main="spread">
               Add correct answers
@@ -62,24 +59,6 @@ const QuestionSettings: React.FC<Props> = ({ id, type, onChange, answers }) => {
 }
 
 export default QuestionSettings
-
-const questionTypes: {
-  value: AssignmentQuestionType
-  label: string
-}[] = [
-  {
-    label: 'Text input',
-    value: AssignmentQuestionType.Text,
-  },
-  {
-    label: 'Number input',
-    value: AssignmentQuestionType.Number,
-  },
-  {
-    label: 'Choice',
-    value: AssignmentQuestionType.Choice,
-  },
-]
 
 const SubCard = styled('div', {
   bc: '$blueGray50',
