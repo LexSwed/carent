@@ -2,15 +2,25 @@ import React from 'react'
 import { Flex, Button, Icon, styled, TextField } from '@fxtrot/ui'
 import { HiOutlinePhotograph, HiOutlineTrash } from 'react-icons/hi'
 
-export const ChoiceBlock = () => {
+interface Props {
+  answers: {
+    id: string
+    markedCorrect: boolean
+    content: string
+  }[]
+}
+
+export const ChoiceBlock = ({ answers }: Props) => {
   return (
     <Flex space="$2" cross="stretch">
-      <Choice content="sadsa" />
-      <Choice content="dasdasdas sdsa" />
-      <ChoiceBox $transparent>
-        <TextField variant="transparent" placeholder="Another option..." />
-        <UploadOptionPhoto />
-      </ChoiceBox>
+      {answers.map(({ id, content }) => {
+        return <Choice content="sadsa" />
+      })}
+      <EmptyOption
+        onChange={() => {
+          console.log('create new option')
+        }}
+      />
     </Flex>
   )
 }
@@ -57,5 +67,14 @@ const UploadOptionPhoto = () => {
     <Button variant="flat" size="sm">
       <Icon as={HiOutlinePhotograph} size="lg" />
     </Button>
+  )
+}
+
+const EmptyOption = ({ onChange }: { onChange: React.ComponentProps<typeof TextField>['onChange'] }) => {
+  return (
+    <ChoiceBox $transparent>
+      <TextField variant="transparent" placeholder="Another option..." />
+      <UploadOptionPhoto />
+    </ChoiceBox>
   )
 }

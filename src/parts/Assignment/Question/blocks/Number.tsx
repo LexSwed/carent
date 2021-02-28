@@ -5,7 +5,11 @@ import { HiOutlineX } from 'react-icons/hi'
 export { TextBlock as NumberBlock } from './Text'
 
 interface Props {
-  answers: QuestionBlockFragment['answers']
+  answers: {
+    id: string
+    number?: number
+    markedCorrect: boolean
+  }[]
 }
 
 export const NumberAnswers: React.FC<Props> = ({ answers }) => {

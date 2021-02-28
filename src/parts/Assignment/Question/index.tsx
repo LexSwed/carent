@@ -9,17 +9,9 @@ import QuestionSettings from './Settings'
 
 import Score from './Score'
 
-const content = {
-  [AssignmentQuestionType.Text]: TextBlock,
-  [AssignmentQuestionType.Number]: NumberBlock,
-  [AssignmentQuestionType.Choice]: ChoiceBlock,
-}
-
 interface Props extends QuestionBlockFragment {}
 
 const Question = ({ id, type, answers }: Props) => {
-  const QuestionBlock = content[type]
-
   return (
     <Grid columns="auto 1fr" gap="$2" css={{ alignItems: 'center' }}>
       <Flex flow="row" space="$1">
@@ -38,7 +30,7 @@ const Question = ({ id, type, answers }: Props) => {
               <Box height={200} br="$sm" width="100%" bc="$surfaceHover">
                 Content block
               </Box>
-              <QuestionBlock answers={answers} />
+              <QuestionBlock type={type} answers={answers} />
             </Flex>
           </Flex>
         </Box>
@@ -49,3 +41,17 @@ const Question = ({ id, type, answers }: Props) => {
 }
 
 export default Question
+
+const QuestionBlock = ({ type, answers }: { type: Props['type']; answers: Props['answers'] }) => {
+  if (type === AssignmentQuestionType.Text) {
+    return <TextBlock answers={answers as QuestionBlockAnswerFragment_TextQuestionAnswer_[]} />
+  }
+  if (type === AssignmentQuestionType.Number) {
+    return <NumberBlock answers={answers as QuestionBlockAnswerFragment_NumberQuestionAnswer_[]} />
+  }
+  if (type === AssignmentQuestionType.Choice) {
+    return <ChoiceBlock answers={answers as QuestionBlockAnswerFragment_ChoiceQuestionAnswer_[]} />
+  }
+
+  return null
+}

@@ -2,7 +2,7 @@ import React from 'react'
 import { Flex, TextField, VisuallyHidden, Button, Text, Icon } from '@fxtrot/ui'
 import { HiOutlineX } from 'react-icons/hi'
 
-type Props = { answers: { hint: string; id: string }[] }
+type Props = { answers: { id: string; text?: string; markedCorrect: boolean }[] }
 
 export const TextBlock: React.FC<Props> = () => {
   return (
