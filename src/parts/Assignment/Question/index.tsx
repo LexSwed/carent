@@ -8,10 +8,12 @@ import { TextBlock, NumberBlock, ChoiceBlock } from './blocks'
 import QuestionSettings from './Settings'
 
 import Score from './Score'
+import { useUpdateAnswers } from './gql'
 
 interface Props extends QuestionBlockFragment {}
 
 const Question = ({ id, type, answers }: Props) => {
+  console.log('new', { answers })
   return (
     <Grid columns="auto 1fr" gap="$2" css={{ alignItems: 'center' }}>
       <Flex flow="row" space="$1">
@@ -30,7 +32,7 @@ const Question = ({ id, type, answers }: Props) => {
               <Box height={200} br="$sm" width="100%" bc="$surfaceHover">
                 Content block
               </Box>
-              <QuestionBlock type={type} answers={answers} />
+              <QuestionBlock id={id} type={type} answers={answers} />
             </Flex>
           </Flex>
         </Box>
@@ -42,7 +44,8 @@ const Question = ({ id, type, answers }: Props) => {
 
 export default Question
 
-const QuestionBlock = ({ type, answers }: { type: Props['type']; answers: Props['answers'] }) => {
+const QuestionBlock = ({ id, type, answers }: { id: Props['id']; type: Props['type']; answers: Props['answers'] }) => {
+  const update = useUpdateAnswers(id)
   if (type === AssignmentQuestionType.Text) {
     return <TextBlock answers={answers as QuestionBlockAnswerFragment_TextQuestionAnswer_[]} />
   }
@@ -50,12 +53,7 @@ const QuestionBlock = ({ type, answers }: { type: Props['type']; answers: Props[
     return <NumberBlock answers={answers as QuestionBlockAnswerFragment_NumberQuestionAnswer_[]} />
   }
   if (type === AssignmentQuestionType.Choice) {
-    return (
-      <ChoiceBlock
-        answers={answers as QuestionBlockAnswerFragment_ChoiceQuestionAnswer_[]}
-        onChange={(newAnswers) => {}}
-      />
-    )
+    return <ChoiceBlock answers={answers as QuestionBlockAnswerFragment_ChoiceQuestionAnswer_[]} onChange={update} />
   }
 
   return null

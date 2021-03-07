@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { gql, useApolloClient } from '@apollo/client'
+import { gql, Reference, useApolloClient } from '@apollo/client'
 import type { AssignmentQuestionType } from '@prisma/client'
 
 export const QuestionBlockFragment = gql`
@@ -79,18 +79,17 @@ export function useUpdateScore(questionId: string) {
 }
 
 const updateAnswersFragment = gql`
-  fragment QuestionBlockAnswersUpdateFragment on AssignmentQuestion {
-    answers {
-      markedCorrect
-      ... on TextQuestionAnswer {
-        text
-      }
-      ... on NumberQuestionAnswer {
-        number
-      }
-      ... on ChoiceQuestionAnswer {
-        content
-      }
+  fragment QuestionBlockAnswersUpdateFragment on AssignmentAnswer {
+    id
+    markedCorrect
+    ... on TextQuestionAnswer {
+      text
+    }
+    ... on NumberQuestionAnswer {
+      number
+    }
+    ... on ChoiceQuestionAnswer {
+      content
     }
   }
 `
@@ -99,14 +98,41 @@ export function useUpdateAnswers(questionId: string) {
 
   return useCallback(
     (answers: QuestionBlockFragment['answers']) => {
-      client.cache.writeFragment({
+      client.cache.modify({
         id: client.cache.identify({
           __typename: 'AssignmentQuestion',
           id: questionId,
         }),
-        fragment: updateAnswersFragment,
-        data: {
-          answers,
+        fields: {
+          answers: () =>
+            answers.reduce((all, answer) => {
+              let data: QuestionBlockFragment['answers'][number]
+              if ('content' in answer) {
+                data = {
+                  ...answer,
+                  __typename: 'ChoiceQuestionAnswer',
+                }
+              } else if ('text' in answer) {
+                data = {
+                  ...answer,
+                  __typename: 'TextQuestionAnswer',
+                }
+              } else if ('number' in answer) {
+                data = {
+                  ...answer,
+                  __typename: 'NumberQuestionAnswer',
+                }
+              }
+              if (data) {
+                all.push(
+                  client.cache.writeFragment({
+                    data,
+                    fragment: updateAnswersFragment,
+                  })
+                )
+              }
+              return all
+            }, [] as Reference[]),
         },
       })
     },

@@ -16,11 +16,11 @@ export const ChoiceBlock = ({ answers, onChange }: Props) => {
   return (
     <Flex space="$2" cross="stretch">
       {answers.map(({ id, content }) => {
-        return <Choice content="sadsa" />
+        return <Choice key={id} content={content} />
       })}
       <EmptyOption
-        onChange={(e) => {
-          onChange([...answers, { id: `${Date.now()}`, content: e.target.value }])
+        onCreate={(content) => {
+          onChange([...answers, { id: `${Date.now()}`, content, markedCorrect: false }])
         }}
       />
     </Flex>
@@ -72,10 +72,18 @@ const UploadOptionPhoto = () => {
   )
 }
 
-const EmptyOption = ({ onChange }: { onChange: React.ComponentProps<typeof TextField>['onChange'] }) => {
+const EmptyOption = ({ onCreate }: { onCreate: (text: string) => void }) => {
   return (
     <ChoiceBox $transparent>
-      <TextField variant="transparent" placeholder="Another option..." />
+      <TextField
+        variant="transparent"
+        type="text"
+        placeholder="Another option..."
+        onBlur={(e) => {
+          onCreate(e.target.value)
+          e.target.value = ''
+        }}
+      />
       <UploadOptionPhoto />
     </ChoiceBox>
   )
