@@ -50,7 +50,12 @@ const QuestionBlock = ({ type, answers }: { type: Props['type']; answers: Props[
     return <NumberBlock answers={answers as QuestionBlockAnswerFragment_NumberQuestionAnswer_[]} />
   }
   if (type === AssignmentQuestionType.Choice) {
-    return <ChoiceBlock answers={answers as QuestionBlockAnswerFragment_ChoiceQuestionAnswer_[]} />
+    return (
+      <ChoiceBlock
+        answers={answers as QuestionBlockAnswerFragment_ChoiceQuestionAnswer_[]}
+        onChange={(newAnswers) => {}}
+      />
+    )
   }
 
   return null

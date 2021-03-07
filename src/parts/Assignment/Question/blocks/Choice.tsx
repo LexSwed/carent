@@ -2,23 +2,25 @@ import React from 'react'
 import { Flex, Button, Icon, styled, TextField } from '@fxtrot/ui'
 import { HiOutlinePhotograph, HiOutlineTrash } from 'react-icons/hi'
 
+type Answer = {
+  id: string
+  markedCorrect: boolean
+  content: string
+}
 interface Props {
-  answers: {
-    id: string
-    markedCorrect: boolean
-    content: string
-  }[]
+  answers: Answer[]
+  onChange: (newAnswers: Answer[]) => void
 }
 
-export const ChoiceBlock = ({ answers }: Props) => {
+export const ChoiceBlock = ({ answers, onChange }: Props) => {
   return (
     <Flex space="$2" cross="stretch">
       {answers.map(({ id, content }) => {
         return <Choice content="sadsa" />
       })}
       <EmptyOption
-        onChange={() => {
-          console.log('create new option')
+        onChange={(e) => {
+          onChange([...answers, { id: `${Date.now()}`, content: e.target.value }])
         }}
       />
     </Flex>

@@ -7,10 +7,7 @@ type Props = { answers: { id: string; text?: string; markedCorrect: boolean }[] 
 export const TextBlock: React.FC<Props> = () => {
   return (
     <Flex space="$8" flow="row" wrap="wrap" cross="center">
-      <TextField label="Your answer" css={{ width: '40%' }} />
-      <Text tone="light" size="xs" css={{ flex: 2 }}>
-        Students will see this input field
-      </Text>
+      <TextField label="Your answer" secondaryLabel="(students will see this text field)" css={{ width: '40%' }} />
     </Flex>
   )
 }
