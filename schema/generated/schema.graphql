@@ -2,6 +2,19 @@
 ### Do not make changes to this file directly
 
 
+"""
+Assignment info required to add a new question if `afterQuestionId` is not provided
+"""
+input AddAssignmentQuestionInput {
+  """ID of the assignment a new question belongs to"""
+  assignmentId: ID!
+
+  """
+  ID of the assignment variant add a new question to. Has to be specified if `afterQuestionId` is not provided
+  """
+  variantId: ID!
+}
+
 """Partial response of archived assignment"""
 type ArchivedAssignment {
   id: ID
@@ -196,10 +209,8 @@ scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/fi
 type Mutation {
   addAssignmentQuestion(
     """ID of the question next to which the new one will be created"""
-    afterQuestionId: ID!
-
-    """ID of the assignment a question belongs to"""
-    assignmentId: ID!
+    afterQuestionId: ID
+    assignment: AddAssignmentQuestionInput
   ): AssignmentQuestion
   addTopicAttachment(data: TopicAttachmentInput!, topicId: ID!): TopicAttachment
 
@@ -224,9 +235,6 @@ type Mutation {
     title: String!
   ): Topic
   deleteAssignmentQuestion(
-    """ID of the assignment a question belongs to"""
-    assignmentId: ID!
-
     """ID of the question to delete"""
     questionId: ID!
   ): DeleteAssignmentQuestionResult
@@ -239,9 +247,6 @@ type Mutation {
     id: ID!
   ): TopicAttachment
   duplicateAssignmentQuestion(
-    """ID of the assignment a question belongs to"""
-    assignmentId: ID!
-
     """ID of the question to duplicate"""
     questionId: ID!
   ): AssignmentQuestion
@@ -263,8 +268,6 @@ type Mutation {
     id: ID!
   ): Topic
   updateAssignmentQuestion(
-    """ID of the assignment a question belongs to"""
-    assignmentId: ID!
     input: UpdateAssignmentQuestionInput!
 
     """ID of the question to update"""

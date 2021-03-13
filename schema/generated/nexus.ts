@@ -33,6 +33,10 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  AddAssignmentQuestionInput: { // input type
+    assignmentId: string; // ID!
+    variantId: string; // ID!
+  }
   AssignmentAnswerWhereUniqueInput: { // input type
     id?: string | null; // String
   }
@@ -587,8 +591,8 @@ export interface NexusGenArgTypes {
   }
   Mutation: {
     addAssignmentQuestion: { // args
-      afterQuestionId: string; // ID!
-      assignmentId: string; // ID!
+      afterQuestionId?: string | null; // ID
+      assignment?: NexusGenInputs['AddAssignmentQuestionInput'] | null; // AddAssignmentQuestionInput
     }
     addTopicAttachment: { // args
       data: NexusGenInputs['TopicAttachmentInput']; // TopicAttachmentInput!
@@ -610,7 +614,6 @@ export interface NexusGenArgTypes {
       title: string; // String!
     }
     deleteAssignmentQuestion: { // args
-      assignmentId: string; // ID!
       questionId: string; // ID!
     }
     deleteTopic: { // args
@@ -620,7 +623,6 @@ export interface NexusGenArgTypes {
       id: string; // ID!
     }
     duplicateAssignmentQuestion: { // args
-      assignmentId: string; // ID!
       questionId: string; // ID!
     }
     renameTopicAttachment: { // args
@@ -633,7 +635,6 @@ export interface NexusGenArgTypes {
       id: string; // ID!
     }
     updateAssignmentQuestion: { // args
-      assignmentId: string; // ID!
       input: NexusGenInputs['UpdateAssignmentQuestionInput']; // UpdateAssignmentQuestionInput!
       questionId: string; // ID!
     }
