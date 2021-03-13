@@ -25,7 +25,6 @@ const GetAssignmentDetailsQuery = gql`
       }
       variants(first: 1, after: $variant) {
         id
-        name
         questions {
           ...QuestionBlockFragment
         }
@@ -51,10 +50,29 @@ const AppendNewQuestionMutation = gql`
   ${QuestionBlockFragment}
 `
 
-export function useAddNewQuestion(id: string) {
+export function useAppendNewQuestion(afterQuestionId: string, variantId: string) {
   return useMutation<AppendNewQuestionMutation, AppendNewQuestionMutationVariables>(AppendNewQuestionMutation, {
     variables: {
-      afterQuestionId: id,
+      afterQuestionId,
+    },
+    update(cache, { data }) {
+      cache.modify({
+        id: cache.identify({
+          __typename: 'AssignmentVariant',
+          id: variantId,
+        }),
+        fields: {
+          questions(existing = []) {
+            const newQuestionRef = cache.writeFragment({
+              data: data.addAssignmentQuestion,
+              fragment: QuestionBlockFragment,
+              fragmentName: 'QuestionBlockFragment',
+            })
+
+            return [...existing, newQuestionRef]
+          },
+        },
+      })
     },
   })
 }

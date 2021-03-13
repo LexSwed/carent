@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ThemeProvider, Icon } from '@fxtrot/ui'
+import { Button, ThemeProvider, Icon, Dialog, Flex, Box } from '@fxtrot/ui'
 import { HiOutlineTrash } from 'react-icons/hi'
 import { gql, useMutation } from '@apollo/client'
 
@@ -24,15 +24,26 @@ export const DeleteQuestionBlock: React.FC<{ questionId: string }> = ({ question
 
   return (
     <ThemeProvider theme="red">
-      <Button
-        title="Delete question"
-        main="spread"
-        variant="primary"
-        disabled={loading}
-        onClick={() => deleteQuestion()}
-      >
-        <Icon as={HiOutlineTrash} />
-      </Button>
+      <Dialog>
+        <Dialog.Trigger title="Delete question" main="spread" variant="primary" disabled={loading}>
+          <Icon as={HiOutlineTrash} />
+        </Dialog.Trigger>
+        {(close) => (
+          <Dialog.Modal>
+            <Flex space="$12">
+              <Dialog.Title level={3}>Delete this question with the content and all answers?</Dialog.Title>
+              <Flex space="$2" flow="row" main="end">
+                <Button variant="flat" onClick={close}>
+                  Cancel
+                </Button>
+                <Button variant="primary" onClick={() => deleteQuestion()}>
+                  Delete
+                </Button>
+              </Flex>
+            </Flex>
+          </Dialog.Modal>
+        )}
+      </Dialog>
     </ThemeProvider>
   )
 }

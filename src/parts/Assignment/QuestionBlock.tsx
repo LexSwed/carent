@@ -3,12 +3,14 @@ import { Button, Flex, Grid, Icon } from '@fxtrot/ui'
 import { HiOutlineMenuAlt4, HiOutlinePlus } from 'react-icons/hi'
 
 import Question from './Question'
-import { useAddNewQuestion } from './gql'
+import { useAppendNewQuestion } from './gql'
 
-interface Props extends QuestionBlockFragment {}
+interface Props extends QuestionBlockFragment {
+  variantId: string
+}
 
 const QuestionBlock = (props: Props) => {
-  const [addQuestion] = useAddNewQuestion(props.id)
+  const [addQuestion] = useAppendNewQuestion(props.id, props.variantId)
   return (
     <Grid columns="auto 1fr" gap="$2" css={{ alignItems: 'center' }}>
       <Flex flow="row" space="$1">

@@ -27,7 +27,7 @@ const AssignmentBuilder = () => {
           <Card>
             <Flex space="$4">
               {variant.questions.map((q) => (
-                <QuestionBlock {...q} key={q.id} />
+                <QuestionBlock {...q} variantId={variant.id} key={q.id} />
               ))}
             </Flex>
           </Card>
