@@ -78,7 +78,7 @@ export function useUpdateScore(questionId: string) {
   )
 }
 
-const updateAnswersFragment = gql`
+const QuestionBlockAnswersUpdateFragment = gql`
   fragment QuestionBlockAnswersUpdateFragment on AssignmentAnswer {
     id
     markedCorrect
@@ -127,7 +127,7 @@ export function useUpdateAnswers(questionId: string) {
                 all.push(
                   client.cache.writeFragment({
                     data,
-                    fragment: updateAnswersFragment,
+                    fragment: QuestionBlockAnswersUpdateFragment,
                   })
                 )
               }

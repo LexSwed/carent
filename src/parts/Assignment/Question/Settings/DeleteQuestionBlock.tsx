@@ -3,16 +3,12 @@ import { Button, ThemeProvider, Icon } from '@fxtrot/ui'
 import { HiOutlineTrash } from 'react-icons/hi'
 import { gql, useMutation } from '@apollo/client'
 
-import { useAssignmentId } from '../../../../utils'
-
 export const DeleteQuestionBlock: React.FC<{ questionId: string }> = ({ questionId }) => {
-  const assignmentId = useAssignmentId()
   const [deleteQuestion, { loading }] = useMutation<DeleteQuestionBlockMutation, DeleteQuestionBlockMutationVariables>(
     deleteQuestionBlockMutation,
     {
       variables: {
         questionId,
-        assignmentId,
       },
       update(cache, { data }) {
         cache.evict({
@@ -35,7 +31,6 @@ export const DeleteQuestionBlock: React.FC<{ questionId: string }> = ({ question
         disabled={loading}
         onClick={() => deleteQuestion()}
       >
-        Delete
         <Icon as={HiOutlineTrash} />
       </Button>
     </ThemeProvider>
@@ -43,8 +38,8 @@ export const DeleteQuestionBlock: React.FC<{ questionId: string }> = ({ question
 }
 
 const deleteQuestionBlockMutation = gql`
-  mutation DeleteQuestionBlock($assignmentId: ID!, $questionId: ID!) {
-    deleteAssignmentQuestion(assignmentId: $assignmentId, questionId: $questionId) {
+  mutation DeleteQuestionBlock($questionId: ID!) {
+    deleteAssignmentQuestion(questionId: $questionId) {
       id
     }
   }

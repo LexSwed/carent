@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client'
+import { gql, useMutation, useQuery } from '@apollo/client'
 import { useAssignmentId } from '../../utils'
 import { QuestionBlockFragment } from './Question/gql'
 
@@ -10,7 +10,7 @@ export const AssignmentSectionFragment = gql`
   }
 `
 
-const getAssignmentDetails = gql`
+const GetAssignmentDetailsQuery = gql`
   query GetAssignmentDetails($id: ID!, $variant: AssignmentVariantWhereUniqueInput) {
     assignment(id: $id) {
       id
@@ -37,7 +37,24 @@ const getAssignmentDetails = gql`
 
 export function useAssignmentDetails() {
   const id = useAssignmentId()
-  return useQuery<GetAssignmentDetailsQuery, GetAssignmentDetailsQueryVariables>(getAssignmentDetails, {
+  return useQuery<GetAssignmentDetailsQuery, GetAssignmentDetailsQueryVariables>(GetAssignmentDetailsQuery, {
     variables: { id },
+  })
+}
+
+const AppendNewQuestionMutation = gql`
+  mutation AppendNewQuestion($afterQuestionId: ID!) {
+    addAssignmentQuestion(afterQuestionId: $afterQuestionId) {
+      ...QuestionBlockFragment
+    }
+  }
+  ${QuestionBlockFragment}
+`
+
+export function useAddNewQuestion(id: string) {
+  return useMutation<AppendNewQuestionMutation, AppendNewQuestionMutationVariables>(AppendNewQuestionMutation, {
+    variables: {
+      afterQuestionId: id,
+    },
   })
 }

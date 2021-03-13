@@ -36,7 +36,7 @@ const QuestionSettings: React.FC<Props> = ({ id, type, answers }) => {
           <QuestionType questionId={id} type={type} />
           <Popover>
             <Popover.Trigger main="spread">
-              Add correct answers
+              Correct answers
               <Icon as={HiOutlineClipboardCheck} />
             </Popover.Trigger>
             <Popover.Content placement="bottom-end">
@@ -46,9 +46,8 @@ const QuestionSettings: React.FC<Props> = ({ id, type, answers }) => {
             </Popover.Content>
           </Popover>
         </Flex>
-        <Flex space="$2">
-          <Button main="spread">
-            Duplicate
+        <Flex space="$2" main="end" flow="row">
+          <Button main="spread" title="Duplicate">
             <Icon as={HiOutlineDocumentDuplicate} />
           </Button>
           <DeleteQuestionBlock questionId={id} />

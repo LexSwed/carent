@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Flex, Spinner } from '@fxtrot/ui'
 
-import Question from './Question'
+import QuestionBlock from './QuestionBlock'
 import { Card } from '../../shared/Card'
 import { useAssignmentDetails } from './gql'
 import AssignmentHeader from './AssignmentHeader'
@@ -25,9 +25,11 @@ const AssignmentBuilder = () => {
       {data?.assignment?.variants?.map((variant) => {
         return (
           <Card>
-            {variant.questions.map((q) => (
-              <Question {...q} key={q.id} />
-            ))}
+            <Flex space="$4">
+              {variant.questions.map((q) => (
+                <QuestionBlock {...q} key={q.id} />
+              ))}
+            </Flex>
           </Card>
         )
       })}

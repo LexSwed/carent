@@ -178,7 +178,7 @@ export const addQuestion = mutationField((t) => {
       }),
     },
     authorize: (_, { assignment, afterQuestionId }, ctx) =>
-      canUpdateAssignment({ questionId: afterQuestionId, assignmentId: assignment.assignmentId }, ctx),
+      canUpdateAssignment({ questionId: afterQuestionId, assignmentId: assignment?.assignmentId }, ctx),
     resolve: async (_, { assignment, afterQuestionId }, { prisma }) => {
       if (afterQuestionId) {
         try {
@@ -336,6 +336,7 @@ async function canUpdateAssignment(
         id: true,
       },
     })
+    console.log(question)
     return !!question
   } else if (assignmentId) {
     const assignment = await prisma.assignment.findFirst({
