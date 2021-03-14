@@ -1,8 +1,9 @@
 import React from 'react'
-import { Flex, TextField, VisuallyHidden, Button, Icon } from '@fxtrot/ui'
+import { Flex, TextField, Button, Icon } from '@fxtrot/ui'
 import { HiOutlineX } from 'react-icons/hi'
-import { useAnswers, useAnswersAtoms, useDeleteAnswer } from '../atoms'
+import { useAnswers, useAnswersAtoms, useCreateAnswer, useDeleteAnswer } from '../atoms'
 import { PrimitiveAtom, useAtom } from 'jotai'
+import SingleFieldForm from '../../../../shared/SingleFieldForm'
 
 export const TextBlock = () => {
   return (
@@ -13,26 +14,22 @@ export const TextBlock = () => {
 }
 
 export const TextAnswers = () => {
-  const [answers, updateList] = useAnswers()
+  const [answers] = useAnswers()
   const answersAtoms = useAnswersAtoms()
+  const create = useCreateAnswer()
 
   return (
     <Flex space="$4">
-      <form
-        onSubmit={(e) => {
-          const answer = e.currentTarget.elements.namedItem('answer') as HTMLInputElement
-          if (answer.value) {
-            updateList((list) => [...list, { id: `${Date.now()}`, markedCorrect: true, text: answer.value }])
-            e.preventDefault()
-            answer.value = ''
-          }
+      <SingleFieldForm
+        submitText="Add this answer"
+        name="answer"
+        label="Add correct answers"
+        hint="press Enter ↵ to add a new answer"
+        type="text"
+        onSubmit={(answer) => {
+          create({ markedCorrect: true, text: answer.value })
         }}
-      >
-        <VisuallyHidden {...({ as: 'button' } as any)} type="submit">
-          Create
-        </VisuallyHidden>
-        <TextField name="answer" label="Add correct answers" hint="press Enter ↵ to add a new answer" type="text" />
-      </form>
+      />
       <Flex space="$2">
         {answersAtoms.map((atom, i) => {
           return <TextAnswer atom={atom as PrimitiveAtom<Answer>} key={answers[i].id} />

@@ -1,8 +1,10 @@
 import React from 'react'
 import { Flex, Button, Icon, styled, TextField } from '@fxtrot/ui'
 import { HiOutlinePhotograph, HiOutlineTrash } from 'react-icons/hi'
-import { useAnswers, useAnswersAtoms, useDeleteAnswer } from '../atoms'
+import { useAnswers, useAnswersAtoms, useCreateAnswer, useDeleteAnswer } from '../atoms'
 import { PrimitiveAtom, useAtom } from 'jotai'
+
+import SingleFieldForm from '../../../../shared/SingleFieldForm'
 
 type Answer = {
   id: string
@@ -12,18 +14,14 @@ type Answer = {
 
 export const ChoiceBlock = () => {
   const answersAtoms = useAnswersAtoms()
-  const [answers, updateList] = useAnswers()
+  const [answers] = useAnswers()
 
   return (
     <Flex space="$2" cross="stretch">
       {answersAtoms.map((atom, i) => {
         return <Choice key={answers[i].id} atom={atom as PrimitiveAtom<Answer>} />
       })}
-      <EmptyOption
-        onCreate={(content) => {
-          updateList((answers) => [...answers, { id: `${Date.now()}`, content, markedCorrect: false }])
-        }}
-      />
+      <EmptyOption />
     </Flex>
   )
 }
@@ -48,15 +46,16 @@ const Choice = ({ atom }: { atom: PrimitiveAtom<Answer> }) => {
   )
 }
 
-export const ChoiceAnswers: React.FC<{ answers: QuestionBlockFragment['answers'] }> = () => {
+export const ChoiceAnswers = () => {
   return null
 }
 
 const ChoiceBox = styled('div', {
   minWidth: 160,
   maxHeight: 200,
-  shadow: '$xs',
-  p: '$3',
+  border: '1px solid $borderLight',
+  py: '$1',
+  px: '$2',
   br: '$lg',
   display: 'flex',
   alignItems: 'center',
@@ -79,18 +78,19 @@ const UploadOptionPhoto = () => {
   )
 }
 
-const EmptyOption = ({ onCreate }: { onCreate: (content: any) => void }) => {
+const EmptyOption = () => {
+  const create = useCreateAnswer()
   return (
     <ChoiceBox $transparent>
-      <TextField
+      <SingleFieldForm
         variant="transparent"
         type="text"
         placeholder="Another option..."
-        onBlur={(e) => {
-          if (e.target.value) {
-            onCreate(e.target.value)
-            e.target.value = ''
-          }
+        submitText="Add the option"
+        name="new-option"
+        onSubmit={(answer) => {
+          console.log(answer)
+          create({ markedCorrect: true, content: answer.value })
         }}
       />
       <UploadOptionPhoto />

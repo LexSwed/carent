@@ -36,7 +36,18 @@ export function useSyncedQuestionTypeAtom(typeProp: AssignmentQuestionType) {
 }
 
 export function useQuestionTypeAtom() {
-  return useAtom(typeAtom)
+  const [type, setType] = useAtom(typeAtom)
+  const updateAnswers = useUpdateAtom(answersListAtom)
+
+  const handleUpdate = useCallback(
+    (newType: AssignmentQuestionType) => {
+      setType(newType)
+      updateAnswers([])
+    },
+    [setType, updateAnswers]
+  )
+
+  return [type, handleUpdate] as const
 }
 
 export function useSyncedQuestionAnswers(answersProp: Answer[]) {
@@ -64,4 +75,18 @@ export function useDeleteAnswer(id: string) {
   return useCallback(() => {
     updateList((list) => list.filter((item) => item.id !== id))
   }, [id, updateList])
+}
+
+export function useCreateAnswer() {
+  const updateList = useUpdateAtom(answersListAtom)
+
+  return useCallback(
+    ({
+      markedCorrect = false,
+      ...answer
+    }: { markedCorrect?: boolean } & ({ text: string } | { number: number } | { content: any })) => {
+      updateList((list) => [...list, { ...answer, markedCorrect, id: `${Date.now()}` }])
+    },
+    [updateList]
+  )
 }
