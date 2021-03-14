@@ -1,10 +1,10 @@
 import React from 'react'
-import { Flex, TextField, VisuallyHidden, Button, Text, Icon } from '@fxtrot/ui'
+import { Flex, TextField, VisuallyHidden, Button, Icon } from '@fxtrot/ui'
 import { HiOutlineX } from 'react-icons/hi'
+import { useAnswers, useAnswersAtoms, useDeleteAnswer } from '../atoms'
+import { PrimitiveAtom, useAtom } from 'jotai'
 
-type Props = { answers: { id: string; text?: string; markedCorrect: boolean }[] }
-
-export const TextBlock: React.FC<Props> = () => {
+export const TextBlock = () => {
   return (
     <Flex space="$8" flow="row" wrap="wrap" cross="center">
       <TextField label="Your answer" secondaryLabel="(students will see this text field)" css={{ width: '40%' }} />
@@ -12,47 +12,58 @@ export const TextBlock: React.FC<Props> = () => {
   )
 }
 
-interface AnswersProps {
-  answers: QuestionBlockFragment['answers']
-}
+export const TextAnswers = () => {
+  const [answers, updateList] = useAnswers()
+  const answersAtoms = useAnswersAtoms()
 
-export const TextAnswers: React.FC<AnswersProps> = ({ answers }) => {
   return (
     <Flex space="$4">
       <form
         onSubmit={(e) => {
-          e.preventDefault()
           const answer = e.currentTarget.elements.namedItem('answer') as HTMLInputElement
-          answer.value = ''
+          if (answer.value) {
+            updateList((list) => [...list, { id: `${Date.now()}`, markedCorrect: true, text: answer.value }])
+            e.preventDefault()
+            answer.value = ''
+          }
         }}
       >
-        <VisuallyHidden {...({ as: 'button' } as any)} type="submit" />
+        <VisuallyHidden {...({ as: 'button' } as any)} type="submit">
+          Create
+        </VisuallyHidden>
         <TextField name="answer" label="Add correct answers" hint="press Enter ↵ to add a new answer" type="text" />
       </form>
       <Flex space="$2">
-        {answers.map((answer: QuestionBlockAnswerFragment_TextQuestionAnswer_, i) => {
-          return (
-            <Flex flow="row" key={answer.id} cross="center" space="$2">
-              <TextField
-                value={answer.text}
-                onChange={(v) => console.log({ newValue: v })}
-                type="text"
-                validity="valid"
-                size="sm"
-              />
-              <Button
-                variant="flat"
-                size="sm"
-                onClick={() => {
-                  console.log('delete', { text: answer.text, i })
-                }}
-              >
-                <Icon as={HiOutlineX} />
-              </Button>
-            </Flex>
-          )
+        {answersAtoms.map((atom, i) => {
+          return <TextAnswer atom={atom as PrimitiveAtom<Answer>} key={answers[i].id} />
         })}
       </Flex>
+    </Flex>
+  )
+}
+
+type Answer = {
+  id: string
+  markedCorrect: boolean
+  text: string
+}
+
+const TextAnswer = ({ atom }: { atom: PrimitiveAtom<Answer> }) => {
+  const [{ text, id, markedCorrect }, update] = useAtom(atom)
+  const onDelete = useDeleteAnswer(id)
+
+  return (
+    <Flex flow="row" cross="center" space="$2">
+      <TextField
+        value={text}
+        onChange={(v) => update({ text: v, markedCorrect, id })}
+        type="text"
+        validity="valid"
+        size="sm"
+      />
+      <Button variant="flat" size="sm" onClick={onDelete}>
+        <Icon as={HiOutlineX} />
+      </Button>
     </Flex>
   )
 }

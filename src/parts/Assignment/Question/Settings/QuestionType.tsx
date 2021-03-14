@@ -1,17 +1,12 @@
 import React from 'react'
 import { Picker } from '@fxtrot/ui'
 import { AssignmentQuestionType } from '@prisma/client'
-import { useUpdateQuestionType } from '../gql'
+import { useQuestionTypeAtom } from '../atoms'
 
-interface Props {
-  questionId: string
-  type: AssignmentQuestionType
-}
-
-const QuestionType: React.FC<Props> = ({ type, questionId }) => {
-  const changeQuestionType = useUpdateQuestionType(questionId)
+const QuestionType = () => {
+  const [type, setType] = useQuestionTypeAtom()
   return (
-    <Picker value={type} onChange={changeQuestionType} label="Question type">
+    <Picker value={type} onChange={(type: AssignmentQuestionType) => setType(type)} label="Question type">
       {questionTypes.map(({ label, value }) => (
         <Picker.Item key={label} value={value} label={label} />
       ))}

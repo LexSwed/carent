@@ -6,19 +6,13 @@ import { HiOutlineDocumentDuplicate, HiOutlineClipboardCheck } from 'react-icons
 import { TextAnswers, NumberAnswers, ChoiceAnswers } from '../blocks'
 import { DeleteQuestionBlock } from './DeleteQuestionBlock'
 import QuestionType from './QuestionType'
+import { useQuestionTypeAtom } from '../atoms'
 
 interface Props {
   id: QuestionBlockFragment['id']
-  type: QuestionBlockFragment['type']
-  answers: QuestionBlockFragment['answers']
 }
 
-const correctAnswersSetup: Record<
-  AssignmentQuestionType,
-  React.ElementType<{
-    answers: QuestionBlockFragment['answers']
-  }>
-> = {
+const correctAnswersSetup: Record<AssignmentQuestionType, React.ElementType> = {
   [AssignmentQuestionType.Text]: TextAnswers,
   [AssignmentQuestionType.Number]: NumberAnswers,
   [AssignmentQuestionType.Choice]: ChoiceAnswers,
@@ -26,14 +20,15 @@ const correctAnswersSetup: Record<
   [AssignmentQuestionType.Document]: () => null,
 }
 
-const QuestionSettings: React.FC<Props> = ({ id, type, answers }) => {
+const QuestionSettings: React.FC<Props> = ({ id }) => {
+  const [type] = useQuestionTypeAtom()
   const CorrectAnswersSetup = correctAnswersSetup[type]
 
   return (
     <SubCard>
       <Flex space="$4" main="spread" css={{ height: '100%' }}>
         <Flex space="$2">
-          <QuestionType questionId={id} type={type} />
+          <QuestionType />
           <Popover>
             <Popover.Trigger main="spread">
               Correct answers
@@ -41,7 +36,7 @@ const QuestionSettings: React.FC<Props> = ({ id, type, answers }) => {
             </Popover.Trigger>
             <Popover.Content placement="bottom-end">
               <Box width={240}>
-                <CorrectAnswersSetup answers={answers} />
+                <CorrectAnswersSetup />
               </Box>
             </Popover.Content>
           </Popover>

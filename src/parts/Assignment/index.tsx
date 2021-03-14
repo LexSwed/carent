@@ -24,7 +24,7 @@ const AssignmentBuilder = () => {
       <AssignmentHeader />
       {data?.assignment?.variants?.map((variant) => {
         return (
-          <Card>
+          <Card key={variant.id}>
             <Flex space="$4">
               {variant.questions.map((q) => (
                 <QuestionBlock {...q} variantId={variant.id} key={q.id} />

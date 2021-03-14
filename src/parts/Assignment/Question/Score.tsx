@@ -1,8 +1,12 @@
 import React from 'react'
 import { Flex, TextField } from '@fxtrot/ui'
+import { useScoreAtom } from './atoms'
 
-const Score = () => {
-  const [score, setScore] = React.useState(0)
+interface Props {
+  score: number
+}
+const Score = ({ score }: Props) => {
+  const [scoreValue, setScore] = useScoreAtom(score)
   return (
     <Flex flow="row" main="end">
       <TextField
@@ -11,7 +15,7 @@ const Score = () => {
         flow="row-reverse"
         size="sm"
         variant="underlined"
-        value={score}
+        value={scoreValue}
         onChange={setScore}
         css={{ 'width': 100, '& input': { textAlign: 'right' } }}
       />

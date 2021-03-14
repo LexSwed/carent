@@ -1,39 +1,46 @@
 import React from 'react'
 import { Flex, Button, Icon, styled, TextField } from '@fxtrot/ui'
 import { HiOutlinePhotograph, HiOutlineTrash } from 'react-icons/hi'
+import { useAnswers, useAnswersAtoms, useDeleteAnswer } from '../atoms'
+import { PrimitiveAtom, useAtom } from 'jotai'
 
 type Answer = {
   id: string
   markedCorrect: boolean
   content: string
 }
-interface Props {
-  answers: Answer[]
-  onChange: (newAnswers: Answer[]) => void
-}
 
-export const ChoiceBlock = ({ answers, onChange }: Props) => {
+export const ChoiceBlock = () => {
+  const answersAtoms = useAnswersAtoms()
+  const [answers, updateList] = useAnswers()
+
   return (
     <Flex space="$2" cross="stretch">
-      {answers.map(({ id, content }) => {
-        return <Choice key={id} content={content} />
+      {answersAtoms.map((atom, i) => {
+        return <Choice key={answers[i].id} atom={atom as PrimitiveAtom<Answer>} />
       })}
       <EmptyOption
         onCreate={(content) => {
-          onChange([...answers, { id: `${Date.now()}`, content, markedCorrect: false }])
+          updateList((answers) => [...answers, { id: `${Date.now()}`, content, markedCorrect: false }])
         }}
       />
     </Flex>
   )
 }
 
-const Choice: React.FC<{ content: string }> = ({ content }) => {
+const Choice = ({ atom }: { atom: PrimitiveAtom<Answer> }) => {
+  const [{ content, id, markedCorrect }, update] = useAtom(atom)
+  const onDelete = useDeleteAnswer(id)
   return (
     <ChoiceBox>
-      <TextField variant="transparent" defaultValue={content} />
+      <TextField
+        variant="transparent"
+        defaultValue={content}
+        onBlur={(e) => update({ id, content: e.target.value, markedCorrect })}
+      />
       <Flex flow="row" space="$1">
         <UploadOptionPhoto />
-        <Button variant="flat" size="sm" css={{ color: '$danger' }}>
+        <Button variant="flat" size="sm" css={{ color: '$danger' }} onClick={onDelete}>
           <Icon as={HiOutlineTrash} size="lg" />
         </Button>
       </Flex>
@@ -72,7 +79,7 @@ const UploadOptionPhoto = () => {
   )
 }
 
-const EmptyOption = ({ onCreate }: { onCreate: (text: string) => void }) => {
+const EmptyOption = ({ onCreate }: { onCreate: (content: any) => void }) => {
   return (
     <ChoiceBox $transparent>
       <TextField
@@ -80,8 +87,10 @@ const EmptyOption = ({ onCreate }: { onCreate: (text: string) => void }) => {
         type="text"
         placeholder="Another option..."
         onBlur={(e) => {
-          onCreate(e.target.value)
-          e.target.value = ''
+          if (e.target.value) {
+            onCreate(e.target.value)
+            e.target.value = ''
+          }
         }}
       />
       <UploadOptionPhoto />
