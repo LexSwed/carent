@@ -1,8 +1,7 @@
 import React from 'react'
-import { Button, Flex, Icon, Dialog, Heading, Box, TextField, Text, ComboBox } from '@fxtrot/ui'
-import { HiPlus } from 'react-icons/hi'
+import { Button, Flex, Icon, Dialog, Heading, Box, TextField, Text, ComboBox, Item } from '@fxtrot/ui'
+import { PlusIcon } from '@heroicons/react/outline'
 import { gql, MutationHookOptions, useMutation, useQuery } from '@apollo/client'
-import type { CreateClassMutation, CreateClassMutationVariables, GetGroupsQuery } from '../../../graphql/generated'
 import Router from 'next/router'
 
 const newClassFragment = gql`
@@ -48,10 +47,10 @@ const getGroupsQuery = gql`
 const CreateNewClass: React.FC<{ defaultOpen: boolean }> = ({ defaultOpen }) => {
   return (
     <Dialog defaultOpen={defaultOpen}>
-      <Dialog.Trigger main="center" variant="flat">
-        <Icon as={HiPlus} />
+      <Button main="center" variant="flat">
+        <Icon as={PlusIcon} />
         <span>Create new class</span>
-      </Dialog.Trigger>
+      </Button>
       {(close) => <NewGroupModal close={close} />}
     </Dialog>
   )
@@ -67,7 +66,7 @@ function NewGroupModal({ close }: { close: () => void }) {
   const [groupId, setGroupId] = React.useState<string | null>(null)
   const [newGroupCode, setNewGroupCode] = React.useState('')
 
-  const inputProps: React.ComponentProps<typeof TextField> = {
+  const inputProps = {
     'aria-describedby': 'students-code-hint',
     'label': 'Student group code',
     'secondaryLabel': '(Required)',
@@ -79,7 +78,7 @@ function NewGroupModal({ close }: { close: () => void }) {
     'required': true,
     'value': newGroupCode,
     'onChange': setNewGroupCode,
-  }
+  } as const
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -111,10 +110,10 @@ function NewGroupModal({ close }: { close: () => void }) {
 
   return (
     <Dialog.Modal>
-      <Flex space="$8">
+      <Flex gap="8">
         <Heading>Create new class</Heading>
         <Box display="contents" as="form" onSubmit={handleSubmit as any}>
-          <Flex space="$4">
+          <Flex gap="4">
             {error && <Text tone="danger">{error.message}</Text>}
             <TextField
               label="Class name"
@@ -133,7 +132,7 @@ function NewGroupModal({ close }: { close: () => void }) {
                 {data?.groups.edges.length ? (
                   <ComboBox {...inputProps} value={groupId} onChange={setGroupId} onInputChange={setNewGroupCode}>
                     {data?.groups.edges.map((group) => (
-                      <ComboBox.Item key={group.node.id} value={group.node.id} label={group.node.code} />
+                      <Item key={group.node.id} value={group.node.id} label={group.node.code} />
                     ))}
                   </ComboBox>
                 ) : (
@@ -145,7 +144,7 @@ function NewGroupModal({ close }: { close: () => void }) {
               </Text>
             </Flex>
           </Flex>
-          <Flex flow="row-reverse" space="$4">
+          <Flex flow="row-reverse" gap="4">
             <Button disabled={loading} type="submit">
               Create
             </Button>

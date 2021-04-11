@@ -22,7 +22,7 @@ const Main = styled('main', {
 const Layout = ({ children }) => {
   return (
     <Grid>
-      <Flex space="$4" css={{ minHeight: '100%', p: '$4' }}>
+      <Flex gap="4" css={{ minHeight: '100%', p: '$4' }}>
         {children[0]}
         <UserPanel css={{ mt: 'auto' }} />
       </Flex>

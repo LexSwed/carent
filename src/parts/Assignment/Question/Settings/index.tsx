@@ -1,7 +1,7 @@
 import React from 'react'
 import { styled, Box, Button, Flex, Icon, Popover } from '@fxtrot/ui'
 import { AssignmentQuestionType } from '@prisma/client'
-import { HiOutlineDocumentDuplicate, HiOutlineClipboardCheck } from 'react-icons/hi'
+import { DocumentDuplicateIcon, ClipboardCheckIcon } from '@heroicons/react/outline'
 
 import { TextAnswers, NumberAnswers, ChoiceAnswers } from '../blocks'
 import { DeleteQuestionBlock } from './DeleteQuestionBlock'
@@ -26,14 +26,14 @@ const QuestionSettings: React.FC<Props> = ({ id }) => {
 
   return (
     <SubCard>
-      <Flex space="$4" main="spread" css={{ height: '100%' }}>
-        <Flex space="$2">
+      <Flex gap="4" main="space-between" css={{ height: '100%' }}>
+        <Flex gap="2">
           <QuestionType />
           <Popover>
-            <Popover.Trigger main="spread">
+            <Button main="space-between">
               Correct answers
-              <Icon as={HiOutlineClipboardCheck} />
-            </Popover.Trigger>
+              <Icon as={ClipboardCheckIcon} />
+            </Button>
             <Popover.Content placement="bottom-end">
               <Box width={240}>
                 <CorrectAnswersSetup />
@@ -41,9 +41,9 @@ const QuestionSettings: React.FC<Props> = ({ id }) => {
             </Popover.Content>
           </Popover>
         </Flex>
-        <Flex space="$2" main="end" flow="row">
-          <Button main="spread" title="Duplicate">
-            <Icon as={HiOutlineDocumentDuplicate} />
+        <Flex gap="2" main="end" flow="row">
+          <Button main="space-between" title="Duplicate">
+            <Icon as={DocumentDuplicateIcon} />
           </Button>
           <DeleteQuestionBlock questionId={id} />
         </Flex>

@@ -1,11 +1,11 @@
-import NextAuth, { InitOptions } from 'next-auth'
+import NextAuth, { NextAuthOptions, User } from 'next-auth'
 import Providers from 'next-auth/providers'
 import Adapters from 'next-auth/adapters'
 import type { NextApiHandler } from 'next'
 
 import { prisma } from '../../../../prisma'
 
-const options: InitOptions = {
+const options: NextAuthOptions = {
   providers: [
     Providers.Email({
       server: {
@@ -33,8 +33,8 @@ const options: InitOptions = {
 
       return true
     },
-    session: async (session, user) => {
-      if (session && user) {
+    session: async (session, user: User) => {
+      if (session && user.id) {
         session.user = {
           ...session.user,
           id: user.id,
@@ -43,7 +43,7 @@ const options: InitOptions = {
           studentId: user.studentId ?? undefined,
         }
       }
-      return Promise.resolve(session)
+      return session as any
     },
   },
   pages: {

@@ -20,12 +20,12 @@ const AssignmentBuilder = () => {
   }
 
   return (
-    <Flex space="$2">
+    <Flex gap="2">
       <AssignmentHeader />
       {data?.assignment?.variants?.map((variant) => {
         return (
           <Card key={variant.id}>
-            <Flex space="$4">
+            <Flex gap="4">
               {variant.questions.map((q) => (
                 <QuestionBlock {...q} variantId={variant.id} key={q.id} />
               ))}

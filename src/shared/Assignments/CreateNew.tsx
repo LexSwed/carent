@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Flex, Picker, TextField } from '@fxtrot/ui'
+import { Button, Flex, Picker, TextField, Item } from '@fxtrot/ui'
 import { useClassTopics } from '../../parts/Topic/gql'
 import { useCreateAssignment } from '../../parts/Class/gql'
 
@@ -31,7 +31,7 @@ export const CreateNewAssignment: React.FC<Props> = ({ selectedTopic, onCreate }
   }
 
   return (
-    <Flex space="$4">
+    <Flex gap="4">
       <TextField label="Assignment title" placeholder="Control test" value={title} onChange={setTitle} required />
       <Picker
         name="topic"
@@ -41,7 +41,7 @@ export const CreateNewAssignment: React.FC<Props> = ({ selectedTopic, onCreate }
         placeholder="Select the topic"
       >
         {data?.class?.topics?.edges.map((edge) => (
-          <Picker.Item key={edge.node.id} label={edge.node.title} value={edge.node.id} />
+          <Item key={edge.node.id} label={edge.node.title} value={edge.node.id} />
         ))}
       </Picker>
       <Button disabled={loading} variant="primary" main="center" onClick={handleSubmit} css={{ width: '100%' }}>

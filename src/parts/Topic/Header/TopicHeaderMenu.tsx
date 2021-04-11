@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button, Box, Dialog, Flex, Text, Icon, Menu } from '@fxtrot/ui'
-import { HiDotsVertical, HiOutlineTrash } from 'react-icons/hi'
+import { Button, Box, Dialog, Flex, Text, Icon, Menu, Item } from '@fxtrot/ui'
+import { DotsVerticalIcon, TrashIcon } from '@heroicons/react/outline'
 import { useDeleteTopic } from '../gql'
 import { useRouter } from 'next/router'
 import { useClassId } from '../../../utils'
@@ -10,9 +10,9 @@ const TopicHeaderMenu: React.FC = () => {
 
   return (
     <Menu>
-      <Menu.Button space="$2" variant="flat">
-        <Icon as={HiDotsVertical} />
-      </Menu.Button>
+      <Button gap="2" variant="flat">
+        <Icon as={DotsVerticalIcon} />
+      </Button>
       <Menu.List placement="bottom-end">
         <DeleteTopicButton deleteTopic={deleteTopic} />
       </Menu.List>
@@ -33,16 +33,16 @@ const DeleteTopicButton: React.FC<{
 
   return (
     <Dialog>
-      <Dialog.Trigger as={Menu.Item} aria-label="Delete the document" css={{ color: '$danger' }} variant="flat">
-        <Icon size="md" as={HiOutlineTrash} />
+      <Item aria-label="Delete the document" css={{ color: '$danger' }}>
+        <Icon size="md" as={TrashIcon} />
         <span>Delete topic</span>
-      </Dialog.Trigger>
+      </Item>
       {(close) => (
         <Dialog.Modal>
           <Dialog.Title level={3}>Delete topic?</Dialog.Title>
           <Text>This will archive the topic itself and all the materials associated with it.</Text>
           <Box pb="$10" />
-          <Flex flow="row" main="end" cross="center" space="sm">
+          <Flex flow="row" main="end" cross="center" gap="4">
             <Button onClick={close}>Cancel</Button>
             <Button onClick={handleDelete} variant="flat">
               Submit

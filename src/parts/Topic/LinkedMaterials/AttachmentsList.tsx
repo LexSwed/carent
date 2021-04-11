@@ -2,14 +2,13 @@ import React from 'react'
 import { Flex, TextLink, styled, TextField, Icon } from '@fxtrot/ui'
 import { useScraper } from '../../../utils/link-preview'
 import { useTopicAttachments, useRenameTopicAttachment, useDeleteTopicAttachment } from '../gql'
-import type { GetTopicAttachmentsQuery } from '../../../graphql/generated'
-import { HiOutlineTrash } from 'react-icons/hi'
+import { TrashIcon } from '@heroicons/react/outline'
 
 const AttachmentsList = () => {
   const { data } = useTopicAttachments()
   const list = data?.topic?.attachments?.edges || []
   return (
-    <Flex space="$2">
+    <Flex gap="2">
       {list.map((edge) => (
         <LinkPreview key={edge.node.id} {...edge.node} />
       ))}
@@ -47,7 +46,7 @@ const LinkPreview: React.FC<GetTopicAttachmentsQuery['topic']['attachments']['ed
           {data?.image && <PreviewImage src={data.image.src} rel={data.image.rel} />}
 
           <LinkPreviewDelete onClick={() => remove()}>
-            <Icon as={HiOutlineTrash} color="white" size="xl" />
+            <Icon as={TrashIcon} color="white" size="xl" />
           </LinkPreviewDelete>
         </PreviewImageBox>
         <LinkDetails>
@@ -109,7 +108,8 @@ const PreviewImageBox = styled('div', {
 const LinkPreviewDelete = styled('button', {
   'p': 0,
   'border': 'none',
-  'size': '100%',
+  'width': '100%',
+  'height': '100%',
   'cursor': 'pointer',
   'display': 'grid',
   'placeItems': 'center',

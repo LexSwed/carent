@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Box, Button, Flex, Heading, Icon, Text, TextField, TextLink } from '@fxtrot/ui'
 
 import { useClassId } from '../../utils'
-import { HiChevronRight, HiArrowRight } from 'react-icons/hi'
+import { ChevronRightIcon, ArrowRightIcon } from '@heroicons/react/outline'
 import { useRouter } from 'next/router'
 import { useCreateNewTopic } from './gql'
 import { Card } from '../../shared/Card'
@@ -21,18 +21,18 @@ const MaterialsSection = () => {
 
   return (
     <Card>
-      <Flex as="section" space="$2">
+      <Flex as="section" gap="2">
         <Box>
           <Link href={`/${classId}/materials`}>
             <Button as="a" variant="flat" size="lg">
               <Text size="xl">Materials</Text>
-              <Icon as={HiChevronRight} size="xl" />
+              <Icon as={ChevronRightIcon} size="xl" />
             </Button>
           </Link>
         </Box>
         {!loading && (
           <Box px="$4" pb="$4">
-            <Flex space="$4">{topic ? <LatestTopic topic={topic} /> : <NoMaterials />}</Flex>
+            <Flex gap="4">{topic ? <LatestTopic topic={topic} /> : <NoMaterials />}</Flex>
           </Box>
         )}
       </Flex>
@@ -66,13 +66,13 @@ function LatestTopic({
   const classId = useClassId()
   const href = `/${classId}/materials/${topic.id}`
   return (
-    <Flex space="$4">
+    <Flex gap="4">
       <Text css={{ color: '$primaryStill', opacity: 0.8 }} size="sm">
         Continue your work on
       </Text>
       <Flex flow="row" main="start" cross="center">
         <Link href={href}>
-          <Flex as={TextLink} flow="row" main="start" cross="center" space="$4">
+          <Flex as={TextLink} flow="row" main="start" cross="center" gap="4">
             <Icon as={TopicIcon} size="xl" stroke="$primaryStill" />
             <Box py="$4" borderRight="2px solid $primaryStill" />
             <Heading level={3} css={{ color: '$primaryStill', m: 0 }}>
@@ -83,7 +83,7 @@ function LatestTopic({
         <Box ml="auto">
           <Link href={href}>
             <Button variant="primary" as="a">
-              <Icon as={HiArrowRight} size="xl" />
+              <Icon as={ArrowRightIcon} size="xl" />
             </Button>
           </Link>
         </Box>
@@ -126,8 +126,8 @@ function NoMaterials() {
   }
 
   return (
-    <Flex space="$6" as="form" onSubmit={handleSubmit}>
-      <Flex space="$2">
+    <Flex gap="6" as="form" onSubmit={handleSubmit}>
+      <Flex gap="2">
         <Heading>New start</Heading>
         <Text tone="light">Create a new topic as a first teaching material for this class</Text>
       </Flex>

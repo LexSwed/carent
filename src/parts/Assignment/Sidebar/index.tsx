@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react'
-import { Box, Button, Dialog, Flex, Icon, Menu, ThemeProvider } from '@fxtrot/ui'
+import { Box, Button, Dialog, Flex, Icon, Menu, Item, ThemeProvider } from '@fxtrot/ui'
 
 import { Card } from '../../../shared/Card'
 import Header from './Header'
-import { HiOutlineArchive, HiOutlineDotsVertical } from 'react-icons/hi'
+import { ArchiveIcon, DotsVerticalIcon } from '@heroicons/react/outline'
 import { gql, useMutation } from '@apollo/client'
 import { useAssignmentId, useClassId } from '../../../utils'
 import { useRouter } from 'next/router'
@@ -11,16 +11,16 @@ import { useRouter } from 'next/router'
 const Sidebar = () => {
   return (
     <Card>
-      <Flex space="$4">
+      <Flex gap="4">
         <Header />
-        <Flex flow="row" space="$6" main="spread">
+        <Flex flow="row" gap="6" main="space-between">
           <Button variant="outline" size="sm" main="center">
             Start accepting responses
           </Button>
           <Menu>
-            <Menu.Button variant="flat" size="sm" title="Assignment options">
-              <Icon as={HiOutlineDotsVertical} />
-            </Menu.Button>
+            <Button variant="flat" size="sm" title="Assignment options">
+              <Icon as={DotsVerticalIcon} />
+            </Button>
             <Menu.List placement="bottom-end" css={{ width: 140 }}>
               <DeleteAssignment />
             </Menu.List>
@@ -39,16 +39,16 @@ const DeleteAssignment = () => {
 
   return (
     <Dialog>
-      <Dialog.Trigger variant="flat" css={{ color: '$danger' }} as={Menu.Item}>
-        <Icon as={HiOutlineArchive} /> Archive
-      </Dialog.Trigger>
+      <Item css={{ color: '$danger' }}>
+        <Icon as={ArchiveIcon} /> Archive
+      </Item>
       {(close) => (
         <Dialog.Modal>
           <Dialog.Title level={4}>Archive this assignment?</Dialog.Title>
           <Box as="p" pb="$4">
             You'll be able to restore it within first 30 days.
           </Box>
-          <Flex flow="row" main="end" cross="center" space="$2">
+          <Flex flow="row" main="end" cross="center" gap="2">
             <Button variant="outline" onClick={close}>
               Cancel
             </Button>

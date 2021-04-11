@@ -5,6 +5,7 @@ import { useClassTopics } from '../gql'
 import { Card } from '../../../shared/Card'
 import TopicList from '../../../shared/TopicList'
 import { useClassId } from '../../../utils'
+import Link from 'next/link'
 
 const Topics = () => {
   const { data } = useClassTopics()
@@ -15,9 +16,11 @@ const Topics = () => {
       <TopicList
         title={<Heading level={3}>All topics</Heading>}
         subtitle={
-          <TextLink to={`/${classId}`} size="xs" tone="light" css={{ color: '$textLight', fontWeight: 'normal' }}>
-            {data?.class?.name}
-          </TextLink>
+          <Link href={`/${classId}`}>
+            <TextLink size="xs" tone="light" css={{ color: '$textLight', fontWeight: 'normal' }}>
+              {data?.class?.name}
+            </TextLink>
+          </Link>
         }
       />
     </Card>

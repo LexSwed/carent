@@ -16,11 +16,11 @@ const Topic = () => {
   }
 
   return (
-    <Flex space="$4" key={topicId}>
+    <Flex gap="4" key={topicId}>
       <Header />
       <Grid
         columns="minmax(320px, 3fr) [main] minmax(300px, 2fr) [materials]"
-        gap="$4"
+        gap="4"
         css={{ alignItems: 'flex-start' }}
       >
         <Card>

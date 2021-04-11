@@ -1,7 +1,4 @@
-import type {
-  AssignmentQuestion as PrismaAssignmentQuestion,
-  AssignmentAnswer as PrismaAssignmentAnswer,
-} from '@prisma/client'
+import type { AssignmentAnswer as PrismaAssignmentAnswer } from '@prisma/client'
 import { interfaceType, objectType } from 'nexus'
 
 export const assignment = objectType({
@@ -66,23 +63,22 @@ export const assignmentQuestion = objectType({
       type: 'JSON',
     })
     t.model.answers({
-      type: 'AssignmentAnswer' as any,
+      type: 'AssignmentAnswer',
     })
   },
 })
 
 export const assignmentAnswer = interfaceType({
   name: 'AssignmentAnswer',
-  resolveType(question: PrismaAssignmentQuestion) {
-    switch (question.type) {
-      case 'Text':
-        return textQuestion.name
-      case 'Number':
-        return numberQuestion.name
-      case 'Choice':
-        return choiceQuestion.name
-      default:
-        throw new Error('Question block is not defined')
+  resolveType(question) {
+    if ('text' in question) {
+      return textQuestion.name
+    }
+    if ('number' in question) {
+      return numberQuestion.name
+    }
+    if ('content' in question) {
+      return choiceQuestion.name
     }
   },
   definition(t) {

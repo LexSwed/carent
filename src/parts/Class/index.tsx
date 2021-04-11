@@ -24,11 +24,11 @@ const ClassPage = () => {
 
   return (
     <Box maxWidth={900}>
-      <Flex space="$4">
+      <Flex gap="4">
         <ClassHeader />
-        <Flex space="$8">
+        <Flex gap="8">
           <Card>
-            <Grid gap="$4" columns="minmax(200px, 1fr) 2fr">
+            <Grid gap="4" columns="minmax(200px, 1fr) 2fr">
               <Box>
                 <TopicList title={<Heading level={3}>Topics</Heading>} />
               </Box>

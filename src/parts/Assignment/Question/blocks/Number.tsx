@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex, TextField, Button, Icon } from '@fxtrot/ui'
-import { HiOutlineX } from 'react-icons/hi'
+import { XIcon } from '@heroicons/react/outline'
 import { useAnswers, useAnswersAtoms, useCreateAnswer, useDeleteAnswer } from '../atoms'
 import { PrimitiveAtom, useAtom } from 'jotai'
 
@@ -14,7 +14,7 @@ export const NumberAnswers = () => {
   const create = useCreateAnswer()
 
   return (
-    <Flex space="$4">
+    <Flex gap="4">
       <SingleFieldForm
         submitText="Add this answer"
         name="answer"
@@ -25,7 +25,7 @@ export const NumberAnswers = () => {
           create({ markedCorrect: true, number: answer.valueAsNumber })
         }}
       />
-      <Flex space="$2">
+      <Flex gap="2">
         {answersAtoms.map((atom, i) => {
           return <TextAnswer atom={atom as PrimitiveAtom<Answer>} key={answers[i].id} />
         })}
@@ -45,7 +45,7 @@ const TextAnswer = ({ atom }: { atom: PrimitiveAtom<Answer> }) => {
   const onDelete = useDeleteAnswer(id)
 
   return (
-    <Flex flow="row" cross="center" space="$2">
+    <Flex flow="row" cross="center" gap="2">
       <TextField
         value={number}
         onChange={(v) => update({ number: v, markedCorrect, id })}
@@ -54,7 +54,7 @@ const TextAnswer = ({ atom }: { atom: PrimitiveAtom<Answer> }) => {
         size="sm"
       />
       <Button variant="flat" size="sm" onClick={onDelete}>
-        <Icon as={HiOutlineX} />
+        <Icon as={XIcon} />
       </Button>
     </Flex>
   )

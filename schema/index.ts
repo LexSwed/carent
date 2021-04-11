@@ -18,7 +18,6 @@ export const schema = makeSchema({
     connectionPlugin({}),
     fieldAuthorizePlugin({
       formatError: (config) => {
-        console.log(config)
         return new ApolloError(
           'Unable to perform operation. Check that you have rights to perform the operation or your arguments are not valid',
           '400'

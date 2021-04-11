@@ -6,7 +6,7 @@ import { Topics } from './Topics'
 import { TopicItem } from './TopicItem'
 import { useClassTopics } from './gql'
 import { AnimatePresence, motion } from 'framer-motion'
-import { HiPlus } from 'react-icons/hi'
+import { PlusIcon } from '@heroicons/react/outline'
 
 const TopicList: React.FC<Props> = ({ title, subtitle }) => {
   const [shown, setShown] = useState(false)
@@ -22,10 +22,10 @@ const TopicList: React.FC<Props> = ({ title, subtitle }) => {
     <>
       <Box pb="$4">
         <Flex>
-          <Flex flow="row" main="spread" cross="center">
+          <Flex flow="row" main="space-between" cross="center">
             {title}
             <Button title="Create new topic" variant="flat" size="sm" onClick={() => setShown((shown) => !shown)}>
-              <Icon as={HiPlus} />
+              <Icon as={PlusIcon} />
             </Button>
           </Flex>
           {subtitle}

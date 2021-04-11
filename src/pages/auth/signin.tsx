@@ -22,7 +22,7 @@ const SignIn: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
         <Box>
           <Heading level={2}>Sign in</Heading>
           <Box minWidth="320px" maxWidth="500px" width="100%">
-            <Flex cross="end" space="$4" as={'form' as any} method="post" action="/api/auth/signin/email">
+            <Flex cross="end" gap="4" as={'form' as any} method="post" action="/api/auth/signin/email">
               <TextField
                 type="email"
                 id="email"

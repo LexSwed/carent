@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Flex, TextField, Icon, StyleRecord } from '@fxtrot/ui'
-import { HiChevronLeft } from 'react-icons/hi'
+import { ChevronLeftIcon } from '@heroicons/react/outline'
 import Link from 'next/link'
 
 import { useOnBlurUpdateTopicTitle, useTopicDetails } from '../gql'
@@ -14,11 +14,11 @@ const Header: React.FC = () => {
   const handleBlur = useOnBlurUpdateTopicTitle()
 
   return (
-    <Flex flow="row" main="spread" cross="center" space="$4">
-      <Flex flow="row" cross="center" main="stretch" css={{ flex: 2 }} space="$4">
+    <Flex flow="row" main="space-between" cross="center" gap="4">
+      <Flex flow="row" cross="center" main="stretch" css={{ flex: 2 }} gap="4">
         <Link href={`/${classId}`}>
           <Button variant="flat" as="a">
-            <Icon as={HiChevronLeft} size="lg" />
+            <Icon as={ChevronLeftIcon} size="lg" />
           </Button>
         </Link>
         {data && (

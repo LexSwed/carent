@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Flex, Icon, styled, Text } from '@fxtrot/ui'
-import { HiMenuAlt4 } from 'react-icons/hi'
+import { MenuAlt4Icon } from '@heroicons/react/outline'
 import { Draggable } from 'react-beautiful-dnd'
 import { useClassId, useTopicId } from '../../utils'
 import { useRouter } from 'next/router'
@@ -39,7 +39,7 @@ export const TopicItem = React.memo<TopicCardProps>(({ id, title, index }) => {
             onClick={stopPropagation}
             {...provided.dragHandleProps}
           >
-            <Icon size="sm" as={HiMenuAlt4} />
+            <Icon size="sm" as={MenuAlt4Icon} />
           </Button>
           <Link href={href}>
             <Button as="a" variant="transparent" size="sm">

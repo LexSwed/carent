@@ -1,5 +1,5 @@
 import React from 'react'
-import { Picker } from '@fxtrot/ui'
+import { Picker, Item } from '@fxtrot/ui'
 import { AssignmentQuestionType } from '@prisma/client'
 import { useQuestionTypeAtom } from '../atoms'
 
@@ -8,7 +8,7 @@ const QuestionType = () => {
   return (
     <Picker value={type} onChange={(type: AssignmentQuestionType) => setType(type)} label="Question type">
       {questionTypes.map(({ label, value }) => (
-        <Picker.Item key={label} value={value} label={label} />
+        <Item key={label} value={value} label={label} />
       ))}
     </Picker>
   )

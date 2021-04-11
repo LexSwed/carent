@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex, Button, Icon, styled, TextField } from '@fxtrot/ui'
-import { HiOutlinePhotograph, HiOutlineTrash } from 'react-icons/hi'
+import { PhotographIcon, TrashIcon } from '@heroicons/react/outline'
 import { useAnswers, useAnswersAtoms, useCreateAnswer, useDeleteAnswer } from '../atoms'
 import { PrimitiveAtom, useAtom } from 'jotai'
 
@@ -17,7 +17,7 @@ export const ChoiceBlock = () => {
   const [answers] = useAnswers()
 
   return (
-    <Flex space="$2" cross="stretch">
+    <Flex gap="2" cross="stretch">
       {answersAtoms.map((atom, i) => {
         return <Choice key={answers[i].id} atom={atom as PrimitiveAtom<Answer>} />
       })}
@@ -36,10 +36,10 @@ const Choice = ({ atom }: { atom: PrimitiveAtom<Answer> }) => {
         defaultValue={content}
         onBlur={(e) => update({ id, content: e.target.value, markedCorrect })}
       />
-      <Flex flow="row" space="$1">
+      <Flex flow="row" gap="1">
         <UploadOptionPhoto />
         <Button variant="flat" size="sm" css={{ color: '$danger' }} onClick={onDelete}>
-          <Icon as={HiOutlineTrash} size="lg" />
+          <Icon as={TrashIcon} size="lg" />
         </Button>
       </Flex>
     </ChoiceBox>
@@ -73,7 +73,7 @@ const ChoiceBox = styled('div', {
 const UploadOptionPhoto = () => {
   return (
     <Button variant="flat" size="sm">
-      <Icon as={HiOutlinePhotograph} size="lg" />
+      <Icon as={PhotographIcon} size="lg" />
     </Button>
   )
 }

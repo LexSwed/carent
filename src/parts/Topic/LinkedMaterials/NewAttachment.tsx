@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { Box, Button, Flex, Icon, TextField } from '@fxtrot/ui'
-import { HiOutlineDocumentAdd } from 'react-icons/hi'
+import { DocumentAddIcon } from '@heroicons/react/outline'
 import { isUrl } from '../../../utils/link-preview'
 import { useAddTopicAttachment } from '../gql'
 
@@ -21,7 +21,7 @@ const NewAttachment: React.FC<{
   }
 
   return (
-    <Flex space="$4" flow="row-reverse" as="form" onSubmit={handleSubmit}>
+    <Flex gap="4" flow="row-reverse" as="form" onSubmit={handleSubmit}>
       <TextField
         aria-label="Insert link to the resource"
         hint="Insert a URL of the resource to attach to this topic"
@@ -35,7 +35,7 @@ const NewAttachment: React.FC<{
       />
       <Box pt="$1">
         <Button size="sm" aria-label="Link the resource" variant="flat" type="submit" main="center">
-          <Icon as={HiOutlineDocumentAdd} size="lg" />
+          <Icon as={DocumentAddIcon} size="lg" />
         </Button>
       </Box>
     </Flex>

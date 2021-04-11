@@ -1,7 +1,7 @@
 import React from 'react'
-import { Text, Icon, Menu, styled, Flex } from '@fxtrot/ui'
+import { Text, Icon, Menu, Item, styled, Flex, Button } from '@fxtrot/ui'
 import { signOut, useSession } from 'next-auth/client'
-import { HiOutlineCog, HiOutlineDotsHorizontal, HiOutlineLogout } from 'react-icons/hi'
+import { CogIcon, DotsHorizontalIcon, LogoutIcon } from '@heroicons/react/outline'
 
 import { Card } from './Card'
 
@@ -23,7 +23,8 @@ const Avatar = styled(Flex, {
 })
 
 const Dummy = styled('div', {
-  size: '100%',
+  width: '100%',
+  height: '100%',
   br: '$round',
   bc: '$primaryLight',
   backgroundImage: "url('/draw/confetti-doodles.svg')",
@@ -46,18 +47,18 @@ const UserPanel: React.FC<React.ComponentProps<typeof Panel>> = (props) => {
       )}
       <Text>{user.name}</Text>
       <Menu>
-        <Menu.Button size="sm" variant="flat">
-          <Icon as={HiOutlineDotsHorizontal} />
-        </Menu.Button>
+        <Button size="sm" variant="flat">
+          <Icon as={DotsHorizontalIcon} />
+        </Button>
         <Menu.List css={{ width: '$32' }} placement="bottom-end">
-          <Menu.Item space="$3">
-            <Icon as={HiOutlineCog} />
+          <Item gap="3">
+            <Icon as={CogIcon} />
             <Text size="sm">Settings</Text>
-          </Menu.Item>
-          <Menu.Item space="$3" onClick={() => signOut()}>
-            <Icon as={HiOutlineLogout} />
+          </Item>
+          <Item gap="3" onClick={() => signOut()}>
+            <Icon as={LogoutIcon} />
             <Text size="sm">Sign Out</Text>
-          </Menu.Item>
+          </Item>
         </Menu.List>
       </Menu>
     </Panel>
