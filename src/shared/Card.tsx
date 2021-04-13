@@ -1,7 +1,7 @@
 import { styled } from '@fxtrot/ui'
 
 export const Card = styled('div', {
-  boxShadow: '$sm',
+  boxShadow: '$xs',
   bc: '#fff',
   color: '$text',
   p: '$4',
