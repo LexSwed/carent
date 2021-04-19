@@ -25,7 +25,7 @@ export const DeleteQuestionBlock: React.FC<{ questionId: string }> = ({ question
   return (
     <ThemeProvider theme="red">
       <Dialog>
-        <Button title="Delete question" main="space-between" variant="primary" disabled={loading}>
+        <Button title="Delete question" main="center" variant="primary" disabled={loading}>
           <Icon as={TrashIcon} />
         </Button>
         {(close) => (

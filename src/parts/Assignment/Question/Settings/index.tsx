@@ -42,7 +42,7 @@ const QuestionSettings: React.FC<Props> = ({ id }) => {
           </Popover>
         </Flex>
         <Flex gap="2" main="end" flow="row">
-          <Button main="space-between" title="Duplicate">
+          <Button main="center" title="Duplicate">
             <Icon as={DocumentDuplicateIcon} />
           </Button>
           <DeleteQuestionBlock questionId={id} />
