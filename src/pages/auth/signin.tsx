@@ -3,7 +3,8 @@ import React from 'react'
 import Head from 'next/head'
 import Router from 'next/router'
 import { Heading, TextField, Flex, Button, Box } from '@fxtrot/ui'
-import { csrfToken } from 'next-auth/client'
+import { getCsrfToken } from 'next-auth/client'
+
 import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 
 const SignIn: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ csrfToken }) => {
@@ -46,7 +47,7 @@ const SignIn: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>> =
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
-      csrfToken: await csrfToken(context),
+      csrfToken: await getCsrfToken(context),
     },
   }
 }
