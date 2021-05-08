@@ -18,11 +18,7 @@ const Topic = () => {
   return (
     <Flex gap="4" key={topicId}>
       <Header />
-      <Grid
-        columns="minmax(320px, 3fr) [main] minmax(300px, 2fr) [materials]"
-        gap="4"
-        css={{ alignItems: 'flex-start' }}
-      >
+      <Grid columns="minmax(320px, 3fr) [main] minmax(300px, 2fr) [materials]" gap="4" cross="start">
         <Card>
           <Assignments />
         </Card>

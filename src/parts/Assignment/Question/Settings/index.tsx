@@ -61,3 +61,109 @@ const SubCard = styled('div', {
   borderLeft: '1px solid $blueGray100',
   p: '$4',
 })
+
+export const Flex = styled('div', {
+  display: 'flex',
+  variants: {
+    wrap: {
+      'wrap': {
+        flexWrap: 'wrap',
+      },
+      'no-wrap': {
+        flexWrap: 'nowrap',
+      },
+      'wrap-reverse': {
+        flexWrap: 'wrap-reverse',
+      },
+    },
+    flow: {
+      'row': {
+        flexDirection: 'row',
+      },
+      'column': {
+        flexDirection: 'column',
+      },
+      'row-reverse': {
+        flexDirection: 'row-reverse',
+      },
+      'column-reverse': {
+        flexDirection: 'column-reverse',
+      },
+    },
+    main: {
+      'start': {
+        justifyContent: 'flex-start',
+      },
+      'center': {
+        justifyContent: 'center',
+      },
+      'end': {
+        justifyContent: 'flex-end',
+      },
+      'stretch': {
+        justifyContent: 'stretch',
+      },
+      'space-between': {
+        justifyContent: 'space-between',
+      },
+    },
+    cross: {
+      start: {
+        alignItems: 'flex-start',
+      },
+      center: {
+        alignItems: 'center',
+      },
+      end: {
+        alignItems: 'flex-end',
+      },
+      stretch: {
+        alignItems: 'stretch',
+      },
+    },
+    gap: {
+      none: {
+        gap: 0,
+      },
+      sm: {
+        gap: '4px',
+      },
+      md: {
+        gap: '8px',
+      },
+      lg: {
+        gap: '16px',
+      },
+    },
+    display: {
+      flex: {
+        display: 'flex',
+      },
+      inline: {
+        display: 'inline-flex',
+      },
+    },
+  },
+})
+
+export const Row = styled(Flex, {
+  flexDirection: 'row',
+  variants: {
+    reverse: {
+      true: {
+        flexDirection: 'row-reverse',
+      },
+    },
+  },
+})
+
+export const Column = styled(Flex, {
+  flexDirection: 'column',
+  variants: {
+    reverse: {
+      true: {
+        flexDirection: 'row-reverse',
+      },
+    },
+  },
+})
