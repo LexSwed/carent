@@ -1,4 +1,4 @@
-import { styled, Box, Flex } from '@fxtrot/ui'
+import { styled, Flex } from '@fxtrot/ui'
 import React from 'react'
 
 import UserPanel from './UserPanel'

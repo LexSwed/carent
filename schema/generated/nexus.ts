@@ -4,7 +4,7 @@
  */
 
 
-import { Context as Context } from "./../context"
+import { Context } from "./../context"
 import { core, connectionPluginCore } from "nexus"
 import { FieldAuthorizeResolver } from "nexus/dist/plugins/fieldAuthorizePlugin"
 
